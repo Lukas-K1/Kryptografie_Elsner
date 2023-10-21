@@ -70,8 +70,8 @@ public class Miller_Rabin {
         while (d.mod(BigInteger.TWO).equals(BigInteger.TWO))
             d = d.divide(BigInteger.TWO);
 
-        // Iterate given number of 'k' times
-        for (int i = 0; i < k; i++) {
+        // Iterate given number of 'k' times TODO
+        for () {
             if (!millerTest(d, n)) {
                 return false;
             }
