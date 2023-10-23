@@ -1,9 +1,8 @@
 package org.example.Algorithms;
 
 import java.math.BigInteger;
-import java.util.Random;
 
-public class Miller_Rabin {
+public class MillerRabin {
     // This function is called for all k trials.
     // It returns false if n is composite and
     // returns false if n is probably prime.
