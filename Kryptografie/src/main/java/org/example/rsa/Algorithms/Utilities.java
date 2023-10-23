@@ -1,4 +1,4 @@
-package org.example.Algorithms;
+package org.example.rsa.Algorithms;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;

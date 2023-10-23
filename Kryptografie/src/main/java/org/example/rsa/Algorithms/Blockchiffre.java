@@ -1,7 +1,6 @@
-package org.example.Algorithms;
+package org.example.rsa.Algorithms;
 
 import java.math.BigInteger;
-import java.util.function.BiFunction;
 
 public class Blockchiffre {
     private static final BigInteger _charSetSize = BigInteger.valueOf(55295);
