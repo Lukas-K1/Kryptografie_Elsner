@@ -13,7 +13,8 @@ public class MillerRabin {
         // Pick a random number in [2..n-2]
         // Corner cases make sure that n > 4
         //new random number generator TODO
-        BigInteger random = Utilities.calculateRandom(n, BigInteger.TEN, BigInteger.TEN, d);
+        BigInteger random = Utilities.calculateRandom(n, BigInteger.TEN, BigInteger.TEN, d); // BigInteger.TEN nur Platzhalter
+        // ich muss an der RandomNumber Generierung sicher noch was dafür anpassen TODO
         BigInteger a = (random.mod(n.subtract(BigInteger.valueOf(4)))).add(BigInteger.TWO);
 
         // Compute a^d % n
