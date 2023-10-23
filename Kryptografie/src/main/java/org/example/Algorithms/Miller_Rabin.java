@@ -14,9 +14,8 @@ public class Miller_Rabin {
         // Pick a random number in [2..n-2]
         // Corner cases make sure that n > 4
         //new random number generator TODO
-        Random r = new Random();
-        BigInteger placeholder = BigInteger.TEN
-        BigInteger a = (placeholder.mod(n.subtract(BigInteger.valueOf(4)))).add(BigInteger.TWO);
+        BigInteger random = Utilities.calculateRandom(n, BigInteger.TEN, BigInteger.TEN, d);
+        BigInteger a = (random.mod(n.subtract(BigInteger.valueOf(4)))).add(BigInteger.TWO);
 
         // Compute a^d % n
         BigInteger x = FastExponantiation.exponentiation(a, d, n);
@@ -41,7 +40,6 @@ public class Miller_Rabin {
                 return true;
             }
         }
-
         // Return composite
         return false;
     }
@@ -55,11 +53,11 @@ public class Miller_Rabin {
 
         // Corner cases
         //n <= 1 || n == 4
-        if (n.compareTo(BigInteger.ONE) > 0 || n.equals(BigInteger.valueOf(4))) {
+        if (n.compareTo(BigInteger.ONE) <= 0 || n.equals(BigInteger.valueOf(4))) {
             return false;
         }
         //n <= 3
-        if (n.compareTo(BigInteger.valueOf(3)) > 0){
+        if (n.compareTo(BigInteger.valueOf(3)) <= 0){
             return true;
         }
 
@@ -67,11 +65,12 @@ public class Miller_Rabin {
         // for some r >= 1
         BigInteger d = n.subtract(BigInteger.ONE);
 
-        while (d.mod(BigInteger.TWO).equals(BigInteger.TWO))
+        while (d.mod(BigInteger.TWO).equals(BigInteger.TWO)) {
             d = d.divide(BigInteger.TWO);
+        }
 
         // Iterate given number of 'k' times TODO
-        for () {
+        while (!k.equals(BigInteger.ZERO)) {
             if (!millerTest(d, n)) {
                 return false;
             }
