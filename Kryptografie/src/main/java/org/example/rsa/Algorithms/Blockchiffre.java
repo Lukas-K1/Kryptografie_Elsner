@@ -7,18 +7,57 @@ public class Blockchiffre {
     private static final String messageFiller = "";
 
     //TODO generate type to contain block length and cipher
-    public static void encryptMessage(String message, BigInteger key, BigInteger n) throws Exception {
+    public static String encryptMessage(String message, BigInteger key, BigInteger n) throws Exception {
         int charBlockLength = calculateBlockLength(n);
         if (!checkBlockLength(charBlockLength, n)) {
             throw new Exception("blocklänge nicht passend");
         }
         String filledMessage = fillMessage(message, charBlockLength);
-        generateCipher(message, charBlockLength, key, n);
+        return generateCipher(filledMessage, charBlockLength, key, n);
     }
 
     //TODO implement
-    public static void decryptMessage(String encryptedMessage, BigInteger key, BigInteger n) throws NoSuchMethodException {
-        throw new NoSuchMethodException();
+    public static String decryptMessage(String encryptedMessage, BigInteger key, BigInteger n) throws Exception {
+        String cipher = encryptedMessage; // TODO properly retriev cipher
+        Integer blockLength = null; // TODO should be received from input, ie TODO for encryptMessage
+        String messageText = "";
+        while (cipher.length() > 0) {
+            String cipherBlock = cipher.substring(0, blockLength);
+            BigInteger c = convertChiffreToNumber(cipherBlock, blockLength - 1);
+            BigInteger m = FastExponantiation.exponentiation(c, key, n);
+            String textBlock = convertToTextBlock(m, blockLength - 2);
+            messageText = messageText.concat(textBlock);
+            cipher = cipher.substring(blockLength);
+        }
+        return messageText;
+    }
+
+    private static String convertToTextBlock(BigInteger m, int power) throws Exception {
+        BigInteger firstCharacter = m.divide(_charSetSize.pow(power));
+
+        if (firstCharacter.compareTo(_charSetSize) > 0) {
+            throw new Exception("the character representing unicode + " + firstCharacter + " is not allowed");
+        }
+
+        String textBlock = String.valueOf(Character.toChars(firstCharacter.intValue()));
+        // TODO check for space placeholder
+        if (textBlock.contains("\u0000")) {
+            return "";
+        } else if (power > 0) {
+            return textBlock.concat(convertToTextBlock(m.mod(_charSetSize.pow(power)), power - 1));
+        }
+        else {
+            return textBlock;
+        }
+
+    }
+
+    private static BigInteger convertChiffreToNumber(String cipherBlock, int power) {
+        BigInteger chiffreNumber = BigInteger.valueOf(cipherBlock.charAt(0)).multiply(_charSetSize.pow(power));
+        if (cipherBlock.length() <= 1) {
+            return chiffreNumber;
+        }
+        return chiffreNumber.add(convertChiffreToNumber(cipherBlock.substring(1), power - 1));
     }
 
     /**
@@ -40,7 +79,8 @@ public class Blockchiffre {
 
 
     private static boolean checkBlockLength(int charBlockLength, BigInteger n) {
-        return _charSetSize.pow(charBlockLength).compareTo(n) < 0 && n.compareTo(_charSetSize.pow(charBlockLength + 1)) < 0;
+        return _charSetSize.pow(charBlockLength).compareTo(n) < 0
+                && n.compareTo(_charSetSize.pow(charBlockLength + 1)) < 0;
     }
 
     /**
@@ -76,11 +116,13 @@ public class Blockchiffre {
     }
 
     private static String generateChiffreBlock(BigInteger messageBlockChiffre, int charBlockLength) {
-        String cipherCharacter = String.valueOf(Character.toChars(Integer.parseInt(String.valueOf(messageBlockChiffre.divide(_charSetSize.pow(charBlockLength))))));
+        String cipherCharacter = String.valueOf(Character.toChars(Integer
+                .parseInt(String.valueOf(messageBlockChiffre.divide(_charSetSize.pow(charBlockLength))))));
         if (charBlockLength < 0) {
             return cipherCharacter;
         }
-        return cipherCharacter.concat(generateChiffreBlock(messageBlockChiffre.mod(_charSetSize.pow(charBlockLength)), charBlockLength - 1));
+        return cipherCharacter.concat(
+                generateChiffreBlock(messageBlockChiffre.mod(_charSetSize.pow(charBlockLength)), charBlockLength - 1));
     }
 
     private static BigInteger convertToNumberBlock(String messageBlock, int power) throws Exception {
