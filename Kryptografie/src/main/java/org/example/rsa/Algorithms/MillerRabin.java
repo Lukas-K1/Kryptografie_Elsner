@@ -8,12 +8,12 @@ public class MillerRabin {
     // returns false if n is probably prime.
     // d is an odd number such that d*2<sup>r</sup>
     // = n-1 for some r >= 1
-    static Boolean millerTest(BigInteger d, BigInteger n) {
+    static Boolean millerTest(BigInteger d, BigInteger n) throws Exception {
 
         // Pick a random number in [2..n-2]
         // Corner cases make sure that n > 4
         //new random number generator TODO
-        BigInteger random = Utilities.calculateRandom(n, BigInteger.TEN, BigInteger.TEN, d); // BigInteger.TEN nur Platzhalter
+        BigInteger random = Utilities.calculateRandom(1000); // BigInteger.TEN nur Platzhalter
         // ich muss an der RandomNumber Generierung sicher noch was dafür anpassen TODO
         BigInteger a = (random.mod(n.subtract(BigInteger.valueOf(4)))).add(BigInteger.TWO);
 
@@ -49,7 +49,7 @@ public class MillerRabin {
     // prime. k is an input parameter that
     // determines accuracy level. Higher
     // value of k indicates more accuracy.
-    static Boolean isPrime(BigInteger n, BigInteger k) {
+    static Boolean isPrime(BigInteger n, BigInteger k) throws Exception {
 
         // Corner cases
         //n <= 1 || n == 4
