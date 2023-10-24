@@ -2,8 +2,7 @@ package org.example.rsa.Algorithms;
 
 import java.math.BigInteger;
 
-public class ExtendedEuclidean
-{
+public class ExtendedEuclidean {
     public static ExtendedGCDResult extendedGCD(BigInteger a, BigInteger b) {
         if (b.equals(BigInteger.ZERO)) {
             return new ExtendedGCDResult(a, BigInteger.ONE, BigInteger.ZERO);
@@ -12,6 +11,14 @@ public class ExtendedEuclidean
             BigInteger x = result.y;
             BigInteger y = result.x.subtract((a.divide(b)).multiply(result.y));
             return new ExtendedGCDResult(result.gcd, x, y);
+        }
+    }
+
+    public static BigInteger gcd(BigInteger a, BigInteger b) {
+        if (a.mod(b).equals(BigInteger.ZERO)) {
+            return b;
+        } else {
+            return gcd(b, a.mod(b));
         }
     }
 
