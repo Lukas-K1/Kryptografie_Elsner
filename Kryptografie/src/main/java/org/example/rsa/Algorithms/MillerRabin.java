@@ -8,40 +8,42 @@ public class MillerRabin {
     // returns false if n is probably prime.
     // d is an odd number such that d*2<sup>r</sup>
     // = n-1 for some r >= 1
-    static Boolean millerTest(BigInteger d, BigInteger n) throws Exception {
-
-        // Pick a random number in [2..n-2]
-        // Corner cases make sure that n > 4
-        //new random number generator TODO
-        BigInteger random = Utilities.calculateRandom(1000); // BigInteger.TEN nur Platzhalter
-        // ich muss an der RandomNumber Generierung sicher noch was dafür anpassen TODO
-        BigInteger a = (random.mod(n.subtract(BigInteger.valueOf(4)))).add(BigInteger.TWO);
-
-        // Compute a^d % n
-        BigInteger x = FastExponantiation.exponentiation(a, d, n);
-
-        if (x.equals(BigInteger.ONE) || x.equals(n.subtract(BigInteger.ONE))){
-            return true;
+    static Boolean isPrim(BigInteger n, BigInteger random) throws Exception {
+        if (ExtendedEuclidean.gcd(n, random).compareTo(BigInteger.ONE) > 0) {
+            return false;
         }
 
-        // Keep squaring x while one of the
-        // following doesn't happen
-        // (i) d does not reach n-1
-        // (ii) (x^2) % n is not 1
-        // (iii) (x^2) % n is not n-1
-        while (!d.equals(n.subtract(BigInteger.ONE))) {
-            x = x.pow(2).mod(n);
-            d = d.multiply(BigInteger.TWO);
+        if (n.mod(BigInteger.TWO).equals(BigInteger.ZERO)) {
+            return false;
+        }
 
-            if (x.equals(BigInteger.ONE)){
-                return false;
-            }
-            if (x.equals(n.subtract(BigInteger.ONE))){
-                return true;
+        BigInteger j = n.subtract(BigInteger.ONE);
+        BigInteger exponent = n.subtract(BigInteger.ONE);
+
+        int r = 0;
+        boolean isPrim = false;
+
+        while (exponent.mod(BigInteger.TWO).equals(BigInteger.ZERO)) {
+            exponent = exponent.divide(BigInteger.TWO);
+            r += 1;
+        }
+
+        BigInteger x = FastExponantiation.exponentiation(random, exponent, n);
+        if (x.equals(BigInteger.ONE) || x.equals(j)) {
+            isPrim = true;
+        } else {
+            r -= 1;
+            exponent = exponent.multiply(BigInteger.TWO);
+            x = x.multiply(x);
+            while (r >= 1 && !isPrim && exponent.compareTo(j) < 0) {
+                if (x.mod(n).equals(j)) {
+                    isPrim = true;
+                }
+                r -= 1;
+                x = x.multiply(x);
             }
         }
-        // Return composite
-        return false;
+        return isPrim;
     }
 
     // It returns false if n is composite
@@ -49,33 +51,24 @@ public class MillerRabin {
     // prime. k is an input parameter that
     // determines accuracy level. Higher
     // value of k indicates more accuracy.
-    static Boolean isPrime(BigInteger n, BigInteger k) throws Exception {
-
+    public static Boolean isPrime(BigInteger probablyPrime, int k) throws Exception {
+        boolean isPrime = true;
         // Corner cases
         //n <= 1 || n == 4
-        if (n.compareTo(BigInteger.ONE) <= 0 || n.equals(BigInteger.valueOf(4))) {
+        if (probablyPrime.compareTo(BigInteger.ONE) <= 0 || probablyPrime.equals(BigInteger.valueOf(4))) {
             return false;
         }
-        //n <= 3
-        if (n.compareTo(BigInteger.valueOf(3)) <= 0){
+
+        if (probablyPrime.compareTo(BigInteger.valueOf(5)) <= 0) {
             return true;
         }
-
-        // Find r such that n = 2^d * r + 1
-        // for some r >= 1
-        BigInteger d = n.subtract(BigInteger.ONE);
-
-        while (d.mod(BigInteger.TWO).equals(BigInteger.TWO)) {
-            d = d.divide(BigInteger.TWO);
-        }
-
         // Iterate given number of 'k' times TODO
-        while (!k.equals(BigInteger.ZERO)) {
-            if (!millerTest(d, n)) {
-                return false;
+        for (int i = 0; i < k; i++) {
+            isPrime = isPrim(probablyPrime, Utilities.calculateRandom(probablyPrime.bitLength()));
+            if (isPrime) {
+                break;
             }
         }
-
-        return true;
+        return isPrime;
     }
 }
