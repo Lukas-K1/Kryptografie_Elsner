@@ -28,7 +28,7 @@ public class MillerRabin {
             r += 1;
         }
 
-        BigInteger x = FastExponantiation.exponentiation(random, exponent, n);
+        BigInteger x = FastExponentiation.exponentiation(random, exponent, n);
         if (x.equals(BigInteger.ONE) || x.equals(j)) {
             isPrim = true;
         } else {

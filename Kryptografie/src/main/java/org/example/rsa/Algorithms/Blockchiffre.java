@@ -4,7 +4,7 @@ import java.math.BigInteger;
 
 public class Blockchiffre {
     private static final BigInteger _charSetSize = BigInteger.valueOf(55295);
-    private static final String messageFiller = "";
+    private static final String messageFiller = "\u0000";
 
     //TODO generate type to contain block length and cipher
     public static String encryptMessage(String message, BigInteger key, BigInteger n) throws Exception {
@@ -18,13 +18,13 @@ public class Blockchiffre {
 
     //TODO implement
     public static String decryptMessage(String encryptedMessage, BigInteger key, BigInteger n) throws Exception {
-        String cipher = encryptedMessage; // TODO properly retriev cipher
+        String cipher = encryptedMessage; // TODO properly retrieve cipher
         Integer blockLength = null; // TODO should be received from input, ie TODO for encryptMessage
         String messageText = "";
         while (cipher.length() > 0) {
             String cipherBlock = cipher.substring(0, blockLength);
             BigInteger c = convertChiffreToNumber(cipherBlock, blockLength - 1);
-            BigInteger m = FastExponantiation.exponentiation(c, key, n);
+            BigInteger m = FastExponentiation.exponentiation(c, key, n);
             String textBlock = convertToTextBlock(m, blockLength - 2);
             messageText = messageText.concat(textBlock);
             cipher = cipher.substring(blockLength);
@@ -41,12 +41,11 @@ public class Blockchiffre {
 
         String textBlock = String.valueOf(Character.toChars(firstCharacter.intValue()));
         // TODO check for space placeholder
-        if (textBlock.contains("\u0000")) {
+        if (textBlock.contains(messageFiller)) {
             return "";
         } else if (power > 0) {
             return textBlock.concat(convertToTextBlock(m.mod(_charSetSize.pow(power)), power - 1));
-        }
-        else {
+        } else {
             return textBlock;
         }
 
@@ -106,7 +105,7 @@ public class Blockchiffre {
         String cipher = "";
         while (message.length() > 0) {
             BigInteger messageBlockNumber = convertToNumberBlock(message.substring(0, charBlockLength), charBlockLength - 1);
-            BigInteger messageBlockChiffre = FastExponantiation.exponentiation(messageBlockNumber, key, n);
+            BigInteger messageBlockChiffre = FastExponentiation.exponentiation(messageBlockNumber, key, n);
             String chiffreBlock = generateChiffreBlock(messageBlockChiffre, charBlockLength);
             cipher = cipher.concat(chiffreBlock);
             message = message.substring(charBlockLength);
