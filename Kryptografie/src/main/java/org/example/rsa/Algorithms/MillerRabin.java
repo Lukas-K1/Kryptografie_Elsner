@@ -51,7 +51,7 @@ public class MillerRabin {
     // prime. k is an input parameter that
     // determines accuracy level. Higher
     // value of k indicates more accuracy.
-    public static Boolean isPrime(BigInteger probablyPrime, int k) throws Exception {
+    public static Boolean isPrime(BigInteger probablyPrime, int k, int m) throws Exception {
         boolean isPrime = true;
         // Corner cases
         //n <= 1 || n == 4
@@ -64,7 +64,7 @@ public class MillerRabin {
         }
         // Iterate given number of 'k' times TODO
         for (int i = 0; i < k; i++) {
-            isPrime = isPrim(probablyPrime, Utilities.calculateRandom(probablyPrime.bitLength()));
+            isPrime = isPrim(probablyPrime, Utilities.calculateRandom(probablyPrime.bitLength(), m));
             if (isPrime) {
                 break;
             }

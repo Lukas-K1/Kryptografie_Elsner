@@ -9,21 +9,16 @@ import java.util.Random;
 
 public class Utilities {
 
-    public static HashSet<BigInteger> calculateRandoms(int lengthOfNumber, int numberAmount) {
+    public static HashSet<BigInteger> calculateRandoms(int lengthOfNumber, int numberAmount, int m) {
         BigDecimal boundLow = BigDecimal.valueOf(2).pow(lengthOfNumber - 1);
         BigDecimal boundHigh = BigDecimal.valueOf(2).pow(lengthOfNumber).subtract(BigDecimal.ONE);
         double randomHelper = Math.random();
-        BigDecimal m;
-
-        do {
-            m = BigDecimal.valueOf(randomHelper).multiply(BigDecimal.valueOf(lengthOfNumber * 2));
-        }
-        while (m.sqrt(MathContext.DECIMAL128).remainder(BigDecimal.ONE).equals(BigDecimal.ZERO));
+        BigDecimal mValue = BigDecimal.valueOf(m);
 
         HashSet<BigInteger> randomNumbers = new HashSet<BigInteger>();
 
         for (long i = 1; i <= numberAmount; i++) {
-            BigInteger randomNumber = boundLow.add((m.sqrt(MathContext.DECIMAL128)
+            BigInteger randomNumber = boundLow.add((mValue.sqrt(MathContext.DECIMAL128)
                     .multiply(BigDecimal.valueOf(i)).remainder(BigDecimal.ONE))
                     .multiply(boundHigh.subtract(boundLow).add(BigDecimal.ONE))).toBigInteger();
             randomNumbers.add(randomNumber);
@@ -32,8 +27,8 @@ public class Utilities {
     }
 
     // based on it security script page 97
-    public static BigInteger calculateRandom(int lengthOfNumber) throws Exception {
-        Optional<BigInteger> random = calculateRandoms(lengthOfNumber, 1)
+    public static BigInteger calculateRandom(int lengthOfNumber, int m) throws Exception {
+        Optional<BigInteger> random = calculateRandoms(lengthOfNumber, 1, m)
                 .stream().findFirst();
         if (!random.isPresent()) {
             throw new Exception("keine Zahl generiert");
