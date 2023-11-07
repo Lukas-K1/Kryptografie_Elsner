@@ -36,16 +36,16 @@ public class Utilities {
         return random.get();
     }
 
-    public static BigInteger getRandomBigInteger(BigInteger minimum, BigInteger maximum) {
+    public static BigInteger getRandomBigInteger(BigInteger minimum, BigInteger maximum, int n, int m) {
         int power = maximum.intValue();
-        BigDecimal n = new BigDecimal(new BigInteger(power * 10 / 3, new Random()));
-        BigDecimal m = new BigDecimal(new BigInteger(power * 2, new Random()));
+        BigDecimal nValue = new BigDecimal(BigInteger.valueOf(n));
+        BigDecimal mValue = new BigDecimal(BigInteger.valueOf(m));
 
-        while (m.sqrt(new MathContext(power * 2)).pow(2).equals(m) || m.compareTo(BigDecimal.valueOf(2)) <= 0) {
-            m = m.add(BigDecimal.ONE);
+        while (mValue.sqrt(new MathContext(power * 2)).pow(2).equals(m) || mValue.compareTo(BigDecimal.valueOf(2)) <= 0) {
+            mValue = mValue.add(BigDecimal.ONE);
         }
 
-        BigDecimal part1 = m.sqrt(new MathContext(power*2)).multiply(n).remainder(BigDecimal.ONE);
+        BigDecimal part1 = mValue.sqrt(new MathContext(power*2)).multiply(nValue).remainder(BigDecimal.ONE);
         BigDecimal part2 = new BigDecimal(maximum.add(BigInteger.ONE).subtract(minimum));
         BigDecimal sn = new BigDecimal(minimum).add(part1.multiply(part2));
         return sn.toBigInteger();

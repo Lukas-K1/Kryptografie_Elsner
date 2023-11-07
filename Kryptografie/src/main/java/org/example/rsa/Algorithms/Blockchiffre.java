@@ -6,7 +6,7 @@ public class Blockchiffre {
     private static final BigInteger _charSetSize = BigInteger.valueOf(55295);
     private static final String messageFiller = "\u0000";
 
-    //TODO generate type to contain block length and cipher
+    // TODO generate type to contain block length and cipher
     public static String encryptMessage(String message, BigInteger key, BigInteger n) throws Exception {
         int charBlockLength = calculateBlockLength(n);
         if (!checkBlockLength(charBlockLength, n)) {
@@ -16,7 +16,7 @@ public class Blockchiffre {
         return generateCipher(filledMessage, charBlockLength, key, n);
     }
 
-    //TODO implement
+    // TODO implement
     public static String decryptMessage(String encryptedMessage, BigInteger key, BigInteger n) throws Exception {
         String cipher = encryptedMessage; // TODO properly retrieve cipher
         Integer blockLength = null; // TODO should be received from input, ie TODO for encryptMessage
