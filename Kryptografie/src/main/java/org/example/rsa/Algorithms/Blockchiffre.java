@@ -1,30 +1,32 @@
 package org.example.rsa.Algorithms;
 
+import org.example.rsa.PairTypes.PairCipherBlockLength;
+import org.example.rsa.PairTypes.RSAKeys;
+
 import java.math.BigInteger;
 
 public class Blockchiffre {
     private static final BigInteger _charSetSize = BigInteger.valueOf(55295);
     private static final String messageFiller = "\u0000";
 
-    // TODO generate type to contain block length and cipher
-    public static String encryptMessage(String message, BigInteger key, BigInteger n) throws Exception {
-        int charBlockLength = calculateBlockLength(n);
-        if (!checkBlockLength(charBlockLength, n)) {
+    public static PairCipherBlockLength encryptMessage(String message, RSAKeys rsaKeys) throws Exception {
+        int charBlockLength = calculateBlockLength(rsaKeys.getN());
+        if (!checkBlockLength(charBlockLength, rsaKeys.getN())) {
             throw new Exception("blocklänge nicht passend");
         }
         String filledMessage = fillMessage(message, charBlockLength);
-        return generateCipher(filledMessage, charBlockLength, key, n);
+        String cipher = generateCipher(filledMessage, charBlockLength, rsaKeys);
+        return new PairCipherBlockLength(cipher, charBlockLength + 1);
     }
 
-    // TODO implement
-    public static String decryptMessage(String encryptedMessage, BigInteger key, BigInteger n) throws Exception {
-        String cipher = encryptedMessage; // TODO properly retrieve cipher
-        Integer blockLength = null; // TODO should be received from input, ie TODO for encryptMessage
+    public static String decryptMessage(PairCipherBlockLength encryptedMessage, RSAKeys rsaKeys) throws Exception {
+        String cipher = encryptedMessage.getCipher();
+        Integer blockLength = encryptedMessage.getBlockLength();
         String messageText = "";
         while (cipher.length() > 0) {
             String cipherBlock = cipher.substring(0, blockLength);
             BigInteger c = convertChiffreToNumber(cipherBlock, blockLength - 1);
-            BigInteger m = FastExponentiation.exponentiation(c, key, n);
+            BigInteger m = FastExponentiation.exponentiation(c, rsaKeys.getKey(), rsaKeys.getN());
             String textBlock = convertToTextBlock(m, blockLength - 2);
             messageText = messageText.concat(textBlock);
             cipher = cipher.substring(blockLength);
@@ -53,7 +55,7 @@ public class Blockchiffre {
 
     private static BigInteger convertChiffreToNumber(String cipherBlock, int power) {
         BigInteger chiffreNumber = BigInteger.valueOf(cipherBlock.charAt(0)).multiply(_charSetSize.pow(power));
-        if (cipherBlock.length() <= 1) {
+        if (cipherBlock.length() == 1) {
             return chiffreNumber;
         }
         return chiffreNumber.add(convertChiffreToNumber(cipherBlock.substring(1), power - 1));
@@ -96,16 +98,14 @@ public class Blockchiffre {
      * teilen des Klartextes in Blocke und Erzeugen des Chiffres
      *
      * @param message         = gesamter Klartext
-     * @param charBlockLength = x
-     * @param key             = Verschlüsselungswert
-     * @param n               =
+     * @param charBlockLength = Blocklänge
      * @return Chiffrat
      */
-    private static String generateCipher(String message, int charBlockLength, BigInteger key, BigInteger n) throws Exception {
+    private static String generateCipher(String message, int charBlockLength, RSAKeys rsaKeys) throws Exception {
         String cipher = "";
         while (message.length() > 0) {
             BigInteger messageBlockNumber = convertToNumberBlock(message.substring(0, charBlockLength), charBlockLength - 1);
-            BigInteger messageBlockChiffre = FastExponentiation.exponentiation(messageBlockNumber, key, n);
+            BigInteger messageBlockChiffre = FastExponentiation.exponentiation(messageBlockNumber, rsaKeys.getKey(), rsaKeys.getN());
             String chiffreBlock = generateChiffreBlock(messageBlockChiffre, charBlockLength);
             cipher = cipher.concat(chiffreBlock);
             message = message.substring(charBlockLength);
@@ -117,7 +117,7 @@ public class Blockchiffre {
     private static String generateChiffreBlock(BigInteger messageBlockChiffre, int charBlockLength) {
         String cipherCharacter = String.valueOf(Character.toChars(Integer
                 .parseInt(String.valueOf(messageBlockChiffre.divide(_charSetSize.pow(charBlockLength))))));
-        if (charBlockLength < 0) {
+        if (charBlockLength == 0) {
             return cipherCharacter;
         }
         return cipherCharacter.concat(
