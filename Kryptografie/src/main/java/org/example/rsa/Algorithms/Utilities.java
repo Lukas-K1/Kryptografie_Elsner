@@ -12,7 +12,7 @@ public class Utilities {
     public static HashSet<BigInteger> calculateRandoms(int lengthOfNumber, int numberAmount, int m) {
         BigDecimal boundLow = BigDecimal.valueOf(2).pow(lengthOfNumber - 1);
         BigDecimal boundHigh = BigDecimal.valueOf(2).pow(lengthOfNumber).subtract(BigDecimal.ONE);
-        double randomHelper = Math.random();
+
         BigDecimal mValue = BigDecimal.valueOf(m);
 
         HashSet<BigInteger> randomNumbers = new HashSet<BigInteger>();

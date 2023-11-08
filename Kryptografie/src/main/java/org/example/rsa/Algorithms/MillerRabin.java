@@ -3,6 +3,8 @@ package org.example.rsa.Algorithms;
 import java.math.BigInteger;
 
 public class MillerRabin {
+
+    public static final int MILLER_RABIN_TRIALS = 30;
     // This function is called for all k trials.
     // It returns false if n is composite and
     // returns false if n is probably prime.
