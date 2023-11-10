@@ -50,9 +50,10 @@ public class RSAHandler {
         BigInteger d;
 
         try {
-            d = generateD(e, phi);
+            d = ExtendedEuclidean.getModInverse(e, phi);
         } catch (Exception exception) {
-            throw new Exception("could not generate d");
+            System.out.println(exception.getMessage()+ "\n" + "private key could not be generated");
+            return generateRSAKeyPair();
         }
 
         PublicKey publicKey = new PublicKey(e, n);
@@ -60,6 +61,14 @@ public class RSAHandler {
         return new RSAKeyPair(publicKey, privateKey);
     }
 
+    /**
+     * generates private key
+     * @param e
+     * @param phi
+     * @return
+     * @throws Exception
+     * @deprecated
+     */
     private BigInteger generateD(BigInteger e, BigInteger phi) throws Exception {
         e = e.mod(phi);
         BigInteger d = generateDHelper(phi, e);
