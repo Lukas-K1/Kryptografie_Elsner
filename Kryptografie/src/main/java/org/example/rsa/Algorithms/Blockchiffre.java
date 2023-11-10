@@ -9,6 +9,14 @@ public class Blockchiffre {
     private static final BigInteger _charSetSize = BigInteger.valueOf(55295);
     private static final String messageFiller = "\u0000";
 
+    /**
+     *
+     * @param message
+     * @param rsaKeys
+     * @return
+     * @throws Exception
+     * @deprecated use {@link #encryptMessage(String, RSAKeys, int)} instead
+     */
     public static PairCipherBlockLength encryptMessage(String message, RSAKeys rsaKeys) throws Exception {
         int charBlockLength = calculateBlockLength(rsaKeys.getN());
         if (!checkBlockLength(charBlockLength, rsaKeys.getN())) {
@@ -17,6 +25,15 @@ public class Blockchiffre {
         String filledMessage = fillMessage(message, charBlockLength);
         String cipher = generateCipher(filledMessage, charBlockLength, rsaKeys);
         return new PairCipherBlockLength(cipher, charBlockLength + 1);
+    }
+
+    public static PairCipherBlockLength encryptMessage(String message, RSAKeys rsaKeys, int blockLength) throws Exception {
+        if (!checkBlockLength(blockLength, rsaKeys.getN())) {
+            throw new Exception("blocklänge nicht passend");
+        }
+        String filledMessage = fillMessage(message, blockLength);
+        String cipher = generateCipher(filledMessage, blockLength, rsaKeys);
+        return new PairCipherBlockLength(cipher, blockLength + 1);
     }
 
     public static String decryptMessage(PairCipherBlockLength encryptedMessage, RSAKeys rsaKeys) throws Exception {
@@ -66,6 +83,7 @@ public class Blockchiffre {
      * charSetSize = _charSetSize = 55295
      *
      * @param n = p*q
+     * @deprecated blocklength now part of input
      */
     public static int calculateBlockLength(BigInteger n) {
         int charBlockLength = 1;
