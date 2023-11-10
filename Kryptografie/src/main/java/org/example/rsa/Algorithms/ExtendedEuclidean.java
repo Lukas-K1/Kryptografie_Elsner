@@ -22,6 +22,15 @@ public class ExtendedEuclidean {
         }
     }
 
+    public static BigInteger getModInverse(BigInteger e, BigInteger phi){
+        ExtendedEuclidResult result = extendedGCD(e, phi);
+        if (result.gcd.equals(BigInteger.ONE)) {
+            return result.x.mod(phi);
+        } else {
+            return BigInteger.ZERO;
+        }
+    }
+
     public static class ExtendedEuclidResult {
         public BigInteger gcd;
         public BigInteger x;
