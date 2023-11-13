@@ -1,15 +1,14 @@
 package org.example.rsa.Handler;
 
-import org.example.rsa.Algorithms.Blockchiffre;
-import org.example.rsa.Algorithms.ExtendedEuclidean;
-import org.example.rsa.Algorithms.MillerRabin;
-import org.example.rsa.Algorithms.Utilities;
+import org.example.rsa.Algorithms.*;
 import org.example.rsa.PairTypes.PairCipherBlockLength;
 import org.example.rsa.PairTypes.PrivateKey;
 import org.example.rsa.PairTypes.PublicKey;
 import org.example.rsa.PairTypes.RSAKeyPair;
 
 import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.security.interfaces.RSAPublicKey;
 
 /**
@@ -22,7 +21,10 @@ public class RSAHandler {
     public int millerRabinTrials = MillerRabin.MILLER_RABIN_TRIALS;
     public int primeNumberLength = 128;
 
-    private int _m;
+    private BigInteger _m;
+    private BigInteger _a;
+    private BigInteger _b;
+    private BigInteger _n;
 
     public void setMillerRabinTrials(int millerRabinTrials) {
         this.millerRabinTrials = millerRabinTrials;
@@ -33,12 +35,12 @@ public class RSAHandler {
     }
 
     public void setM(int m) {
-        this._m = m;
+        this._m = BigInteger.valueOf(m);
     }
 
     private RSAKeyPair generateRSAKeyPair() throws Exception {
-        BigInteger p = Utilities.calculateRandom(primeNumberLength, millerRabinTrials);
-        BigInteger q = Utilities.calculateRandom(primeNumberLength, millerRabinTrials);
+        BigInteger p = Utilities.generateRandom(_m, _n, _a, _b, millerRabinTrials);
+        BigInteger q = Utilities.generateRandom(_m, _n, _a, _b, millerRabinTrials);
 
         BigInteger n = p.multiply(q);
         BigInteger phi = p.subtract(BigInteger.ONE).multiply(q.subtract(BigInteger.ONE));
@@ -46,7 +48,7 @@ public class RSAHandler {
         BigInteger e;
 
         do {
-            e = Utilities.calculateRandom(primeNumberLength, _m);
+            e = Utilities.generateRandom(_m, _n, _a, _b, millerRabinTrials);
         }
         while (!ExtendedEuclidean.gcd(e, phi).equals(BigInteger.ONE));
 
@@ -72,19 +74,18 @@ public class RSAHandler {
         return Blockchiffre.decryptMessage(encryptedMessage, privateKey);
     }
 
-    public String signatureForMessage(String message) {
-        return Utilities.hash256(message);
+    public String signatureForMessage(String message) throws Exception {
+        return Utilities.hash256(message, generateRSAKeyPair().getPrivateKey());
     }
 
-    public String decryptHashedMessage(String hashedMessage, PrivateKey privateKey) {
-        String message = "";
+    public boolean validSignature(String hashedMessage, String signature) throws Exception {
+        final MessageDigest digest = MessageDigest.getInstance("SHA3-256");
+        final byte[] hashbytes = digest.digest(hashedMessage.getBytes());
+        BigInteger hashedInteger = new BigInteger(1, hashbytes);
+        BigInteger signatureInteger = new BigInteger(signature, 16);
 
-        try {
-            message = Blockchiffre.decryptMessage(new PairCipherBlockLength(hashedMessage, 1), privateKey);
-        } catch (Exception e) {
-            System.out.println(e.getMessage() + "\n" + "hash could not be decrypted");
-        }
-        return message;
+        BigInteger decryptedSignature = FastExponentiation.exponentiation(signatureInteger, generateRSAKeyPair().getPublicKey().getKey(), generateRSAKeyPair().getPublicKey().getN());
+        return decryptedSignature.equals(hashedInteger);
     }
 
     /**
