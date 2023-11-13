@@ -5,7 +5,7 @@ import java.math.BigInteger;
 import java.math.MathContext;
 import java.util.HashSet;
 import java.util.Optional;
-import java.util.Random;
+import org.apache.commons.codec.digest.DigestUtils;
 
 public class Utilities {
 
@@ -49,5 +49,9 @@ public class Utilities {
         BigDecimal part2 = new BigDecimal(maximum.add(BigInteger.ONE).subtract(minimum));
         BigDecimal sn = new BigDecimal(minimum).add(part1.multiply(part2));
         return sn.toBigInteger();
+    }
+
+    public static String hash256(String message) {
+        return DigestUtils.sha256Hex(message);
     }
 }

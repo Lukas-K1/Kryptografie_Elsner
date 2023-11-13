@@ -1,13 +1,16 @@
 package org.example.rsa.Handler;
 
+import org.example.rsa.Algorithms.Blockchiffre;
 import org.example.rsa.Algorithms.ExtendedEuclidean;
 import org.example.rsa.Algorithms.MillerRabin;
 import org.example.rsa.Algorithms.Utilities;
+import org.example.rsa.PairTypes.PairCipherBlockLength;
 import org.example.rsa.PairTypes.PrivateKey;
 import org.example.rsa.PairTypes.PublicKey;
 import org.example.rsa.PairTypes.RSAKeyPair;
 
 import java.math.BigInteger;
+import java.security.interfaces.RSAPublicKey;
 
 /**
  * class to manage all keys
@@ -17,7 +20,7 @@ import java.math.BigInteger;
 public class RSAHandler {
 
     public int millerRabinTrials = MillerRabin.MILLER_RABIN_TRIALS;
-    public int primeNumberLength = 256;
+    public int primeNumberLength = 128;
 
     private int _m;
 
@@ -52,7 +55,7 @@ public class RSAHandler {
         try {
             d = ExtendedEuclidean.getModInverse(e, phi);
         } catch (Exception exception) {
-            System.out.println(exception.getMessage()+ "\n" + "private key could not be generated");
+            System.out.println(exception.getMessage() + "\n" + "private key could not be generated");
             return generateRSAKeyPair();
         }
 
@@ -61,8 +64,32 @@ public class RSAHandler {
         return new RSAKeyPair(publicKey, privateKey);
     }
 
+    public PairCipherBlockLength encryptMessage(String message, PublicKey publicKey, int blockLength) throws Exception {
+        return Blockchiffre.encryptMessage(message, publicKey, blockLength);
+    }
+
+    public String decryptMessage(PairCipherBlockLength encryptedMessage, PrivateKey privateKey) throws Exception {
+        return Blockchiffre.decryptMessage(encryptedMessage, privateKey);
+    }
+
+    public String signatureForMessage(String message) {
+        return Utilities.hash256(message);
+    }
+
+    public String decryptHashedMessage(String hashedMessage, PrivateKey privateKey) {
+        String message = "";
+
+        try {
+            message = Blockchiffre.decryptMessage(new PairCipherBlockLength(hashedMessage, 1), privateKey);
+        } catch (Exception e) {
+            System.out.println(e.getMessage() + "\n" + "hash could not be decrypted");
+        }
+        return message;
+    }
+
     /**
      * generates private key
+     *
      * @param e
      * @param phi
      * @return
