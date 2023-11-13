@@ -6,72 +6,44 @@ public class MillerRabin {
 
     public static final int MILLER_RABIN_TRIALS = 20;
 
-    // This function is called for all k trials.
-    // It returns false if n is composite and
-    // returns false if n is probably prime.
-    // d is an odd number such that d*2<sup>r</sup>
-    // = n-1 for some r >= 1
-    static Boolean isPrim(BigInteger n, BigInteger random) throws Exception {
-        if (ExtendedEuclidean.gcd(n, random).compareTo(BigInteger.ONE) > 0) {
-            return false;
-        }
-
-        if (n.mod(BigInteger.TWO).equals(BigInteger.ZERO)) {
+    public static Boolean isPrime(BigInteger probablyPrime, int k, BigInteger n, BigInteger m) throws Exception {
+        if (probablyPrime.equals(BigInteger.ONE) || probablyPrime.mod(BigInteger.TWO).equals(BigInteger.ZERO)) {
             return false;
         }
 
         BigInteger j = n.subtract(BigInteger.ONE);
-        BigInteger exponent = n.subtract(BigInteger.ONE);
+        BigInteger exponent = n.subtract(BigInteger.TWO);
 
-        int r = 0;
-        boolean isPrim = false;
-
-        while (exponent.mod(BigInteger.TWO).equals(BigInteger.ZERO)) {
-            exponent = exponent.divide(BigInteger.TWO);
-            r += 1;
+        int s = 0;
+        while (j.mod(BigInteger.TWO).equals(BigInteger.ZERO)) {
+            j = j.divide(BigInteger.TWO);
+            s++;
         }
 
-        BigInteger x = FastExponentiation.exponentiation(random, exponent, n);
-        if (x.equals(BigInteger.ONE) || x.equals(j)) {
-            isPrim = true;
-        } else {
-            r -= 1;
-            exponent = exponent.multiply(BigInteger.TWO);
-            x = x.multiply(x);
-            while (r >= 1 && !isPrim && exponent.compareTo(j) < 0) {
-                if (x.mod(n).equals(j)) {
-                    isPrim = true;
-                }
-                r -= 1;
-                x = x.multiply(x);
-            }
-        }
-        return isPrim;
-    }
-
-    // It returns false if n is composite
-    // and returns true if n is probably
-    // prime. k is an input parameter that
-    // determines accuracy level. Higher
-    // value of k indicates more accuracy.
-    public static Boolean isPrime(BigInteger probablyPrime, int k, int m) throws Exception {
-        boolean isPrime = true;
-        // Corner cases
-        //n <= 1 || n == 4
-        if (probablyPrime.compareTo(BigInteger.ONE) <= 0 || probablyPrime.equals(BigInteger.valueOf(4))) {
-            return false;
-        }
-
-        if (probablyPrime.compareTo(BigInteger.valueOf(5)) <= 0) {
-            return true;
-        }
         // Iterate given number of 'k' times TODO
         for (int i = 0; i < k; i++) {
-            isPrime = isPrim(probablyPrime, Utilities.calculateRandom(probablyPrime.bitLength(), m));
-            if (isPrime) {
-                break;
+
+            n = n.add(BigInteger.valueOf(i));
+            BigInteger x = Utilities.getRandomBigInteger(BigInteger.TWO, exponent, n, m);
+            BigInteger y = FastExponentiation.exponentiation(x, j, probablyPrime);
+
+            if (!y.equals(BigInteger.ONE) || y.equals(probablyPrime.subtract(BigInteger.ONE))) {
+                continue;
+            }
+            int r;
+            for (r = 1; r < s; r++) {
+                y = FastExponentiation.exponentiation(y, BigInteger.TWO, probablyPrime);
+                if (y.equals(BigInteger.ONE)) {
+                    return false;
+                }
+                if (y.equals(probablyPrime.subtract(BigInteger.ONE))) {
+                    break;
+                }
+            }
+            if (r == s) {
+                return false;
             }
         }
-        return isPrime;
+        return true;
     }
 }
