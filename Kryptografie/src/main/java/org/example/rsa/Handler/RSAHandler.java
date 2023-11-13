@@ -8,8 +8,6 @@ import org.example.rsa.PairTypes.RSAKeyPair;
 
 import java.math.BigInteger;
 import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.security.interfaces.RSAPublicKey;
 
 /**
  * class to manage all keys
@@ -18,13 +16,14 @@ import java.security.interfaces.RSAPublicKey;
  */
 public class RSAHandler {
 
-    public int millerRabinTrials = MillerRabin.MILLER_RABIN_TRIALS;
+    public static int millerRabinTrials = MillerRabin.MILLER_RABIN_TRIALS;
     public int primeNumberLength = 128;
 
-    private BigInteger _m;
-    private BigInteger _a;
-    private BigInteger _b;
-    private BigInteger _n;
+    private static BigInteger _m;
+    private static BigInteger _p;
+    private static BigInteger _q;
+    private static BigInteger _n;
+    private static BigInteger _phi;
 
     public void setMillerRabinTrials(int millerRabinTrials) {
         this.millerRabinTrials = millerRabinTrials;
@@ -39,18 +38,13 @@ public class RSAHandler {
     }
 
     private RSAKeyPair generateRSAKeyPair() throws Exception {
-        BigInteger p = Utilities.generateRandom(_m, _n, _a, _b, millerRabinTrials);
-        BigInteger q = Utilities.generateRandom(_m, _n, _a, _b, millerRabinTrials);
+        BigInteger p = calculateP(primeNumberLength);
+        BigInteger q = calculateQ(primeNumberLength);
 
-        BigInteger n = p.multiply(q);
-        BigInteger phi = p.subtract(BigInteger.ONE).multiply(q.subtract(BigInteger.ONE));
+        BigInteger n = calculateN(p, q);
+        BigInteger phi = calculatePhiN(p, q);
 
-        BigInteger e;
-
-        do {
-            e = Utilities.generateRandom(_m, _n, _a, _b, millerRabinTrials);
-        }
-        while (!ExtendedEuclidean.gcd(e, phi).equals(BigInteger.ONE));
+        BigInteger e = calculateE(phi);
 
         BigInteger d;
 
@@ -86,6 +80,47 @@ public class RSAHandler {
 
         BigInteger decryptedSignature = FastExponentiation.exponentiation(signatureInteger, generateRSAKeyPair().getPublicKey().getKey(), generateRSAKeyPair().getPublicKey().getN());
         return decryptedSignature.equals(hashedInteger);
+    }
+
+    private static BigInteger calculateN(BigInteger p, BigInteger q) {
+        return _n = p.multiply(q);
+    }
+
+    private static BigInteger calculateP(int primeNumberLength) throws Exception {
+        BigInteger possibleP;
+        BigInteger a = BigInteger.TWO.pow((primeNumberLength / 2) - 1);
+        BigInteger b = BigInteger.TWO.pow(primeNumberLength / 2);
+        do {
+            possibleP = Utilities.generateRandom(_m, BigInteger.ONE, a, b, millerRabinTrials);
+        } while (!possibleP.equals(_q));
+        return _p = possibleP;
+    }
+
+    private static BigInteger calculateQ(int primeNumberLength) throws Exception {
+        BigInteger possibleQ;
+        BigInteger a = BigInteger.TWO.pow((primeNumberLength / 2) - 1);
+        BigInteger b = BigInteger.TWO.pow(primeNumberLength / 2);
+        do {
+            possibleQ = Utilities.generateRandom(_m, BigInteger.ONE, a, b, millerRabinTrials);
+        } while (!possibleQ.equals(_p));
+        return _q = possibleQ;
+    }
+
+    private static BigInteger calculateE(BigInteger phi) throws Exception {
+        BigInteger e;
+
+        BigInteger lowerBoundE = BigInteger.TWO;
+        BigInteger upperBoundE = phi.subtract(BigInteger.ONE);
+
+        do {
+            e = Utilities.generateRandom(_m, _n, lowerBoundE, upperBoundE, millerRabinTrials);
+        }
+        while (!ExtendedEuclidean.gcd(e, phi).equals(BigInteger.ONE) || e.compareTo(phi) >= 0);
+        return e;
+    }
+
+    private static BigInteger calculatePhiN(BigInteger p, BigInteger q) {
+        return _phi = (p.subtract(BigInteger.ONE)).multiply(q.subtract(BigInteger.ONE));
     }
 
     /**
