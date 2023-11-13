@@ -12,6 +12,10 @@ import java.util.HashSet;
 import java.util.Optional;
 
 public class Utilities {
+
+    public static BigInteger getNValue(){
+        return BigInteger.ONE;
+    }
     static BigInteger[] smallPrimes;
 
     public static HashSet<BigInteger> calculateRandoms(BigInteger a, BigInteger b, BigInteger n, BigInteger m) {
@@ -71,6 +75,7 @@ public class Utilities {
         }
     }
 
+    // TODO n should be set to BigInteger.ONE for on random number
     public static BigInteger getRandomBigInteger(BigInteger a, BigInteger b, BigInteger n, BigInteger m) {
         BigDecimal aValue = new BigDecimal(a);
         BigDecimal bValue = new BigDecimal(b);
