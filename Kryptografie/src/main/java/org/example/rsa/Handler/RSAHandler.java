@@ -16,7 +16,7 @@ import java.security.MessageDigest;
  */
 public class RSAHandler {
 
-    public static int millerRabinTrials = MillerRabin.MILLER_RABIN_TRIALS;
+    public static int millerRabinTrials;
     public int primeNumberLength = 128;
 
     private static BigInteger _m;
@@ -60,8 +60,8 @@ public class RSAHandler {
         return new RSAKeyPair(publicKey, privateKey);
     }
 
-    public PairCipherBlockLength encryptMessage(String message, PublicKey publicKey, int blockLength) throws Exception {
-        return Blockchiffre.encryptMessage(message, publicKey, blockLength);
+    public PairCipherBlockLength encryptMessage(String message, PublicKey publicKey) throws Exception {
+        return Blockchiffre.encryptMessage(message, publicKey);
     }
 
     public String decryptMessage(PairCipherBlockLength encryptedMessage, PrivateKey privateKey) throws Exception {

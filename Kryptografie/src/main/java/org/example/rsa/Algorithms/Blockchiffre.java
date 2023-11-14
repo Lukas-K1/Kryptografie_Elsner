@@ -15,7 +15,6 @@ public class Blockchiffre {
      * @param rsaKeys
      * @return
      * @throws Exception
-     * @deprecated use {@link #encryptMessage(String, RSAKeys, int)} instead
      */
     public static PairCipherBlockLength encryptMessage(String message, RSAKeys rsaKeys) throws Exception {
         int charBlockLength = calculateBlockLength(rsaKeys.getN());
@@ -83,16 +82,11 @@ public class Blockchiffre {
      * charSetSize = _charSetSize = 55295
      *
      * @param n = p*q
-     * @deprecated blocklength now part of input
      */
     public static int calculateBlockLength(BigInteger n) {
-        int charBlockLength = 1;
+        int charBlockLength;
+        charBlockLength = (int) Math.floor(Math.log(n.doubleValue()) / Math.log(_charSetSize.doubleValue()));
 
-        while (_charSetSize.pow(charBlockLength).compareTo(n) < 0) {
-            charBlockLength++;
-        }
-
-        charBlockLength--;
         return charBlockLength;
     }
 
