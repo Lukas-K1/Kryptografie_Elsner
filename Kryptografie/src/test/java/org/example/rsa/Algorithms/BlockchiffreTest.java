@@ -9,9 +9,18 @@ import org.example.rsa.PairTypes.RSAKeys;
 public class BlockchiffreTest {
 	@Test
 	public void calculateBlockLength() {
-		BigInteger n = null;
-		int expected = 123;
+		BigInteger n = BigInteger.valueOf(169300000);
+		int expected = 2;
 		int actual = Blockchiffre.calculateBlockLength(n);
+
+		assertEquals(expected, actual);
+	}
+
+	@Test
+	public void calcBlockLength() {
+		int primeNumberLength = 1024;
+		int expected = 64;
+		int actual = Blockchiffre.calcBlockLength(primeNumberLength);
 
 		assertEquals(expected, actual);
 	}

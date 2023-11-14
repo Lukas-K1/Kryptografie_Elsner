@@ -11,10 +11,10 @@ import static org.junit.jupiter.api.Assertions.*;
 public class FastExponentiationTest {
 	@Test
 	public void exponentiation() {
-		BigInteger baseValue = null;
-		BigInteger exponent = null;
-		BigInteger modulo = null;
-		BigInteger expected = null;
+		BigInteger baseValue = BigInteger.valueOf(5);
+		BigInteger exponent = BigInteger.valueOf(23);
+		BigInteger modulo = BigInteger.valueOf(11);
+		BigInteger expected = BigInteger.valueOf(4);
 		BigInteger actual = FastExponentiation.exponentiation(baseValue, exponent, modulo);
 
 		assertEquals(expected, actual);
