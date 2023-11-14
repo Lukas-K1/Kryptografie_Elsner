@@ -222,10 +222,10 @@ public class Utilities {
 
     public static BigInteger generateRandom(BigInteger m, BigInteger n, BigInteger a, BigInteger b, int millerRabinTrials) throws Exception {
         BigInteger probablyPrime;
-
+        n = getNValue();
         while (true) {
             probablyPrime = getRandomBigInteger(a, b, n, m).setBit(0);
-            boolean hasPrimeDivisor;
+            boolean hasPrimeDivisor = false;
             //TODO check against smaller primes
 
             for (BigInteger smallerPrime : smallPrimes) {
@@ -236,6 +236,10 @@ public class Utilities {
                     hasPrimeDivisor = true;
                     break;
                 }
+            }
+            if (hasPrimeDivisor) {
+                n = n.add(BigInteger.ONE);
+                continue;
             }
             if (MillerRabin.isPrime(probablyPrime, millerRabinTrials, n, m)) {
                 return probablyPrime;
