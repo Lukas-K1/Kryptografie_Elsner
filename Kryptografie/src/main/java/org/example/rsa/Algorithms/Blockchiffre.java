@@ -15,10 +15,11 @@ public class Blockchiffre {
      * @param rsaKeys
      * @return
      * @throws Exception
+     * @deprecated use {@link #encryptMessage(String, RSAKeys, int)} instead
      */
     public static PairCipherBlockLength encryptMessage(String message, RSAKeys rsaKeys) throws Exception {
         int charBlockLength = calculateBlockLength(rsaKeys.getN());
-        if (!checkBlockLength(charBlockLength, rsaKeys.getN())) {
+        if (checkBlockLength(charBlockLength, rsaKeys.getN())) {
             throw new Exception("blocklänge nicht passend");
         }
         String filledMessage = fillMessage(message, charBlockLength);
@@ -39,11 +40,11 @@ public class Blockchiffre {
         String cipher = encryptedMessage.getCipher();
         Integer blockLength = encryptedMessage.getBlockLength();
         String messageText = "";
-        while (cipher.length() > 0) {
+        while (!cipher.isEmpty()) {
             String cipherBlock = cipher.substring(0, blockLength);
-            BigInteger c = convertChiffreToNumber(cipherBlock, blockLength - 1);
-            BigInteger m = FastExponentiation.exponentiation(c, rsaKeys.getKey(), rsaKeys.getN());
-            String textBlock = convertToTextBlock(m, blockLength - 2);
+            BigInteger cipherNumber = convertChiffreToNumber(cipherBlock, blockLength - 1);
+            BigInteger members = FastExponentiation.exponentiation(cipherNumber, rsaKeys.getKey(), rsaKeys.getN());
+            String textBlock = convertToTextBlock(members, blockLength - 2);
             messageText = messageText.concat(textBlock);
             cipher = cipher.substring(blockLength);
         }
@@ -84,9 +85,13 @@ public class Blockchiffre {
      * @param n = p*q
      */
     public static int calculateBlockLength(BigInteger n) {
-        int charBlockLength;
-        charBlockLength = (int) Math.floor(Math.log(n.doubleValue()) / Math.log(_charSetSize.doubleValue()));
+        int charBlockLength = 1;
 
+        while (_charSetSize.pow(charBlockLength).compareTo(n) < 0) {
+            charBlockLength++;
+        }
+
+        charBlockLength--;
         return charBlockLength;
     }
 
@@ -115,7 +120,7 @@ public class Blockchiffre {
      */
     private static String generateCipher(String message, int charBlockLength, RSAKeys rsaKeys) throws Exception {
         String cipher = "";
-        while (message.length() > 0) {
+        while (!message.isEmpty()) {
             BigInteger messageBlockNumber = convertToNumberBlock(message.substring(0, charBlockLength), charBlockLength - 1);
             BigInteger messageBlockChiffre = FastExponentiation.exponentiation(messageBlockNumber, rsaKeys.getKey(), rsaKeys.getN());
             String chiffreBlock = generateChiffreBlock(messageBlockChiffre, charBlockLength);
@@ -137,7 +142,7 @@ public class Blockchiffre {
     }
 
     private static BigInteger convertToNumberBlock(String messageBlock, int power) throws Exception {
-        BigInteger charToDecimal = BigInteger.valueOf(messageBlock.charAt(0));
+        BigInteger charToDecimal = BigInteger.valueOf((int) messageBlock.charAt(0));
         BigInteger x = charToDecimal.multiply(_charSetSize.pow(power));
 
         if (charToDecimal.compareTo(_charSetSize) > 0) {
