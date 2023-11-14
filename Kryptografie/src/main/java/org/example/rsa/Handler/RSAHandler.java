@@ -27,6 +27,12 @@ public class RSAHandler {
     private static BigInteger _e;
     private static BigInteger _d;
     private static int _blockLength;
+    private static int _numberLengthPQ;
+
+    public void setNumberLengthPQ(int primeNumberLength) {
+        _numberLengthPQ = primeNumberLength / 2;
+    }
+
     public static int setBlockLength(int blockLength) {
         return _blockLength = blockLength;
     }
@@ -44,8 +50,9 @@ public class RSAHandler {
     }
 
     public static void generateRandomPrimes() throws Exception {
-        _p = calculateP(primeNumberLength);
-        _q = calculateQ(primeNumberLength);
+        int numberLengthPQ = _numberLengthPQ;
+        _p = calculateP(numberLengthPQ);
+        _q = calculateQ(numberLengthPQ - 1);
         _n = calculateN(_p, _q);
         _phi = calculatePhiN(_p, _q);
         _e = calculateE(_phi);
@@ -53,8 +60,8 @@ public class RSAHandler {
     }
 
     public static RSAKeyPair generateRSAKeyPair() throws Exception {
-        BigInteger p = calculateP(primeNumberLength);
-        BigInteger q = calculateQ(primeNumberLength);
+        BigInteger p = calculateP(_numberLengthPQ);
+        BigInteger q = calculateQ(_numberLengthPQ - 1);
 
         BigInteger n = calculateN(p, q);
         BigInteger phi = calculatePhiN(p, q);
@@ -103,7 +110,7 @@ public class RSAHandler {
 
     public static BigInteger calculateP(int primeNumberLength) throws Exception {
         BigInteger possibleP;
-        BigInteger a = BigInteger.TWO.pow((primeNumberLength / 2) - 1);
+        BigInteger a = BigInteger.TWO.pow(primeNumberLength / 2 - 1);
         BigInteger b = BigInteger.TWO.pow(primeNumberLength / 2);
         do {
             possibleP = Utilities.generateRandom(_m, BigInteger.ONE, a, b, millerRabinTrials);
@@ -112,14 +119,11 @@ public class RSAHandler {
     }
 
     public static BigInteger calculateQ(int primeNumberLength) throws Exception {
-        BigInteger possibleQ = BigInteger.ZERO;
-        BigInteger a = BigInteger.TWO.pow((primeNumberLength / 2) - 1);
+        BigInteger possibleQ;
+        BigInteger a = BigInteger.TWO.pow(primeNumberLength / 2 - 1);
         BigInteger b = BigInteger.TWO.pow(primeNumberLength / 2);
         do {
-            if (possibleQ.equals(_p)){
-                a = a.subtract(BigInteger.ONE);
-            }
-            possibleQ = Utilities.generateRandom(_m, BigInteger.TWO, a, b, millerRabinTrials);
+            possibleQ = Utilities.generateRandom(_m, BigInteger.ONE, a, b, millerRabinTrials);
         } while (possibleQ.equals(_p));
         return _q = possibleQ;
     }
