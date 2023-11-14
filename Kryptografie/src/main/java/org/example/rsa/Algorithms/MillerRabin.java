@@ -4,8 +4,6 @@ import java.math.BigInteger;
 
 public class MillerRabin {
 
-    public static final int MILLER_RABIN_TRIALS = 20;
-
     public static Boolean isPrime(BigInteger probablyPrime, int k, BigInteger n, BigInteger m) throws Exception {
         if (probablyPrime.equals(BigInteger.ONE) || probablyPrime.mod(BigInteger.TWO).equals(BigInteger.ZERO)) {
             return false;
