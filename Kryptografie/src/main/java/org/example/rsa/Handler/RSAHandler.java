@@ -26,6 +26,10 @@ public class RSAHandler {
     private static BigInteger _phi;
     private static BigInteger _e;
     private static BigInteger _d;
+    private static int _blockLength;
+    public static int setBlockLength(int blockLength) {
+        return _blockLength = blockLength;
+    }
 
     public void setMillerRabinTrials(int millerRabinTrials) {
         this.millerRabinTrials = millerRabinTrials;
@@ -48,7 +52,7 @@ public class RSAHandler {
         _d = ExtendedEuclidean.getModInverse(_e, _phi);
     }
 
-    public RSAKeyPair generateRSAKeyPair() throws Exception {
+    public static RSAKeyPair generateRSAKeyPair() throws Exception {
         BigInteger p = calculateP(primeNumberLength);
         BigInteger q = calculateQ(primeNumberLength);
 
@@ -71,11 +75,11 @@ public class RSAHandler {
         return new RSAKeyPair(publicKey, privateKey);
     }
 
-    public PairCipherBlockLength encryptMessage(String message, PublicKey publicKey) throws Exception {
-        return Blockchiffre.encryptMessage(message, publicKey);
+    public static PairCipherBlockLength encryptMessage(String message, PublicKey publicKey) throws Exception {
+        return Blockchiffre.encryptMessage(message, publicKey, _blockLength);
     }
 
-    public String decryptMessage(PairCipherBlockLength encryptedMessage, PrivateKey privateKey) throws Exception {
+    public static String decryptMessage(PairCipherBlockLength encryptedMessage, PrivateKey privateKey) throws Exception {
         return Blockchiffre.decryptMessage(encryptedMessage, privateKey);
     }
 
@@ -114,7 +118,6 @@ public class RSAHandler {
         do {
             if (possibleQ.equals(_p)){
                 a = a.subtract(BigInteger.ONE);
-                b = b.add(BigInteger.ONE);
             }
             possibleQ = Utilities.generateRandom(_m, BigInteger.TWO, a, b, millerRabinTrials);
         } while (possibleQ.equals(_p));
