@@ -26,6 +26,7 @@ public class RSAHandler {
     private static BigInteger _phi;
     private static BigInteger _e;
     private static BigInteger _d;
+    private static BigInteger _countN = BigInteger.ONE;
     private static int _blockLength;
     private static int _numberLengthPQ;
 
@@ -113,7 +114,7 @@ public class RSAHandler {
         BigInteger a = BigInteger.TWO.pow(primeNumberLength / 2 - 1);
         BigInteger b = BigInteger.TWO.pow(primeNumberLength / 2);
         do {
-            possibleP = Utilities.generateRandom(_m, BigInteger.ONE, a, b, millerRabinTrials);
+            possibleP = Utilities.generateRandom(_m, _countN, a, b, millerRabinTrials);
         } while (possibleP.equals(_q));
         return _p = possibleP;
     }
@@ -123,7 +124,7 @@ public class RSAHandler {
         BigInteger a = BigInteger.TWO.pow(primeNumberLength / 2 - 1);
         BigInteger b = BigInteger.TWO.pow(primeNumberLength / 2);
         do {
-            possibleQ = Utilities.generateRandom(_m, BigInteger.ONE, a, b, millerRabinTrials);
+            possibleQ = Utilities.generateRandom(_m, _countN, a, b, millerRabinTrials);
         } while (possibleQ.equals(_p));
         return _q = possibleQ;
     }
@@ -135,7 +136,7 @@ public class RSAHandler {
         BigInteger upperBoundE = phi.subtract(BigInteger.ONE);
 
         do {
-            e = Utilities.generateRandom(_m, _n, lowerBoundE, upperBoundE, millerRabinTrials);
+            e = Utilities.generateRandom(_m, _countN, lowerBoundE, upperBoundE, millerRabinTrials);
         }
         while (!ExtendedEuclidean.gcd(e, phi).equals(BigInteger.ONE) || e.compareTo(phi) >= 0);
         return e;

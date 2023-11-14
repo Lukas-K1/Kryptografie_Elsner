@@ -6,16 +6,20 @@ import org.example.rsa.PairTypes.PublicKey;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.MathContext;
-import java.math.RoundingMode;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashSet;
-import java.util.Optional;
 
 public class Utilities {
 
-    public static BigInteger getNValue() {
-        return BigInteger.ONE;
+    private static BigInteger _countN = BigInteger.ONE;
+
+    public static BigInteger getCountN() {
+        return _countN;
+    }
+
+    public static BigInteger setCountN(BigInteger countN) {
+        return _countN = countN;
     }
 
     private static final BigInteger[] smallPrimes = {
@@ -224,7 +228,7 @@ public class Utilities {
 
     public static BigInteger generateRandom(BigInteger m, BigInteger n, BigInteger a, BigInteger b, int millerRabinTrials) throws Exception {
         BigInteger probablyPrime;
-        n = getNValue();
+        n = getCountN();
         while (true) {
             probablyPrime = getRandomBigInteger(a, b, n, m).setBit(0);
             boolean hasPrimeDivisor = false;
@@ -244,10 +248,12 @@ public class Utilities {
                 continue;
             }
             if (MillerRabin.isPrime(probablyPrime, millerRabinTrials, n, m)) {
-                return probablyPrime;
+                break;
             }
             n = n.add(BigInteger.ONE);
         }
+        setCountN(n.add(BigInteger.ONE));
+        return probablyPrime;
     }
 
     // TODO n should be set to BigInteger.ONE for on random number
