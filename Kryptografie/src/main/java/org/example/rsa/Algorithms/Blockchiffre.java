@@ -28,9 +28,9 @@ public class Blockchiffre {
     }
 
     public static PairCipherBlockLength encryptMessage(String message, RSAKeys rsaKeys, int blockLength) throws Exception {
-//        if (!checkBlockLength(blockLength, rsaKeys.getN())) {
-//            throw new Exception("blocklänge nicht passend");
-//        }
+        if (!checkBlockLength(blockLength, rsaKeys.getN())) {
+            throw new Exception("blocklänge nicht passend");
+        }
         String filledMessage = fillMessage(message, blockLength);
         String cipher = generateCipher(filledMessage, blockLength, rsaKeys);
         return new PairCipherBlockLength(cipher, blockLength + 1);
@@ -91,7 +91,7 @@ public class Blockchiffre {
             charBlockLength++;
         }
 
-        //charBlockLength--;
+        charBlockLength--;
         return charBlockLength;
     }
 

@@ -61,7 +61,7 @@ public class RSAHandler {
 
     public static RSAKeyPair generateRSAKeyPair() throws Exception {
         BigInteger p = calculateP(_numberLengthPQ);
-        BigInteger q = calculateQ(_numberLengthPQ - 1);
+        BigInteger q = calculateQ(_numberLengthPQ-1);
 
         BigInteger n = calculateN(p, q);
         BigInteger phi = calculatePhiN(p, q);

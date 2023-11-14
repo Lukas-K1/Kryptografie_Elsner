@@ -26,10 +26,11 @@ public class Main {
 
         long durationNano = System.nanoTime() - start;
         long duration = durationNano / 1000000;
-        System.out.println(duration);
+        System.out.println(duration);//currently between 11000 and 14000
         RSAKeyPair keys = RSAHandler.generateRSAKeyPair();
         BigInteger n = keys.getPublicKey().getN();
-        int blocklength = Blockchiffre.calcBlockLength(numberLength);
+        //int blocklength = Blockchiffre.calcBlockLength(numberLength/2);
+        int blocklength = Blockchiffre.calculateBlockLength(n);
         RSAHandler.setBlockLength(blocklength);
         PairCipherBlockLength encryptedText = RSAHandler.encryptMessage(text,keys.getPublicKey());
         String decryptedText = RSAHandler.decryptMessage(encryptedText, keys.getPrivateKey());
