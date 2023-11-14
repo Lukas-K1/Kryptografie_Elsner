@@ -103,17 +103,21 @@ public class RSAHandler {
         BigInteger b = BigInteger.TWO.pow(primeNumberLength / 2);
         do {
             possibleP = Utilities.generateRandom(_m, BigInteger.ONE, a, b, millerRabinTrials);
-        } while (!possibleP.equals(_q));
+        } while (possibleP.equals(_q));
         return _p = possibleP;
     }
 
     public static BigInteger calculateQ(int primeNumberLength) throws Exception {
-        BigInteger possibleQ;
+        BigInteger possibleQ = BigInteger.ZERO;
         BigInteger a = BigInteger.TWO.pow((primeNumberLength / 2) - 1);
         BigInteger b = BigInteger.TWO.pow(primeNumberLength / 2);
         do {
-            possibleQ = Utilities.generateRandom(_m, BigInteger.ONE, a, b, millerRabinTrials);
-        } while (!possibleQ.equals(_p));
+            if (possibleQ.equals(_p)){
+                a = a.subtract(BigInteger.ONE);
+                b = b.add(BigInteger.ONE);
+            }
+            possibleQ = Utilities.generateRandom(_m, BigInteger.TWO, a, b, millerRabinTrials);
+        } while (possibleQ.equals(_p));
         return _q = possibleQ;
     }
 

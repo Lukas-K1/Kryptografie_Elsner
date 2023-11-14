@@ -254,9 +254,10 @@ public class Utilities {
         BigDecimal bValue = new BigDecimal(b);
         BigDecimal nValue = new BigDecimal(n);
         BigDecimal mValue = new BigDecimal(m);
-        MathContext context = MathContext.DECIMAL128;
 
         BigDecimal bSubA = bValue.subtract(aValue).add(BigDecimal.ONE);
+        int contextPrecision = bSubA.precision() - bSubA.scale();
+        MathContext context = new MathContext(contextPrecision);
 
         while (mValue.sqrt(context).remainder(BigDecimal.ONE).equals(BigDecimal.ZERO)) {
             mValue = mValue.add(BigDecimal.ONE);
