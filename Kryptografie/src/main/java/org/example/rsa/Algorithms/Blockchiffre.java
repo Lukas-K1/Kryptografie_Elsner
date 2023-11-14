@@ -91,11 +91,14 @@ public class Blockchiffre {
             charBlockLength++;
         }
 
-        charBlockLength--;
+        //charBlockLength--;
         return charBlockLength;
     }
 
-
+    public static int calcBlockLength(int primeNumberlength){
+        double log = (primeNumberlength * (Math.log(2) / Math.log(_charSetSize.doubleValue())));
+        return (int) Math.floor(log);
+    }
     private static boolean checkBlockLength(int charBlockLength, BigInteger n) {
         return _charSetSize.pow(charBlockLength).compareTo(n) < 0
                 && n.compareTo(_charSetSize.pow(charBlockLength + 1)) < 0;
