@@ -52,7 +52,7 @@ public class RSAHandler {
     public static void generateRandomPrimes() throws Exception {
         int numberLengthPQ = _numberLengthPQ;
         _p = calculateP(numberLengthPQ);
-        _q = calculateQ(numberLengthPQ - 1);
+        _q = calculateQ(numberLengthPQ);
         _n = calculateN(_p, _q);
         _phi = calculatePhiN(_p, _q);
         _e = calculateE(_phi);
@@ -61,7 +61,7 @@ public class RSAHandler {
 
     public static RSAKeyPair generateRSAKeyPair() throws Exception {
         BigInteger p = calculateP(_numberLengthPQ);
-        BigInteger q = calculateQ(_numberLengthPQ-1);
+        BigInteger q = calculateQ(_numberLengthPQ);
 
         BigInteger n = calculateN(p, q);
         BigInteger phi = calculatePhiN(p, q);

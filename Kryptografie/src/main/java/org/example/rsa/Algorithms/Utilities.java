@@ -6,6 +6,7 @@ import org.example.rsa.PairTypes.PublicKey;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.MathContext;
+import java.math.RoundingMode;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashSet;
@@ -13,9 +14,10 @@ import java.util.Optional;
 
 public class Utilities {
 
-    public static BigInteger getNValue(){
+    public static BigInteger getNValue() {
         return BigInteger.ONE;
     }
+
     private static final BigInteger[] smallPrimes = {
             BigInteger.valueOf(2),
             BigInteger.valueOf(3),
@@ -244,7 +246,7 @@ public class Utilities {
             if (MillerRabin.isPrime(probablyPrime, millerRabinTrials, n, m)) {
                 return probablyPrime;
             }
-            n.add(BigInteger.ONE);
+            n = n.add(BigInteger.ONE);
         }
     }
 
@@ -259,7 +261,7 @@ public class Utilities {
         int contextPrecision = bSubA.precision() - bSubA.scale();
         MathContext context = new MathContext(contextPrecision);
 
-        while (mValue.sqrt(context).remainder(BigDecimal.ONE).equals(BigDecimal.ZERO)) {
+        while (mValue.sqrt(context).remainder(BigDecimal.ONE).equals(BigDecimal.ZERO) || mValue.sqrt(context).pow(2).equals(mValue)) {
             mValue = mValue.add(BigDecimal.ONE);
         }
 
