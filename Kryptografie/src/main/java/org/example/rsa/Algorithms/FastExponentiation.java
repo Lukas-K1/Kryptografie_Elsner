@@ -4,20 +4,15 @@ import java.math.BigInteger;
 
 public class FastExponentiation {
     public static BigInteger exponentiation(BigInteger baseValue, BigInteger exponent, BigInteger modulo) {
-        if (exponent.equals(BigInteger.ZERO)) {
-            return BigInteger.ONE;
+        BigInteger x = BigInteger.ONE;
+
+        while (exponent.compareTo(BigInteger.ZERO) > 0) {
+            if (exponent.mod(BigInteger.TWO).equals(BigInteger.ONE)){
+                x = x.multiply(baseValue).mod(modulo);
+            }
+            baseValue = baseValue.multiply(baseValue).mod(modulo);
+            exponent = exponent.divide(BigInteger.TWO);
         }
-        if (exponent.equals(BigInteger.ONE)) {
-            return baseValue;
-        }
-        BigInteger x = exponentiation(baseValue, exponent.divide(BigInteger.TWO), modulo);
-        // if exponent is even value
-        if (exponent.mod(BigInteger.TWO).equals(BigInteger.ZERO)) {
-            return x.pow(2).mod(modulo);
-        }
-        // if exponent is odd value
-        else {
-            return x.pow(2).multiply(baseValue).mod(modulo);
-        }
+        return x.mod(modulo);
     }
 }
