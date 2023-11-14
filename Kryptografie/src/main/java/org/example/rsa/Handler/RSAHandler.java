@@ -17,13 +17,15 @@ import java.security.MessageDigest;
 public class RSAHandler {
 
     public static int millerRabinTrials;
-    public int primeNumberLength = 128;
+    public static int primeNumberLength;
 
     private static BigInteger _m;
     private static BigInteger _p;
     private static BigInteger _q;
     private static BigInteger _n;
     private static BigInteger _phi;
+    private static BigInteger _e;
+    private static BigInteger _d;
 
     public void setMillerRabinTrials(int millerRabinTrials) {
         this.millerRabinTrials = millerRabinTrials;
@@ -37,7 +39,16 @@ public class RSAHandler {
         this._m = BigInteger.valueOf(m);
     }
 
-    private RSAKeyPair generateRSAKeyPair() throws Exception {
+    public static void generateRandomPrimes() throws Exception {
+        _p = calculateP(primeNumberLength);
+        _q = calculateQ(primeNumberLength);
+        _n = calculateN(_p, _q);
+        _phi = calculatePhiN(_p, _q);
+        _e = calculateE(_phi);
+        _d = ExtendedEuclidean.getModInverse(_e, _phi);
+    }
+
+    public RSAKeyPair generateRSAKeyPair() throws Exception {
         BigInteger p = calculateP(primeNumberLength);
         BigInteger q = calculateQ(primeNumberLength);
 
@@ -82,11 +93,11 @@ public class RSAHandler {
         return decryptedSignature.equals(hashedInteger);
     }
 
-    private static BigInteger calculateN(BigInteger p, BigInteger q) {
+    public static BigInteger calculateN(BigInteger p, BigInteger q) {
         return _n = p.multiply(q);
     }
 
-    private static BigInteger calculateP(int primeNumberLength) throws Exception {
+    public static BigInteger calculateP(int primeNumberLength) throws Exception {
         BigInteger possibleP;
         BigInteger a = BigInteger.TWO.pow((primeNumberLength / 2) - 1);
         BigInteger b = BigInteger.TWO.pow(primeNumberLength / 2);
@@ -96,7 +107,7 @@ public class RSAHandler {
         return _p = possibleP;
     }
 
-    private static BigInteger calculateQ(int primeNumberLength) throws Exception {
+    public static BigInteger calculateQ(int primeNumberLength) throws Exception {
         BigInteger possibleQ;
         BigInteger a = BigInteger.TWO.pow((primeNumberLength / 2) - 1);
         BigInteger b = BigInteger.TWO.pow(primeNumberLength / 2);
@@ -106,7 +117,7 @@ public class RSAHandler {
         return _q = possibleQ;
     }
 
-    private static BigInteger calculateE(BigInteger phi) throws Exception {
+    public static BigInteger calculateE(BigInteger phi) throws Exception {
         BigInteger e;
 
         BigInteger lowerBoundE = BigInteger.TWO;
@@ -119,7 +130,7 @@ public class RSAHandler {
         return e;
     }
 
-    private static BigInteger calculatePhiN(BigInteger p, BigInteger q) {
+    public static BigInteger calculatePhiN(BigInteger p, BigInteger q) {
         return _phi = (p.subtract(BigInteger.ONE)).multiply(q.subtract(BigInteger.ONE));
     }
 
