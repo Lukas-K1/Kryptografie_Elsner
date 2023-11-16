@@ -230,6 +230,20 @@ public class Blockchiffre {
             bigIntMessage = bigIntMessage.divide(_charSetSize.pow(blocklength));
             blocklength--;
         }
+        // alternativ
+//        List<BigInteger> numberBlocks = new ArrayList<>();
+//        while(!bigIntMessage.equals(BigInteger.ZERO)){
+//            numberBlocks.add(bigIntMessage.mod(_charSetSize.pow(blocklength+1)));
+//            bigIntMessage = bigIntMessage.divide(_charSetSize.pow(blocklength+1));
+//        }
+//
+//        for (BigInteger numberBlock : numberBlocks) {
+//            for (int i = blocklength; i >= 0; i--) {
+//                BigInteger blockValue = numberBlock.divide(_charSetSize.pow(i));
+//                messageList.add(blockValue.intValue());
+//                numberBlock = numberBlock.subtract(blockValue.multiply(_charSetSize.pow(i)));
+//            }
+//        }
 
         for (int number : messageList) {
             message.append(Character.toChars(number));
