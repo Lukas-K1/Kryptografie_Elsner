@@ -72,7 +72,8 @@ public class RSAHandler {
         BigInteger d;
 
         try {
-            d = ExtendedEuclidean.getModInverse(e, phi);
+//            d = ExtendedEuclidean.getModInverse(e, phi);
+            d = generateD(e, phi);
         } catch (Exception exception) {
             System.out.println(exception.getMessage() + "\n" + "private key could not be generated");
             return generateRSAKeyPair();
@@ -153,22 +154,22 @@ public class RSAHandler {
      * @param phi
      * @return
      * @throws Exception
-     * @deprecated
+     *
      */
-    private BigInteger generateD(BigInteger e, BigInteger phi) throws Exception {
-        e = e.mod(phi);
+    private static BigInteger generateD(BigInteger e, BigInteger phi) throws Exception {
+//        e = e.mod(phi);
         BigInteger d = generateDHelper(phi, e);
         return d.mod(e);
     }
 
-    private BigInteger generateDHelper(BigInteger phi, BigInteger e) throws Exception {
+    private static BigInteger generateDHelper(BigInteger phi, BigInteger e) throws Exception {
         if (!phi.mod(e).equals(BigInteger.ZERO)) {
             return generateDHelper(e, phi.mod(e))
                     .multiply(phi)
                     .subtract(BigInteger.ONE)
                     .divide(e.multiply(BigInteger.valueOf(-1)));
         }
-        if (e.equals(BigInteger.ONE)) {
+        else if (e.equals(BigInteger.ONE)) {
             return BigInteger.ONE;
         } else {
             throw new Exception("values are not coprime");

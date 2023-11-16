@@ -1,6 +1,8 @@
 package org.example.rsa.Algorithms;
 
 import java.math.BigInteger;
+
+import org.example.rsa.Handler.RSAHandler;
 import org.junit.jupiter.api.*;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -27,7 +29,7 @@ public class ExtendedEuclideanTest {
 	}
 
 	@Test
-	public void getModInverse() {
+	public void getModInverse() throws Exception {
 		BigInteger e = BigInteger.valueOf(5);
 		BigInteger phi = BigInteger.valueOf(48);
 		BigInteger expected = BigInteger.valueOf(29);
