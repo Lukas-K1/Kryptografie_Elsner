@@ -5,6 +5,7 @@ import org.example.rsa.PairTypes.RSAKeys;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class Blockchiffre {
@@ -179,75 +180,87 @@ public class Blockchiffre {
         return messageInt;
     }
 
-    private static BigInteger numberMessageToBigInt(ArrayList<Integer> messageInt, int blockLength) {
+    public static BigInteger numberMessageToBigInt(ArrayList<Integer> messageInt, int blockLength) {
         BigInteger messageBigInt = BigInteger.ZERO;
-        for (int number : messageInt) {
-            messageBigInt = messageBigInt.add(BigInteger.valueOf(number).multiply(_charSetSize.pow(blockLength - 1)));
-            blockLength--;
+        int messageSize = messageInt.size();
+        int currentBlockLength = blockLength;
+
+        for (int i = 0; i < messageSize; i++) {
+            int number = messageInt.get(i);
+            messageBigInt = messageBigInt.multiply(BigInteger.valueOf(_charSetSize.intValue()))
+                    .add(BigInteger.valueOf(number));
+
+            currentBlockLength--;
+
+            if (currentBlockLength == 0 || i == messageSize - 1) {
+                messageBigInt = messageBigInt.shiftLeft((blockLength - currentBlockLength) * 16);
+                currentBlockLength = blockLength;
+            }
         }
+
         return messageBigInt;
     }
 
-    private static String bigIntToUnicode(BigInteger bigIntMessage, int blocklength) {
-        StringBuilder unicodeMessage = new StringBuilder();
+    public static String bigIntToUnicode(BigInteger bigIntMessage, int blockLength) {
         List<Integer> unicodeList = new ArrayList<>();
-        int counter = 0;
+
         while (!bigIntMessage.equals(BigInteger.ZERO)) {
-            BigInteger unicode = bigIntMessage.mod(_charSetSize);
+            BigInteger unicode = bigIntMessage.mod(BigInteger.valueOf(_charSetSize.intValue()));
             unicodeList.add(unicode.intValue());
-            bigIntMessage = bigIntMessage.divide(_charSetSize);
-            counter++;
+            bigIntMessage = bigIntMessage.divide(BigInteger.valueOf(_charSetSize.intValue()));
         }
-        while (counter < blocklength + 1) {
+
+        int paddingSize = blockLength + 1 - unicodeList.size();
+        for (int i = 0; i < paddingSize; i++) {
             unicodeList.add(0);
-            counter++;
         }
+
+        Collections.reverse(unicodeList);
+
+        StringBuilder unicodeMessage = new StringBuilder();
         for (int number : unicodeList) {
-            unicodeMessage.append(Character.toChars(number));
+            unicodeMessage.appendCodePoint(number);
         }
+
         return unicodeMessage.toString();
     }
 
-    private static BigInteger unicodeToBigInt(String unicodeMessage, int blocklength) {
+    public static BigInteger unicodeToBigInt(String unicodeMessage, int blockLength) {
         List<Integer> unicodeList = messageToInt(unicodeMessage);
         BigInteger bigIntMessage = BigInteger.ZERO;
-        for (int i = 0; i < unicodeList.size(); i++) {
-            for (int j = 0; j < blocklength - i; j++) {
-                bigIntMessage = bigIntMessage.add(BigInteger.valueOf(unicodeList.get(i + j)));
+
+        int messageLength = unicodeMessage.length();
+        for (int i = 0; i < messageLength; i += blockLength) {
+            BigInteger blockValue = BigInteger.ZERO;
+
+            for (int j = 0; j < blockLength && i + j < messageLength; j++) {
+                blockValue = blockValue.multiply(BigInteger.valueOf(_charSetSize.intValue()))
+                        .add(BigInteger.valueOf(unicodeList.get(i + j)));
             }
+
+            bigIntMessage = bigIntMessage.shiftLeft(blockLength * 16).add(blockValue);
         }
-        bigIntMessage = bigIntMessage.multiply(_charSetSize.pow(blocklength));
+
         return bigIntMessage;
     }
 
-    private static String bigIntToMessage(BigInteger bigIntMessage, int blocklength) {
-        StringBuilder message = new StringBuilder();
+    public static String bigIntToMessage(BigInteger bigIntMessage, int blockLength) {
         List<Integer> messageList = new ArrayList<>();
 
-        while (blocklength > 0){
-            BigInteger unicode = bigIntMessage.mod(_charSetSize.pow(blocklength));
+        while (blockLength > 0) {
+            BigInteger unicode = bigIntMessage.mod(BigInteger.valueOf(_charSetSize.intValue()));
             messageList.add(unicode.intValue());
-            bigIntMessage = bigIntMessage.divide(_charSetSize.pow(blocklength));
-            blocklength--;
+            bigIntMessage = bigIntMessage.divide(BigInteger.valueOf(_charSetSize.intValue()));
+            blockLength--;
         }
-        // alternativ
-//        List<BigInteger> numberBlocks = new ArrayList<>();
-//        while(!bigIntMessage.equals(BigInteger.ZERO)){
-//            numberBlocks.add(bigIntMessage.mod(_charSetSize.pow(blocklength+1)));
-//            bigIntMessage = bigIntMessage.divide(_charSetSize.pow(blocklength+1));
-//        }
-//
-//        for (BigInteger numberBlock : numberBlocks) {
-//            for (int i = blocklength; i >= 0; i--) {
-//                BigInteger blockValue = numberBlock.divide(_charSetSize.pow(i));
-//                messageList.add(blockValue.intValue());
-//                numberBlock = numberBlock.subtract(blockValue.multiply(_charSetSize.pow(i)));
-//            }
-//        }
 
+        Collections.reverse(messageList);
+
+        StringBuilder message = new StringBuilder();
         for (int number : messageList) {
             message.append(Character.toChars(number));
         }
+
         return message.toString();
     }
 }
