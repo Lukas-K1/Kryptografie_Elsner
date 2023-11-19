@@ -29,6 +29,14 @@ public class Blockchiffre {
         return new PairCipherBlockLength(cipher, charBlockLength + 1);
     }
 
+    /**
+     * encryption of string message
+     * @param message
+     * @param rsaKeys
+     * @param blockLength
+     * @return
+     * @throws Exception
+     */
     public static PairCipherBlockLength encryptMessage(String message, RSAKeys rsaKeys, int blockLength) throws Exception {
         if (!checkBlockLength(blockLength, rsaKeys.getN())) {
             throw new Exception("blocklänge nicht passend");
@@ -38,6 +46,13 @@ public class Blockchiffre {
         return new PairCipherBlockLength(cipher, blockLength + 1);
     }
 
+    /**
+     * method to call decryption steps
+     * @param encryptedMessage
+     * @param rsaKeys
+     * @return
+     * @throws Exception
+     */
     public static String decryptMessage(PairCipherBlockLength encryptedMessage, RSAKeys rsaKeys) throws Exception {
         String cipher = encryptedMessage.getCipher();
         Integer blockLength = encryptedMessage.getBlockLength();
@@ -46,6 +61,14 @@ public class Blockchiffre {
         return messageText;
     }
 
+    /**
+     * method for calling smaller decryption steps
+     * @param cipher
+     * @param blockLength
+     * @param rsaKeys
+     * @return
+     * @throws Exception
+     */
     private static String decryptCipher(String cipher, Integer blockLength, RSAKeys rsaKeys) throws Exception {
         String messageText = "";
         while (!cipher.isEmpty()) {
@@ -61,6 +84,13 @@ public class Blockchiffre {
         return messageText;
     }
 
+    /**
+     * convert biginteger to unicode text
+     * @param m
+     * @param power
+     * @return
+     * @throws Exception
+     */
     private static String convertToTextBlock(BigInteger m, int power) throws Exception {
 
         String textBlock = "";
@@ -76,6 +106,12 @@ public class Blockchiffre {
 
     }
 
+    /**
+     * convert unicode to biginteger
+     * @param cipherBlock
+     * @param power
+     * @return
+     */
     private static BigInteger convertChiffreToNumber(String cipherBlock, int power) {
         BigInteger chiffreNumber = BigInteger.ZERO;
         for (int i = 0; i < cipherBlock.length(); i++) {
@@ -104,11 +140,22 @@ public class Blockchiffre {
         return charBlockLength;
     }
 
+    /**
+     * alternative calculation of block length: both functioning the same way
+     * @param primeNumberlength
+     * @return
+     */
     public static int calcBlockLength(int primeNumberlength) {
         double log = (primeNumberlength * (Math.log(2) / Math.log(_charSetSize.doubleValue())));
         return (int) Math.floor(log);
     }
 
+    /**
+     * checks correctness of block length based on script
+     * @param charBlockLength
+     * @param n
+     * @return
+     */
     private static boolean checkBlockLength(int charBlockLength, BigInteger n) {
         return _charSetSize.pow(charBlockLength).compareTo(n) < 0
                 && n.compareTo(_charSetSize.pow(charBlockLength + 1)) < 0;
@@ -118,15 +165,21 @@ public class Blockchiffre {
      * Auffüllen der Länge des Textes auf eine Länge die ganzzahlig durch die Blocklänge teilbar ist
      */
     private static String fillMessage(String message, int charBlockLength) {
-        StringBuilder filledMessage = new StringBuilder(message);
-        int messageLengthDifference = charBlockLength - (message.length() % charBlockLength);
-        filledMessage.append(messageFiller.repeat(messageLengthDifference));
-        return filledMessage.toString();
+//        StringBuilder filledMessage = new StringBuilder(message);
+//        int messageLengthDifference = charBlockLength - (message.length() % charBlockLength);
+//        filledMessage.append(messageFiller.repeat(messageLengthDifference));
+//        return filledMessage.toString();
+        int messageLength = message.length();
+        int paddingLength = charBlockLength - (messageLength % charBlockLength);
+        if (paddingLength != charBlockLength) {
+            message = message.concat(messageFiller.repeat(paddingLength));
+        }
+        return message;
     }
 
     /**
      * teilen des Klartextes in Blocke und Erzeugen des Chiffres
-     *
+     * calls smaller encryption steps
      * @param message         = gesamter Klartext
      * @param charBlockLength = Blocklänge
      * @return Chiffrat
@@ -147,6 +200,12 @@ public class Blockchiffre {
         return cipher;
     }
 
+    /**
+     * generates encrypted blocks
+     * @param messageBlockChiffre
+     * @param charBlockLength
+     * @return
+     */
     private static String generateChiffreBlock(BigInteger messageBlockChiffre, int charBlockLength) {
         String cipherBlock = "";
         for (int i = 0; i < charBlockLength; i++) {
@@ -158,6 +217,13 @@ public class Blockchiffre {
         return cipherBlock;
     }
 
+    /**
+     * converts string to number block
+     * @param messageBlock
+     * @param power
+     * @return
+     * @throws Exception
+     */
     private static BigInteger convertToNumberBlock(String messageBlock, int power) throws Exception {
         BigInteger result = BigInteger.ZERO;
         for (int i = 0; i < messageBlock.length(); i++) {
@@ -172,6 +238,11 @@ public class Blockchiffre {
         return result;
     }
 
+    /**
+     * message to integer representation
+     * @param message
+     * @return
+     */
     private static ArrayList<Integer> messageToInt(String message) {
         ArrayList<Integer> messageInt = new ArrayList<>();
         for (int i = 0; i < message.length(); i++) {
@@ -180,6 +251,12 @@ public class Blockchiffre {
         return messageInt;
     }
 
+    /**
+     * integer to bigint block conversion
+     * @param messageInt
+     * @param blockLength
+     * @return
+     */
     public static BigInteger numberMessageToBigInt(ArrayList<Integer> messageInt, int blockLength) {
         BigInteger messageBigInt = BigInteger.ZERO;
         int messageSize = messageInt.size();
@@ -201,6 +278,12 @@ public class Blockchiffre {
         return messageBigInt;
     }
 
+    /**
+     * bigint to unicode representation
+     * @param bigIntMessage
+     * @param blockLength
+     * @return
+     */
     public static String bigIntToUnicode(BigInteger bigIntMessage, int blockLength) {
         List<Integer> unicodeList = new ArrayList<>();
 
@@ -225,6 +308,12 @@ public class Blockchiffre {
         return unicodeMessage.toString();
     }
 
+    /**
+     * unicode to bigint conversion
+     * @param unicodeMessage
+     * @param blockLength
+     * @return
+     */
     public static BigInteger unicodeToBigInt(String unicodeMessage, int blockLength) {
         List<Integer> unicodeList = messageToInt(unicodeMessage);
         BigInteger bigIntMessage = BigInteger.ZERO;
@@ -244,6 +333,12 @@ public class Blockchiffre {
         return bigIntMessage;
     }
 
+    /**
+     * bigint to string message conversion using integer blocks
+     * @param bigIntMessage
+     * @param blockLength
+     * @return
+     */
     public static String bigIntToMessage(BigInteger bigIntMessage, int blockLength) {
         List<Integer> messageList = new ArrayList<>();
 

@@ -50,6 +50,10 @@ public class RSAHandler {
         this._m = BigInteger.valueOf(m);
     }
 
+    /**
+     * method for performance test while generating prime numbers
+     * @throws Exception
+     */
     public static void generateRandomPrimes() throws Exception {
         int numberLengthPQ = _numberLengthPQ;
         _p = calculateP(numberLengthPQ);
@@ -60,6 +64,11 @@ public class RSAHandler {
         _d = ExtendedEuclidean.getModInverse(_e, _phi);
     }
 
+    /**
+     * generates random primes and the specific keys used later with the primes
+     * @return RSAKeyPair containing PrivateKey and PublicKey
+     * @throws Exception
+     */
     public static RSAKeyPair generateRSAKeyPair() throws Exception {
         BigInteger p = calculateP(_numberLengthPQ);
         BigInteger q = calculateQ(_numberLengthPQ);
@@ -84,18 +93,45 @@ public class RSAHandler {
         return new RSAKeyPair(publicKey, privateKey);
     }
 
+    /**
+     * calls block cipher encrypt method
+     * @param message = string to be encrypted
+     * @param publicKey = pair (e,n)
+     * @return
+     * @throws Exception
+     */
     public static PairCipherBlockLength encryptMessage(String message, PublicKey publicKey) throws Exception {
         return Blockchiffre.encryptMessage(message, publicKey, _blockLength);
     }
 
+    /**
+     * calls block cipher decrypt
+     * @param encryptedMessage = unicode message to be decrypted
+     * @param privateKey = pair (d,n)
+     * @return
+     * @throws Exception
+     */
     public static String decryptMessage(PairCipherBlockLength encryptedMessage, PrivateKey privateKey) throws Exception {
         return Blockchiffre.decryptMessage(encryptedMessage, privateKey);
     }
 
+    /**
+     * calls hash method from utilities
+     * @param message = message that gets signed
+     * @return hashed message (signed)
+     * @throws Exception
+     */
     public String signatureForMessage(String message) throws Exception {
         return Utilities.hash256(message, generateRSAKeyPair().getPrivateKey());
     }
 
+    /**
+     *
+     * @param hashedMessage message which signature gets checked
+     * @param signature
+     * @return true if hash equals value of signature of the message
+     * @throws Exception
+     */
     public boolean validSignature(String hashedMessage, String signature) throws Exception {
         final MessageDigest digest = MessageDigest.getInstance("SHA3-256");
         final byte[] hashbytes = digest.digest(hashedMessage.getBytes());
@@ -106,10 +142,22 @@ public class RSAHandler {
         return decryptedSignature.equals(hashedInteger);
     }
 
+    /**
+     * calculates modulo
+     * @param p = random prime
+     * @param q = random prime
+     * @return n = p * q
+     */
     public static BigInteger calculateN(BigInteger p, BigInteger q) {
         return _n = p.multiply(q);
     }
 
+    /**
+     * calculates random prime p
+     * @param primeNumberLength
+     * @return random prime
+     * @throws Exception
+     */
     public static BigInteger calculateP(int primeNumberLength) throws Exception {
         BigInteger possibleP;
         BigInteger a = BigInteger.TWO.pow(primeNumberLength / 2 - 1);
@@ -120,6 +168,12 @@ public class RSAHandler {
         return _p = possibleP;
     }
 
+    /**
+     * calculates random prime q
+     * @param primeNumberLength
+     * @return random prime
+     * @throws Exception
+     */
     public static BigInteger calculateQ(int primeNumberLength) throws Exception {
         BigInteger possibleQ;
         BigInteger a = BigInteger.TWO.pow(primeNumberLength / 2 - 1);
@@ -130,6 +184,12 @@ public class RSAHandler {
         return _q = possibleQ;
     }
 
+    /**
+     * calculates e for public key
+     * @param phi = p-1 * q - 1
+     * @return random prime e
+     * @throws Exception
+     */
     public static BigInteger calculateE(BigInteger phi) throws Exception {
         BigInteger e;
 
@@ -143,6 +203,12 @@ public class RSAHandler {
         return e;
     }
 
+    /**
+     * calulates phiN
+     * @param p
+     * @param q
+     * @return phi(N) = p - 1 * q - 1
+     */
     public static BigInteger calculatePhiN(BigInteger p, BigInteger q) {
         return _phi = (p.subtract(BigInteger.ONE)).multiply(q.subtract(BigInteger.ONE));
     }
@@ -162,6 +228,14 @@ public class RSAHandler {
         return d.mod(e);
     }
 
+    /**
+     * functioning attempt for mod inverse of e
+     * moved and improved -> ExtendedEuclidean
+     * @param phi
+     * @param e
+     * @return
+     * @throws Exception
+     */
     private static BigInteger generateDHelper(BigInteger phi, BigInteger e) throws Exception {
         if (!phi.mod(e).equals(BigInteger.ZERO)) {
             return generateDHelper(e, phi.mod(e))

@@ -4,6 +4,15 @@ import java.math.BigInteger;
 
 public class MillerRabin {
 
+    /**
+     * Miller Rabin primality check
+     * @param probablyPrime
+     * @param k
+     * @param n
+     * @param m
+     * @return true if probably prime
+     * @throws Exception
+     */
     public static Boolean isPrime(BigInteger probablyPrime, int k, BigInteger n, BigInteger m) throws Exception {
         if (probablyPrime.equals(BigInteger.ONE)) {
             return false;
@@ -24,7 +33,6 @@ public class MillerRabin {
             s++;
         }
 
-        // Iterate given number of 'k' times TODO
         for (int i = 0; i < k; i++) {
 
             n = n.add(BigInteger.valueOf(i));
