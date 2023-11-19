@@ -1,0 +1,258 @@
+import javax.swing.*;
+import javax.swing.border.Border;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+class Maske {
+        public void launch() {
+                JFrame frame = new JFrame("Integrationsprojekt");
+
+                // Create a panel with a BorderLayout
+                JPanel mainPanel = new JPanel(new BorderLayout());
+
+                // Create a panel for the first row (1/3 of the window)
+                JPanel row1 = new JPanel(new GridLayout(1, 3)); // 1 row, 3 columns in the first row
+                addBorder(row1, "Schlüsselerzeugung");
+
+                // Create components for the first row
+                JTextField textField1 = new JTextField(1);
+                JTextField textField2 = new JTextField(1);
+
+                JTextArea oeffentlichAlice = new JTextArea();
+                oeffentlichAlice.setEditable(false);
+                oeffentlichAlice.setLineWrap(true);
+                oeffentlichAlice.setWrapStyleWord(true);
+
+                JTextArea oeffentlichBob = new JTextArea();
+                oeffentlichBob.setEditable(false);
+                oeffentlichBob.setLineWrap(true);
+                oeffentlichBob.setWrapStyleWord(true);
+
+                JButton button = new JButton("Start");
+
+                JTextArea lengthKlartext = new JTextArea();
+                lengthKlartext.setEditable(true);
+                lengthKlartext.setLineWrap(true);
+                lengthKlartext.setWrapStyleWord(true);
+
+                JTextArea lengthChiffre = new JTextArea();
+                lengthChiffre.setEditable(true);
+                lengthChiffre.setLineWrap(true);
+                lengthChiffre.setWrapStyleWord(true);
+
+                // Add components to the first row
+                JPanel column1 = new JPanel();
+                column1.setLayout(new BoxLayout(column1, BoxLayout.Y_AXIS));
+                column1.add(createLabeledPanel("Anzahl der Schritte", textField1));
+                column1.add(createLabeledPanel("Länge der Primzahlen", textField2));
+                column1.add(button);
+
+                JPanel column2 = new JPanel(new GridLayout(1, 1));
+                column2.add(createLabeledPanel("Öffentlicher Schlüssel Alice", oeffentlichAlice));
+
+                JPanel column3 = new JPanel(new GridLayout(1, 1));
+                column3.add(createLabeledPanel("Öffentlicher Schlüssel Bob", oeffentlichBob));
+
+                JPanel column4 = new JPanel(new GridLayout(2, 1));
+                column4.add(createLabeledPanel("Länge des Klartexts", lengthKlartext));
+                column4.add(createLabeledPanel("Länge des Chiffriertexts", lengthChiffre));
+
+                row1.add(column1);
+                row1.add(column2);
+                row1.add(column3);
+                row1.add(column4);
+
+                // Create a panel for the second row (2/3 of the window)
+                JPanel row2 = new JPanel(new GridLayout(1, 2)); // 2 columns in the second row
+                addBorder(row2, "Alice und Bob");
+                
+                // Create components for the second row
+                JTextArea geheimAlice = new JTextArea();
+                geheimAlice.setEditable(false);
+                geheimAlice.setLineWrap(true);
+                geheimAlice.setWrapStyleWord(true);
+
+                JTextArea geheimBob = new JTextArea();
+                geheimBob.setEditable(false);
+                geheimBob.setLineWrap(true);
+                geheimBob.setWrapStyleWord(true);
+
+                JTextArea textAlice = new JTextArea();
+                textAlice.setEditable(true);
+                textAlice.setLineWrap(true);
+                textAlice.setWrapStyleWord(true);
+
+                JTextArea textBob = new JTextArea();
+                textBob.setEditable(true);
+                textBob.setLineWrap(true);
+                textBob.setWrapStyleWord(true);
+
+                JTextArea signaturenAlice = new JTextArea();
+                signaturenAlice.setEditable(false);
+                signaturenAlice.setLineWrap(true);
+                signaturenAlice.setWrapStyleWord(true);
+
+                JTextArea signaturenBob = new JTextArea();
+                signaturenBob.setEditable(false);
+                signaturenBob.setLineWrap(true);
+                signaturenBob.setWrapStyleWord(true);
+
+                JLabel gueltigkeitAlice = new JLabel("Ausgabe von gültiger oder ungültiger Signatur");
+
+                JLabel gueltigkeitBob = new JLabel("Ausgabe von gültiger oder ungültiger Signatur");
+
+                JButton buttonVerschlüsseln = new JButton("Verschlüsseln");
+                JButton buttonSignieren = new JButton("Signieren");
+
+                JButton buttonVerschlüsselnBob = new JButton("Verschlüsseln");
+                JButton buttonSignierenBob = new JButton("Signieren");
+
+                JButton buttonEntschlüsseln = new JButton("Entschlüsseln/Verifizieren");
+                JButton buttonVersenden = new JButton("Versenden");
+
+                JButton buttonEntschlüsselnBob = new JButton("Entschlüsseln/Verifizieren");
+                JButton buttonVersendenBob = new JButton("Versenden");
+
+                JButton buttonReset = new JButton("Reset");
+
+                JButton buttonResetBob = new JButton("Reset");
+
+                // Add components to the second row
+                JPanel column21 = new JPanel(new GridLayout(8, 1));
+                addBorder(column21, "Alice");
+                column21.add(createLabeledPanel("Alice geheimerschlüsselteil d_A", geheimAlice));
+
+                column21.add(createLabeledPanel("Klar- und Chiffriertext", textAlice));
+
+                JPanel buttonRow = new JPanel(new GridLayout(1, 2));
+                //addBorder(buttonRow, "test");
+                JPanel buttonCol1 = new JPanel();
+                buttonCol1.add(buttonVerschlüsseln);
+                JPanel buttonCol2 = new JPanel();
+                buttonCol2.add(buttonSignieren);
+                buttonRow.add(buttonCol1);
+                buttonRow.add(buttonCol2);
+
+                column21.add(buttonRow);
+
+                JPanel buttonRow2 = new JPanel(new GridLayout(1, 2));
+                //addBorder(buttonRow, "test");
+                JPanel buttonCol21 = new JPanel();
+                buttonCol21.add(buttonEntschlüsseln);
+                JPanel buttonCol22 = new JPanel();
+                buttonCol22.add(buttonVersenden);
+                buttonRow2.add(buttonCol21);
+                buttonRow2.add(buttonCol22);
+
+                column21.add(buttonRow2);
+        
+                column21.add(createLabeledPanel("Signaturen", signaturenAlice));
+
+                JPanel buttonRow4 = new JPanel(new GridLayout(1, 2));
+                JPanel buttonCol41 = new JPanel();
+                buttonCol41.add(gueltigkeitAlice);
+                buttonRow4.add(buttonCol41);
+                column21.add(buttonRow4);
+
+                JPanel buttonRow3 = new JPanel(new GridLayout(1, 2));
+                JPanel buttonCol31 = new JPanel();
+                buttonCol31.add(buttonReset);
+                buttonRow3.add(buttonCol31);
+                column21.add(buttonRow3);
+
+                // Bobs Maske
+                JPanel column22 = new JPanel(new GridLayout(8, 1));
+                addBorder(column22, "Bob");
+                
+                column22.add(createLabeledPanel("Bobs geheimerschlüsselteil d_A", geheimBob));
+
+                column22.add(createLabeledPanel("Klar- und Chiffriertext", textBob));
+
+                JPanel buttonRowBob = new JPanel(new GridLayout(1, 2));
+                //addBorder(buttonRow, "test");
+                JPanel buttonCol1Bob = new JPanel();
+                buttonCol1Bob.add(buttonVerschlüsselnBob);
+                JPanel buttonCol2Bob = new JPanel();
+                buttonCol2Bob.add(buttonSignierenBob);
+                buttonRowBob.add(buttonCol1Bob);
+                buttonRowBob.add(buttonCol2Bob);
+
+                column22.add(buttonRowBob);
+
+                JPanel buttonRow2Bob = new JPanel(new GridLayout(1, 2));
+                //addBorder(buttonRow, "test");
+                JPanel buttonCol21Bob = new JPanel();
+                buttonCol21Bob.add(buttonEntschlüsselnBob);
+                JPanel buttonCol22Bob = new JPanel();
+                buttonCol22Bob.add(buttonVersendenBob);
+                buttonRow2Bob.add(buttonCol21Bob);
+                buttonRow2Bob.add(buttonCol22Bob);
+
+                column22.add(buttonRow2Bob);
+        
+                column22.add(createLabeledPanel("Signaturen", signaturenBob));
+
+                JPanel buttonRow4Bob = new JPanel(new GridLayout(1, 2));
+                JPanel buttonCol41Bob = new JPanel();
+                buttonCol41Bob.add(gueltigkeitBob);
+                buttonRow4Bob.add(buttonCol41Bob);
+                column22.add(buttonRow4Bob);
+
+                JPanel buttonRow3Bob = new JPanel(new GridLayout(1, 2));
+                JPanel buttonCol31Bob = new JPanel();
+                buttonCol31Bob.add(buttonResetBob);
+                buttonRow3Bob.add(buttonCol31Bob);
+                column22.add(buttonRow3Bob);
+
+                row2.add(column21);
+                row2.add(column22);
+
+                // Add rows to the main panel
+                mainPanel.add(row1, BorderLayout.NORTH);
+                mainPanel.add(row2, BorderLayout.CENTER);
+
+                // Add the main panel to the frame
+                frame.add(mainPanel);
+
+                // Set frame properties
+                frame.setSize(1200, 1000);
+                frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                frame.setLocationRelativeTo(null);
+
+                row1.setPreferredSize(new Dimension(0, frame.getHeight() / 3));
+                frame.setVisible(true);
+
+                // Add action listener to the buttons
+                button.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                                System.out.println("button clicked");
+                        }
+                        });
+                }
+
+                private void addBorder(JPanel panel, String title) {
+                        Border border = BorderFactory.createTitledBorder(title);
+                        panel.setBorder(border);
+                    }
+                
+                // labeledPanel.add(label, BorderLayout.NORTH); gibt namen doppelt drin ein
+                private JPanel createLabeledPanel(String labelText, JTextField textField) {
+                        JPanel labeledPanel = new JPanel(new BorderLayout());
+                        //JLabel label = new JLabel(labelText);
+                        //labeledPanel.add(label, BorderLayout.NORTH);
+                        labeledPanel.add(textField, BorderLayout.NORTH);
+                        addBorder(labeledPanel, labelText);
+                        return labeledPanel;
+                }
+
+                private JPanel createLabeledPanel(String labelText, JTextArea textArea) {
+                        JPanel labeledPanel = new JPanel(new BorderLayout());
+                        //JLabel label = new JLabel(labelText);
+                        //labeledPanel.add(label, BorderLayout.NORTH);
+                        labeledPanel.add(new JScrollPane(textArea), BorderLayout.CENTER);
+                        addBorder(labeledPanel, labelText);
+                        return labeledPanel;
+                    }
+}
