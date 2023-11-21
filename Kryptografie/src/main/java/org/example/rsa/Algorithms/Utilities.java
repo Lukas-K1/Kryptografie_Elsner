@@ -22,6 +22,9 @@ public class Utilities {
         return _countN = countN;
     }
 
+    /**
+     * primes up to 1000 to check against
+     */
     private static final BigInteger[] smallPrimes = {
             BigInteger.valueOf(2),
             BigInteger.valueOf(3),
@@ -193,6 +196,14 @@ public class Utilities {
             BigInteger.valueOf(997)
     };
 
+    /**
+     * first random number impl; generates set of numbers
+     * @param a
+     * @param b
+     * @param n
+     * @param m
+     * @return
+     */
     public static HashSet<BigInteger> calculateRandoms(BigInteger a, BigInteger b, BigInteger n, BigInteger m) {
         BigDecimal aValue = new BigDecimal(a);
         BigDecimal bValue = new BigDecimal(b);
@@ -218,6 +229,16 @@ public class Utilities {
     }
 
     // based on it security script page 97
+
+    /**
+     * returns one number from set of random numbers; not used; not marked deprecated
+     * @param a
+     * @param b
+     * @param n
+     * @param m
+     * @return
+     * @throws Exception
+     */
     public static BigInteger calculateRandom(BigInteger a, BigInteger b, BigInteger n, BigInteger m) throws Exception {
         BigInteger random = calculateRandoms(a, b, n, m)
                 .stream()
@@ -226,13 +247,22 @@ public class Utilities {
         return random;
     }
 
+    /**
+     * returns random number with primality check using Miller-Rabin
+     * @param m
+     * @param n
+     * @param a
+     * @param b
+     * @param millerRabinTrials
+     * @return random biginteger which is probably prime
+     * @throws Exception
+     */
     public static BigInteger generateRandom(BigInteger m, BigInteger n, BigInteger a, BigInteger b, int millerRabinTrials) throws Exception {
         BigInteger probablyPrime;
         n = getCountN();
         while (true) {
             probablyPrime = getRandomBigInteger(a, b, n, m).setBit(0);
             boolean hasPrimeDivisor = false;
-            //TODO check against smaller primes
 
             for (BigInteger smallerPrime : smallPrimes) {
                 if (probablyPrime.equals(smallerPrime)) {
@@ -256,7 +286,15 @@ public class Utilities {
         return probablyPrime;
     }
 
-    // TODO n should be set to BigInteger.ONE for on random number
+    /**
+     * returns random biginteger
+     * based on it security script page 97
+     * @param a
+     * @param b
+     * @param n
+     * @param m
+     * @return random biginteger
+     */
     public static BigInteger getRandomBigInteger(BigInteger a, BigInteger b, BigInteger n, BigInteger m) {
         BigDecimal aValue = new BigDecimal(a);
         BigDecimal bValue = new BigDecimal(b);
@@ -277,6 +315,13 @@ public class Utilities {
         return sn.toBigInteger();
     }
 
+    /**
+     * hash function for signature
+     * @param message
+     * @param privateKey
+     * @return
+     * @throws NoSuchAlgorithmException
+     */
     public static String hash256(String message, PrivateKey privateKey) throws NoSuchAlgorithmException {
         final MessageDigest digest = MessageDigest.getInstance("SHA3-256");
         final byte[] hashbytes = digest.digest(message.getBytes());
@@ -285,6 +330,14 @@ public class Utilities {
         return hashedMessage.toString(16);
     }
 
+    /**
+     * signature validity check
+     * @param message
+     * @param signature
+     * @param publicKey
+     * @return true if identical
+     * @throws NoSuchAlgorithmException
+     */
     public static boolean isSignatureValid(String message, String signature, PublicKey publicKey) throws NoSuchAlgorithmException {
         final MessageDigest digest = MessageDigest.getInstance("SHA3-256");
         final byte[] hashbytes = digest.digest(message.getBytes());

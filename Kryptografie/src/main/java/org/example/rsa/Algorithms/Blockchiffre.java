@@ -29,6 +29,14 @@ public class Blockchiffre {
         return new PairCipherBlockLength(cipher, charBlockLength + 1);
     }
 
+    /**
+     * encryption of string message
+     * @param message
+     * @param rsaKeys
+     * @param blockLength
+     * @return
+     * @throws Exception
+     */
     public static PairCipherBlockLength encryptMessage(String message, RSAKeys rsaKeys, int blockLength) throws Exception {
         if (!checkBlockLength(blockLength, rsaKeys.getN())) {
             throw new Exception("blocklänge nicht passend");
@@ -38,6 +46,13 @@ public class Blockchiffre {
         return new PairCipherBlockLength(cipher, blockLength + 1);
     }
 
+    /**
+     * method to call decryption steps
+     * @param encryptedMessage
+     * @param rsaKeys
+     * @return
+     * @throws Exception
+     */
     public static String decryptMessage(PairCipherBlockLength encryptedMessage, RSAKeys rsaKeys) throws Exception {
         String cipher = encryptedMessage.getCipher();
         Integer blockLength = encryptedMessage.getBlockLength();
@@ -68,6 +83,12 @@ public class Blockchiffre {
         return (int) Math.floor(log);
     }
 
+    /**
+     * checks correctness of block length based on script
+     * @param charBlockLength
+     * @param n
+     * @return
+     */
     private static boolean checkBlockLength(int charBlockLength, BigInteger n) {
         return _charSetSize.pow(charBlockLength).compareTo(n) < 0
                 && n.compareTo(_charSetSize.pow(charBlockLength + 1)) < 0;
@@ -85,7 +106,7 @@ public class Blockchiffre {
 
     /**
      * teilen des Klartextes in Blocke und Erzeugen des Chiffres
-     *
+     * calls smaller encryption steps
      * @param message         = gesamter Klartext
      * @param charBlockLength = Blocklänge
      * @return Chiffrat
@@ -134,6 +155,11 @@ public class Blockchiffre {
         return messageInt;
     }
 
+    /**
+     * message to integer representation
+     * @param message
+     * @return
+     */
     private static ArrayList<Integer> messageToIntList(String message) {
         ArrayList<Integer> messageInt = new ArrayList<>();
         for (int i = 0; i < message.length(); i++) {
