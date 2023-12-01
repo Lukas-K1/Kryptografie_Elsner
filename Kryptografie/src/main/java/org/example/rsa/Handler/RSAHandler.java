@@ -64,6 +64,26 @@ public class RSAHandler {
         _d = ExtendedEuclidean.getModInverse(_e, _phi);
     }
 
+    public static RSAKeyPair generateKeyPairBob() throws Exception {
+        return generateRSAKeyPair();
+    }
+
+    public static RSAKeyPair generateKeyPairAlice() throws Exception {
+        return generateRSAKeyPair();
+    }
+
+    //TODO: implement
+    public static void sentMessage(T receiver , String message){
+
+    }
+    public void sentMessageBob(String message){
+        sentMessage(Alice, message);
+    }
+
+    public void sentMessageAlice(String message){
+        sentMessage(Bob, message);
+    }
+
     /**
      * generates random primes and the specific keys used later with the primes
      * @return RSAKeyPair containing PrivateKey and PublicKey
