@@ -57,4 +57,36 @@ public class EllipticCurvePoint{
                     .subtract(_y).mod(_p);
         return new EllipticCurvePoint(newX, newY, _a, _b, _p);
     }
+
+    public EllipticCurvePoint subtract(EllipticCurvePoint newPoint) {
+        if (this == null || newPoint == null) {
+            return null;
+        }
+        return add(newPoint.negate());
+    }
+
+    public EllipticCurvePoint multiply(BigInteger n) {
+        if (n.equals(BigInteger.ZERO)) {
+            return null;
+        }
+        if (n.equals(BigInteger.ONE)) {
+            return this;
+        }
+        if (n.mod(BigInteger.TWO).equals(BigInteger.ZERO)) {
+            return doublePoint().multiply(n.divide(BigInteger.TWO));
+        }
+        return add(doublePoint().multiply(n.divide(BigInteger.TWO)));
+    }
+
+    /**
+     * calculates right hand side of equation
+     * @return
+     */
+    public BigInteger calculateRightHandSide(BigInteger x) {
+        return x.multiply(x).mod(_p).add(_a.multiply(x)).add(_b).mod(_p);
+    }
+
+    private EllipticCurvePoint negate() {
+        return new EllipticCurvePoint(_x, _y.negate(), _a, _b, _p);
+    }
 }
