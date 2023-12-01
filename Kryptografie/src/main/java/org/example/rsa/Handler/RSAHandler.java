@@ -84,6 +84,29 @@ public class RSAHandler {
         sentMessage(Bob, message);
     }
 
+    //TODO create User type fo Alice/Bob
+    public PairCipherBlockLength encryptMessageBob(String message) throws Exception {
+        return encryptMessage(message, Bob.getPublicKey());
+    }
+
+    public PairCipherBlockLength encryptMessageAlice(String message) throws Exception {
+        return encryptMessage(message, Alice.getPublicKey());
+    }
+
+    public String decryptMessageBob(PairCipherBlockLength encryptedMessage) throws Exception {
+        return decryptMessage(encryptedMessage, Bob.getPrivateKey());
+    }
+
+    public String decryptMessageAlice(PairCipherBlockLength encryptedMessage) throws Exception {
+        return decryptMessage(encryptedMessage, Alice.getPrivateKey());
+    }
+
+    public void receiveMessageBob(String message) throws Exception {
+    }
+
+    public void receiveMessageAlice(String message) throws Exception {
+    }
+
     /**
      * generates random primes and the specific keys used later with the primes
      * @return RSAKeyPair containing PrivateKey and PublicKey
