@@ -59,7 +59,7 @@ public class EllipticCurvePoint{
     }
 
     public EllipticCurvePoint subtract(EllipticCurvePoint newPoint) {
-        if (this == null || newPoint == null) {
+        if (newPoint == null) {
             return null;
         }
         return add(newPoint.negate());
