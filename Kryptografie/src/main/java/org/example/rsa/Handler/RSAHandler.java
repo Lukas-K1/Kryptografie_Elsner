@@ -29,6 +29,8 @@ public class RSAHandler {
     private static BigInteger _countN = BigInteger.ONE;
     private static int _blockLength;
     private static int _numberLengthPQ;
+    static RSAUser Alice;
+    static RSAUser Bob;
 
     public void setNumberLengthPQ(int primeNumberLength) {
         _numberLengthPQ = primeNumberLength / 2;
@@ -65,15 +67,17 @@ public class RSAHandler {
     }
 
     public static RSAKeyPair generateKeyPairBob() throws Exception {
-        return generateRSAKeyPair();
+        Bob.setKeyPair(generateRSAKeyPair());
+        return Bob.getKeyPair();
     }
 
     public static RSAKeyPair generateKeyPairAlice() throws Exception {
-        return generateRSAKeyPair();
+        Alice.setKeyPair(generateRSAKeyPair());
+        return Alice.getKeyPair();
     }
 
     //TODO: implement
-    public static void sentMessage(T receiver , String message){
+    public static void sentMessage(RSAUser receiver , String message){
 
     }
     public void sentMessageBob(String message){
@@ -86,19 +90,19 @@ public class RSAHandler {
 
     //TODO create User type fo Alice/Bob
     public PairCipherBlockLength encryptMessageBob(String message) throws Exception {
-        return encryptMessage(message, Bob.getPublicKey());
+        return encryptMessage(message, Bob.getKeyPair().getPublicKey());
     }
 
     public PairCipherBlockLength encryptMessageAlice(String message) throws Exception {
-        return encryptMessage(message, Alice.getPublicKey());
+        return encryptMessage(message, Alice.getKeyPair().getPublicKey());
     }
 
     public String decryptMessageBob(PairCipherBlockLength encryptedMessage) throws Exception {
-        return decryptMessage(encryptedMessage, Bob.getPrivateKey());
+        return decryptMessage(encryptedMessage, Bob.getKeyPair().getPrivateKey());
     }
 
     public String decryptMessageAlice(PairCipherBlockLength encryptedMessage) throws Exception {
-        return decryptMessage(encryptedMessage, Alice.getPrivateKey());
+        return decryptMessage(encryptedMessage, Alice.getKeyPair().getPrivateKey());
     }
 
     public void receiveMessageBob(String message) throws Exception {
