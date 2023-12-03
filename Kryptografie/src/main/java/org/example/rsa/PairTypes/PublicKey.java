@@ -11,4 +11,12 @@ public class PublicKey extends RSAKeys {
     public BigInteger getKeyE() {
         return this.getKey();
     }
+
+    @Override
+    public String toString() {
+        return "PublicKey{" +
+                "e=" + this.getKeyE() +
+                ", n=" + this.getN() +
+                '}';
+    }
 }

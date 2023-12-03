@@ -11,4 +11,12 @@ public class PrivateKey extends RSAKeys{
     public BigInteger getKeyD() {
         return this.getKey();
     }
+
+    @Override
+    public String toString() {
+        return "PrivateKey{" +
+                "d=" + this.getKeyD() +
+                ", n=" + this.getN() +
+                '}';
+    }
 }
