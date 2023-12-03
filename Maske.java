@@ -13,6 +13,8 @@ class Maske {
                 String privateBob = "";
                 String signaturAlice = "";
                 String signaturBob = "";
+                String signaturGültigkeitAlice = "Ausgabe von gültiger oder ungültiger Signatur";
+                String signaturGültigkeitBob = "Ausgabe von gültiger oder ungültiger Signatur";
 
 
                 JFrame frame = new JFrame("Integrationsprojekt");
@@ -25,8 +27,8 @@ class Maske {
                 addBorder(row1, "Schlüsselerzeugung");
 
                 // Create components for the first row
-                JTextField textField1 = new JTextField(1);
-                JTextField textField2 = new JTextField(1);
+                JTextField anzahlSchritteFeld = new JTextField(1);
+                JTextField primzahlLängeFeld = new JTextField(1);
 
                 JTextArea oeffentlichAlice = new JTextArea(öffentlichAlice);
                 oeffentlichAlice.setEditable(false);
@@ -53,8 +55,8 @@ class Maske {
                 // Add components to the first row
                 JPanel column1 = new JPanel();
                 column1.setLayout(new BoxLayout(column1, BoxLayout.Y_AXIS));
-                column1.add(createLabeledPanel("Anzahl der Schritte", textField1));
-                column1.add(createLabeledPanel("Länge der Primzahlen", textField2));
+                column1.add(createLabeledPanel("Anzahl der Schritte", anzahlSchritteFeld));
+                column1.add(createLabeledPanel("Länge der Primzahlen", primzahlLängeFeld));
                 column1.add(button);
 
                 JPanel column2 = new JPanel(new GridLayout(1, 1));
@@ -107,9 +109,9 @@ class Maske {
                 signaturenBob.setLineWrap(true);
                 signaturenBob.setWrapStyleWord(true);
 
-                JLabel gueltigkeitAlice = new JLabel("Ausgabe von gültiger oder ungültiger Signatur");
+                JLabel gueltigkeitAlice = new JLabel(signaturGültigkeitAlice);
 
-                JLabel gueltigkeitBob = new JLabel("Ausgabe von gültiger oder ungültiger Signatur");
+                JLabel gueltigkeitBob = new JLabel(signaturGültigkeitBob);
 
                 JButton buttonVerschlüsseln = new JButton("Verschlüsseln");
                 JButton buttonSignieren = new JButton("Signieren");
@@ -236,7 +238,7 @@ class Maske {
                 button.addActionListener(new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
-                                System.out.println(textField1.getText());
+                                System.out.println(anzahlSchritteFeld.getText());
                                 startButton();
                         }
                         });
