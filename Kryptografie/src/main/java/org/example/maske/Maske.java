@@ -7,6 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import org.example.rsa.Handler.RSAHandler;
+import org.example.rsa.PairTypes.PairCipherBlockLength;
 
 class Maske {
         public int anzahlAnSchritte = 0;
@@ -23,6 +24,8 @@ class Maske {
         public String signaturGültigkeitBob = "Ausgabe von gültiger oder ungültiger Signatur";
 
         RSAHandler handler = new RSAHandler();
+        PairCipherBlockLength encryptedMessageAlice;
+        PairCipherBlockLength encryptedMessageBob;
 
         public void launch() {
                 JFrame frame = new JFrame("Integrationsprojekt");
@@ -262,9 +265,10 @@ class Maske {
                                 try {
                                         oeffentlichAlice.setText(handler.generateKeyPairAlice().getPublicKey().toString());
                                         oeffentlichBob.setText(handler.generateKeyPairBob().getPublicKey().toString());
-
+                                        handler.setBlockLength();
                                         geheimAlice.setText(handler.Alice.getKeyPair().getPrivateKey().toString());
                                         geheimBob.setText(handler.Bob.getKeyPair().getPrivateKey().toString());
+                                        handler.setBlockLength();
                                 } catch (Exception e1) {
                                         // TODO Auto-generated catch block
                                         e1.printStackTrace();
@@ -275,6 +279,11 @@ class Maske {
                 buttonVerschlüsseln.addActionListener(new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
+                                try {
+                                        encryptedMessageAlice = handler.encryptMessageAlice(textAlice.getText());
+                                } catch (Exception ex) {
+                                        throw new RuntimeException(ex);
+                                }
                                 verschlüsselnAlice();
                         }
                         });
@@ -282,6 +291,11 @@ class Maske {
                 buttonSignieren.addActionListener(new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
+                                try {
+                                        handler.signatureForMessage(encryptedMessageAlice.getCipher());
+                                } catch (Exception ex) {
+                                        throw new RuntimeException(ex);
+                                }
                                 signierenAlice();
                         }
                         });
@@ -289,6 +303,11 @@ class Maske {
                 buttonVerschlüsselnBob.addActionListener(new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
+                                try {
+                                        encryptedMessageBob = handler.encryptMessageBob(textBob.getText());
+                                } catch (Exception ex) {
+                                        throw new RuntimeException(ex);
+                                }
                                 verschlüsselnBob();
                         }
                         });
@@ -296,6 +315,11 @@ class Maske {
                 buttonSignierenBob.addActionListener(new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
+                                try {
+                                        handler.signatureForMessage(encryptedMessageBob.getCipher());
+                                } catch (Exception ex) {
+                                        throw new RuntimeException(ex);
+                                }
                                 signierenBob();
                         }
                         });
@@ -303,6 +327,11 @@ class Maske {
                 buttonEntschlüsseln.addActionListener(new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
+                                try {
+                                        handler.decryptMessageAlice(encryptedMessageBob);
+                                } catch (Exception ex) {
+                                        throw new RuntimeException(ex);
+                                }
                                 entschlüsselnAlice();
                         }
                         });
@@ -310,6 +339,7 @@ class Maske {
                 buttonVersenden.addActionListener(new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
+                                handler.sentMessageAlice(encryptedMessageAlice.getCipher());
                                 versendenAlice();
                         }
                         });
@@ -317,6 +347,11 @@ class Maske {
                 buttonEntschlüsselnBob.addActionListener(new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
+                                try {
+                                        handler.decryptMessageBob(encryptedMessageAlice);
+                                } catch (Exception ex) {
+                                        throw new RuntimeException(ex);
+                                }
                                 entschlüsselnBob();
                         }
                         });
@@ -324,6 +359,8 @@ class Maske {
                 buttonVersendenBob.addActionListener(new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
+
+                                handler.sentMessageBob(encryptedMessageBob.getCipher());
                                 versendenBob();
                         }
                         });
@@ -331,6 +368,7 @@ class Maske {
                 buttonReset.addActionListener(new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
+                                textAlice.setText("");
                                 resetAlice();
                         }
                         });
@@ -338,6 +376,7 @@ class Maske {
                 buttonResetBob.addActionListener(new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
+                                textBob.setText("");
                                 resetBob();
                         }
                         });
