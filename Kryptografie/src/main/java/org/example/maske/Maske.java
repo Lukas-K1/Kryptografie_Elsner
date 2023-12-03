@@ -26,6 +26,8 @@ class Maske {
         RSAHandler handler = new RSAHandler();
         PairCipherBlockLength encryptedMessageAlice;
         PairCipherBlockLength encryptedMessageBob;
+        PairCipherBlockLength receivedMessageAlice;
+        PairCipherBlockLength receivedMessageBob;
 
         public void launch() {
                 JFrame frame = new JFrame("Integrationsprojekt");
@@ -281,6 +283,8 @@ class Maske {
                         public void actionPerformed(ActionEvent e) {
                                 try {
                                         encryptedMessageAlice = handler.encryptMessageAlice(textAlice.getText());
+                                        receivedMessageBob = encryptedMessageAlice;
+                                        textAlice.setText(encryptedMessageAlice.getCipher());
                                 } catch (Exception ex) {
                                         throw new RuntimeException(ex);
                                 }
@@ -305,6 +309,8 @@ class Maske {
                         public void actionPerformed(ActionEvent e) {
                                 try {
                                         encryptedMessageBob = handler.encryptMessageBob(textBob.getText());
+                                        receivedMessageAlice = encryptedMessageBob;
+                                        textBob.setText(encryptedMessageBob.getCipher());
                                 } catch (Exception ex) {
                                         throw new RuntimeException(ex);
                                 }
@@ -328,7 +334,8 @@ class Maske {
                         @Override
                         public void actionPerformed(ActionEvent e) {
                                 try {
-                                        handler.decryptMessageAlice(encryptedMessageBob);
+                                        String message = handler.decryptMessageAlice(receivedMessageAlice);
+                                        textAlice.setText(message);
                                 } catch (Exception ex) {
                                         throw new RuntimeException(ex);
                                 }
@@ -340,6 +347,7 @@ class Maske {
                         @Override
                         public void actionPerformed(ActionEvent e) {
                                 handler.sentMessageAlice(encryptedMessageAlice.getCipher());
+                                textBob.setText(receivedMessageBob.getCipher());
                                 versendenAlice();
                         }
                         });
@@ -348,7 +356,8 @@ class Maske {
                         @Override
                         public void actionPerformed(ActionEvent e) {
                                 try {
-                                        handler.decryptMessageBob(encryptedMessageAlice);
+                                        String message = handler.decryptMessageBob(receivedMessageBob);
+                                        textBob.setText(message);
                                 } catch (Exception ex) {
                                         throw new RuntimeException(ex);
                                 }
@@ -361,6 +370,7 @@ class Maske {
                         public void actionPerformed(ActionEvent e) {
 
                                 handler.sentMessageBob(encryptedMessageBob.getCipher());
+                                textAlice.setText(receivedMessageAlice.getCipher());
                                 versendenBob();
                         }
                         });
