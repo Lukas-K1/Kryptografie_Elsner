@@ -22,13 +22,4 @@
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
 replay_pid*
-Kryptografie/.idea/uiDesigner.xml
-.idea/shelf/Uncommitted_changes_before_Update_at_14_11_2023_12_51_\[Changes\]/shelved.patch
-.idea/shelf/Uncommitted_changes_before_Update_at_14_11_2023_12_51__Changes_.xml
-.idea/shelf/Uncommitted_changes_before_Update_at_15_11_2023_16_39__Changes_.xml
-.idea/vcs.xml
-.idea/workspace.xml
-Kryptografie/.idea/codeStyles/Project.xml
-.idea/shelf/Uncommitted_changes_before_Update_at_15_11_2023_16_39_\[Changes\]/shelved.patch
-Kryptografie/.idea/codeStyles/Project.xml
-Kryptografie/.idea/codeStyles/Project.xml
+.idea/
