@@ -6,6 +6,15 @@ import java.awt.event.ActionListener;
 
 class Maske {
         public void launch() {
+                //String Sammlung
+                String öffentlichAlice = "";
+                String öffentlichBob = "";
+                String privatAlice = "";
+                String privateBob = "";
+                String signaturAlice = "";
+                String signaturBob = "";
+
+
                 JFrame frame = new JFrame("Integrationsprojekt");
 
                 // Create a panel with a BorderLayout
@@ -19,12 +28,12 @@ class Maske {
                 JTextField textField1 = new JTextField(1);
                 JTextField textField2 = new JTextField(1);
 
-                JTextArea oeffentlichAlice = new JTextArea();
+                JTextArea oeffentlichAlice = new JTextArea(öffentlichAlice);
                 oeffentlichAlice.setEditable(false);
                 oeffentlichAlice.setLineWrap(true);
                 oeffentlichAlice.setWrapStyleWord(true);
 
-                JTextArea oeffentlichBob = new JTextArea();
+                JTextArea oeffentlichBob = new JTextArea(öffentlichBob);
                 oeffentlichBob.setEditable(false);
                 oeffentlichBob.setLineWrap(true);
                 oeffentlichBob.setWrapStyleWord(true);
@@ -68,12 +77,12 @@ class Maske {
                 addBorder(row2, "Alice und Bob");
                 
                 // Create components for the second row
-                JTextArea geheimAlice = new JTextArea();
+                JTextArea geheimAlice = new JTextArea(privatAlice);
                 geheimAlice.setEditable(false);
                 geheimAlice.setLineWrap(true);
                 geheimAlice.setWrapStyleWord(true);
 
-                JTextArea geheimBob = new JTextArea();
+                JTextArea geheimBob = new JTextArea(privateBob);
                 geheimBob.setEditable(false);
                 geheimBob.setLineWrap(true);
                 geheimBob.setWrapStyleWord(true);
@@ -88,12 +97,12 @@ class Maske {
                 textBob.setLineWrap(true);
                 textBob.setWrapStyleWord(true);
 
-                JTextArea signaturenAlice = new JTextArea();
+                JTextArea signaturenAlice = new JTextArea(signaturAlice);
                 signaturenAlice.setEditable(false);
                 signaturenAlice.setLineWrap(true);
                 signaturenAlice.setWrapStyleWord(true);
 
-                JTextArea signaturenBob = new JTextArea();
+                JTextArea signaturenBob = new JTextArea(signaturBob);
                 signaturenBob.setEditable(false);
                 signaturenBob.setLineWrap(true);
                 signaturenBob.setWrapStyleWord(true);
@@ -227,10 +236,83 @@ class Maske {
                 button.addActionListener(new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
-                                System.out.println("button clicked");
+                                System.out.println(textField1.getText());
+                                startButton();
+                        }
+                        });
+
+                buttonVerschlüsseln.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                                verschlüsselnAlice();
+                        }
+                        });
+
+                buttonSignieren.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                                signierenAlice();
+                        }
+                        });
+
+                buttonVerschlüsselnBob.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                                verschlüsselnBob();
+                        }
+                        });
+
+                buttonSignierenBob.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                                signierenBob();
+                        }
+                        });
+
+                buttonEntschlüsseln.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                                entschlüsselnAlice();
+                        }
+                        });
+
+                buttonVersenden.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                                versendenAlice();
+                        }
+                        });
+
+                buttonEntschlüsselnBob.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                                entschlüsselnBob();
+                        }
+                        });
+
+                buttonVersendenBob.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                                versendenBob();
+                        }
+                        });
+
+                buttonReset.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                                resetAlice();
+                        }
+                        });
+
+                buttonResetBob.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                                resetBob();
                         }
                         });
                 }
+
+                
 
                 private void addBorder(JPanel panel, String title) {
                         Border border = BorderFactory.createTitledBorder(title);
@@ -255,4 +337,48 @@ class Maske {
                         addBorder(labeledPanel, labelText);
                         return labeledPanel;
                     }
+
+                public void startButton(){
+                        System.out.println("Start Button gedrückt");
+                }
+
+                public void verschlüsselnAlice(){
+                        System.out.println("Alice Verschlüsselungs Button gedrückt");
+                }
+
+                public void signierenAlice(){
+                        System.out.println("Alice Signatur Button gedrückt");
+                }
+
+                public void verschlüsselnBob(){
+                        System.out.println("Bobs Verschlüsselungs Button gedrückt");
+                }
+
+                public void signierenBob(){
+                        System.out.println("Bobs Signatur Button gedrückt");
+                }
+
+                public void entschlüsselnAlice(){
+                        System.out.println("Alice Text entschlüsselt");
+                }
+
+                public void versendenAlice(){
+                        System.out.println("Alice Text verschickt");
+                }
+
+                public void entschlüsselnBob(){
+                        System.out.println("Bobs Text entschlüsselt");
+                }
+
+                public void versendenBob(){
+                        System.out.println("Bobs Text verschickt");
+                }
+
+                public void resetAlice(){
+                        System.out.println("Alice Maske reset");
+                }
+
+                public void resetBob(){
+                        System.out.println("Bobs Maske reset");
+                }
 }
