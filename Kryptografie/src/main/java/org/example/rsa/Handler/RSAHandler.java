@@ -39,8 +39,8 @@ public class RSAHandler {
         _numberLengthPQ = primeNumberLength / 2;
     }
 
-    public static int setBlockLength(int blockLength) {
-        return _blockLength = blockLength;
+    public static int setBlockLength() {
+        return _blockLength = Blockchiffre.calculateBlockLength(_n);
     }
 
     public void setMillerRabinTrials(int millerRabinTrials) {
