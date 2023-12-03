@@ -1,4 +1,4 @@
-package Kryptografie.src.main.java.org.example.rsa.PairTypes;
+package org.example.rsa.PairTypes;
 
 public class RSAKeyPair {
     private final PublicKey _publicKey;

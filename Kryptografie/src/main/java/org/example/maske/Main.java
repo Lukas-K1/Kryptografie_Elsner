@@ -1,4 +1,4 @@
-package Kryptografie.src.main.java.org.example.maske;
+package org.example.maske;
 
 public class Main{
     public static void main(String[] args) {

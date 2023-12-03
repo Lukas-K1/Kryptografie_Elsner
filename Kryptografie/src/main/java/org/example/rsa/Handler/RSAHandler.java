@@ -1,10 +1,13 @@
-package Kryptografie.src.main.java.org.example.rsa.Handler;
+package org.example.rsa.Handler;
 
-import Kryptografie.src.main.java.org.example.rsa.Algorithms.*;
-import Kryptografie.src.main.java.org.example.rsa.PairTypes.PairCipherBlockLength;
-import Kryptografie.src.main.java.org.example.rsa.PairTypes.PrivateKey;
-import Kryptografie.src.main.java.org.example.rsa.PairTypes.PublicKey;
-import Kryptografie.src.main.java.org.example.rsa.PairTypes.RSAKeyPair;
+import org.example.rsa.Algorithms.Blockchiffre;
+import org.example.rsa.Algorithms.ExtendedEuclidean;
+import org.example.rsa.Algorithms.FastExponentiation;
+import org.example.rsa.Algorithms.Utilities;
+import org.example.rsa.PairTypes.PairCipherBlockLength;
+import org.example.rsa.PairTypes.PrivateKey;
+import org.example.rsa.PairTypes.PublicKey;
+import org.example.rsa.PairTypes.RSAKeyPair;
 
 import java.math.BigInteger;
 import java.security.MessageDigest;

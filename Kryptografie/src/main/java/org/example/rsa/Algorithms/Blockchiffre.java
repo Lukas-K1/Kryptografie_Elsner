@@ -1,7 +1,7 @@
-package Kryptografie.src.main.java.org.example.rsa.Algorithms;
+package org.example.rsa.Algorithms;
 
-import Kryptografie.src.main.java.org.example.rsa.PairTypes.PairCipherBlockLength;
-import Kryptografie.src.main.java.org.example.rsa.PairTypes.RSAKeys;
+import org.example.rsa.PairTypes.PairCipherBlockLength;
+import org.example.rsa.PairTypes.RSAKeys;
 
 import java.math.BigInteger;
 import java.util.ArrayList;

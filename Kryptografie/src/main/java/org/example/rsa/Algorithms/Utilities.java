@@ -1,7 +1,9 @@
-package Kryptografie.src.main.java.org.example.rsa.Algorithms;
+package org.example.rsa.Algorithms;
 
-import Kryptografie.src.main.java.org.example.rsa.PairTypes.PrivateKey;
-import Kryptografie.src.main.java.org.example.rsa.PairTypes.PublicKey;
+
+
+import org.example.rsa.PairTypes.PrivateKey;
+import org.example.rsa.PairTypes.PublicKey;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;

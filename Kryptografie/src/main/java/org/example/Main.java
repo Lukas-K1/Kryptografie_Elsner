@@ -1,17 +1,11 @@
-package Kryptografie.src.main.java.org.example;
+package org.example;
 
-import Kryptografie.src.main.java.org.example.rsa.Algorithms.Blockchiffre;
-import Kryptografie.src.main.java.org.example.rsa.Algorithms.ExtendedEuclidean;
-import Kryptografie.src.main.java.org.example.rsa.Handler.RSAHandler;
-import Kryptografie.src.main.java.org.example.rsa.PairTypes.PairCipherBlockLength;
-import Kryptografie.src.main.java.org.example.rsa.PairTypes.PrivateKey;
-import Kryptografie.src.main.java.org.example.rsa.PairTypes.PublicKey;
-import Kryptografie.src.main.java.org.example.rsa.PairTypes.RSAKeyPair;
+import org.example.rsa.Algorithms.*;
+import org.example.rsa.Handler.RSAHandler;
+import org.example.rsa.PairTypes.PairCipherBlockLength;
+import org.example.rsa.PairTypes.RSAKeyPair;
 
 import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Timer;
 
 public class Main {
     public static void main(String[] args) throws Exception {
@@ -20,7 +14,7 @@ public class Main {
         String text = "das ist ein nicht wirklich sinnvoller text, aber er ist lang genug um die blocklänge zu testen. ich hoffe das funktioniert";
         int numberLength = 256;
         int millerRabinTrials = 10000000;
-        RSAHandler rsaHandler = new RSAHandler();
+        org.example.rsa.Handler.RSAHandler rsaHandler = new RSAHandler();
         rsaHandler.setPrimeNumberLength(numberLength);
         rsaHandler.setMillerRabinTrials(millerRabinTrials);
         rsaHandler.setM(50);

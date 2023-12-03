@@ -1,4 +1,4 @@
-package Kryptografie.src.main.java.org.example.rsa.Algorithms;
+package org.example.rsa.Algorithms;
 
 import java.math.BigInteger;
 

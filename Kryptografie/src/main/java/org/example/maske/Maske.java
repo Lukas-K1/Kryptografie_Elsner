@@ -1,4 +1,4 @@
-package Kryptografie.src.main.java.org.example.maske;
+package org.example.maske;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -6,7 +6,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import Kryptografie.src.main.java.org.example.rsa.Handler.RSAHandler;
+import org.example.rsa.Handler.RSAHandler;
 
 class Maske {
         public int anzahlAnSchritte = 0;
