@@ -1,4 +1,4 @@
-package Kryptografie.src.main.java.org.example.rsa.PairTypes;
+package org.example.rsa.PairTypes;
 
 import java.math.BigInteger;
 
@@ -14,9 +14,6 @@ public class PrivateKey extends RSAKeys{
 
     @Override
     public String toString() {
-        return "PrivateKey{" +
-                "d=" + this.getKeyD() +
-                ", n=" + this.getN() +
-                '}';
+        return "d" + getKeyD();
     }
 }

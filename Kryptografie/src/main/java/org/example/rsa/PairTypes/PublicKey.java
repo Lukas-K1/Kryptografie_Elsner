@@ -1,4 +1,4 @@
-package Kryptografie.src.main.java.org.example.rsa.PairTypes;
+package org.example.rsa.PairTypes;
 
 import java.math.BigInteger;
 
@@ -14,9 +14,6 @@ public class PublicKey extends RSAKeys {
 
     @Override
     public String toString() {
-        return "PublicKey{" +
-                "e=" + this.getKeyE() +
-                ", n=" + this.getN() +
-                '}';
+        return "e=" + this.getKeyE() + ", n=" + this.getN();
     }
 }
