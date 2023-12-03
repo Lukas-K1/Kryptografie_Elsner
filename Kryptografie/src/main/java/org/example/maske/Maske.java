@@ -262,6 +262,9 @@ class Maske {
                                 try {
                                         oeffentlichAlice.setText(handler.generateKeyPairAlice().getPublicKey().toString());
                                         oeffentlichBob.setText(handler.generateKeyPairBob().getPublicKey().toString());
+
+                                        geheimAlice.setText(handler.Alice.getKeyPair().getPrivateKey().toString());
+                                        geheimBob.setText(handler.Bob.getKeyPair().getPrivateKey().toString());
                                 } catch (Exception e1) {
                                         // TODO Auto-generated catch block
                                         e1.printStackTrace();

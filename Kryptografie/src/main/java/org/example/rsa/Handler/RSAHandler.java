@@ -29,8 +29,8 @@ public class RSAHandler {
     private static BigInteger _countN = BigInteger.ONE;
     private static int _blockLength;
     private static int _numberLengthPQ;
-    static RSAUser Alice = new RSAUser();
-    static RSAUser Bob = new RSAUser();
+    public static RSAUser Alice = new RSAUser();
+    public static RSAUser Bob = new RSAUser();
 
     public void setNumberLengthPQ(int primeNumberLength) {
         _numberLengthPQ = primeNumberLength / 2;
