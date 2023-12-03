@@ -16,4 +16,12 @@ public class RSAKeyPair {
     public PrivateKey getPrivateKey() {
         return _privateKey;
     }
+
+    @Override
+    public String toString() {
+        return "RSAKeyPair{" +
+                "publicKey=" + _publicKey +
+                ", privateKey=" + _privateKey +
+                '}';
+    }
 }

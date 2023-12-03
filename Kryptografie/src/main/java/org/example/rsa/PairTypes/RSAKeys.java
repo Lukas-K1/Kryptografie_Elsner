@@ -14,4 +14,12 @@ public class RSAKeys extends BasePair<BigInteger, BigInteger> {
     public BigInteger getN() {
         return this.getSecond();
     }
+
+    @Override
+    public String toString() {
+        return "RSAKeys{" +
+                "key=" + this.getKey() +
+                ", n=" + this.getN() +
+                '}';
+    }
 }

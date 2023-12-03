@@ -18,4 +18,12 @@ public class BasePair<T0, T1> {
     public T1 getSecond() {
         return _second;
     }
+
+    @Override
+    public String toString() {
+        return "BasePair{" +
+                "_first=" + _first +
+                ", _second=" + _second +
+                '}';
+    }
 }

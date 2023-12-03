@@ -14,4 +14,12 @@ public class PairCipherBlockLength extends BasePair<String, Integer> {
     public Integer getBlockLength() {
         return this.getSecond();
     }
+
+    @Override
+    public String toString() {
+        return "PairCipherBlockLength{" +
+                "cipher='" + this.getCipher() + '\'' +
+                ", blockLength=" + this.getBlockLength() +
+                '}';
+    }
 }
