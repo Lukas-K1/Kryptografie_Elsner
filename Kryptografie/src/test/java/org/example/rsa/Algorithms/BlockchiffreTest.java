@@ -1,4 +1,4 @@
-package org.example.rsa.Algorithms;
+package Kryptografie.src.test.java.org.example.rsa.Algorithms;
 
 import java.math.BigInteger;
 import org.junit.jupiter.api.*;

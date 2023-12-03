@@ -1,4 +1,4 @@
-package org.example.ellipticCurve.algorithms;
+package Kryptografie.src.main.java.org.example.ellipticCurve.algorithms;
 
 import java.math.BigInteger;
 

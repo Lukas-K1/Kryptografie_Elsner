@@ -1,10 +1,10 @@
-package org.example.rsa.Handler;
+package Kryptografie.src.main.java.org.example.rsa.Handler;
 
-import org.example.rsa.Algorithms.*;
-import org.example.rsa.PairTypes.PairCipherBlockLength;
-import org.example.rsa.PairTypes.PrivateKey;
-import org.example.rsa.PairTypes.PublicKey;
-import org.example.rsa.PairTypes.RSAKeyPair;
+import Kryptografie.src.main.java.org.example.rsa.Algorithms.*;
+import Kryptografie.src.main.java.org.example.rsa.PairTypes.PairCipherBlockLength;
+import Kryptografie.src.main.java.org.example.rsa.PairTypes.PrivateKey;
+import Kryptografie.src.main.java.org.example.rsa.PairTypes.PublicKey;
+import Kryptografie.src.main.java.org.example.rsa.PairTypes.RSAKeyPair;
 
 import java.math.BigInteger;
 import java.security.MessageDigest;
@@ -29,8 +29,8 @@ public class RSAHandler {
     private static BigInteger _countN = BigInteger.ONE;
     private static int _blockLength;
     private static int _numberLengthPQ;
-    static RSAUser Alice;
-    static RSAUser Bob;
+    static RSAUser Alice = new RSAUser();
+    static RSAUser Bob = new RSAUser();
 
     public void setNumberLengthPQ(int primeNumberLength) {
         _numberLengthPQ = primeNumberLength / 2;

@@ -1,4 +1,4 @@
-package org.example.rsa.PairTypes;
+package Kryptografie.src.main.java.org.example.rsa.PairTypes;
 
 import java.math.BigInteger;
 

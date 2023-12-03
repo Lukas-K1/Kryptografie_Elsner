@@ -1,7 +1,7 @@
-package org.example.rsa.Handler;
+package Kryptografie.src.main.java.org.example.rsa.Handler;
 
-import org.example.rsa.PairTypes.RSAKeyPair;
-import org.example.rsa.PairTypes.RSAKeys;
+import Kryptografie.src.main.java.org.example.rsa.PairTypes.RSAKeyPair;
+import Kryptografie.src.main.java.org.example.rsa.PairTypes.RSAKeys;
 
 public class RSAUser {
     private String _name;
@@ -10,6 +10,10 @@ public class RSAUser {
 
     public RSAUser(RSAKeyPair keys) {
         _keyPair = keys;
+    }
+
+    public RSAUser(){
+        
     }
 
 

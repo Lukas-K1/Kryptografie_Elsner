@@ -1,22 +1,30 @@
+package Kryptografie.src.main.java.org.example.maske;
+
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import Kryptografie.src.main.java.org.example.rsa.Handler.RSAHandler;
+
 class Maske {
+        public int anzahlAnSchritte = 0;
+        public int primzahlLänge = 0;
+
+        //String Sammlung
+        public String öffentlichAlice = "";
+        public String öffentlichBob = "";
+        public String privatAlice = "";
+        public String privateBob = "";
+        public String signaturAlice = "";
+        public String signaturBob = "";
+        public String signaturGültigkeitAlice = "Ausgabe von gültiger oder ungültiger Signatur";
+        public String signaturGültigkeitBob = "Ausgabe von gültiger oder ungültiger Signatur";
+
+        RSAHandler handler = new RSAHandler();
+
         public void launch() {
-                //String Sammlung
-                String öffentlichAlice = "";
-                String öffentlichBob = "";
-                String privatAlice = "";
-                String privateBob = "";
-                String signaturAlice = "";
-                String signaturBob = "";
-                String signaturGültigkeitAlice = "Ausgabe von gültiger oder ungültiger Signatur";
-                String signaturGültigkeitBob = "Ausgabe von gültiger oder ungültiger Signatur";
-
-
                 JFrame frame = new JFrame("Integrationsprojekt");
 
                 // Create a panel with a BorderLayout
@@ -238,8 +246,26 @@ class Maske {
                 button.addActionListener(new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
-                                System.out.println(anzahlSchritteFeld.getText());
-                                startButton();
+                                String anzahlSchritte = anzahlSchritteFeld.getText();
+                                String primzahlLängeText = primzahlLängeFeld.getText();
+                                
+                                if(anzahlSchritte != "" && primzahlLängeText != ""){
+                                        anzahlAnSchritte = Integer.valueOf(anzahlSchritte);
+                                        primzahlLänge = Integer.valueOf(primzahlLängeText);
+                                }
+
+                                handler.setMillerRabinTrials(anzahlAnSchritte);
+                                handler.setPrimeNumberLength(primzahlLänge);
+                                handler.setNumberLengthPQ(primzahlLänge);
+                                handler.setM(52);
+
+                                try {
+                                        oeffentlichAlice.setText(handler.generateKeyPairAlice().getPublicKey().toString());
+                                        oeffentlichBob.setText(handler.generateKeyPairBob().getPublicKey().toString());
+                                } catch (Exception e1) {
+                                        // TODO Auto-generated catch block
+                                        e1.printStackTrace();
+                                }
                         }
                         });
 
