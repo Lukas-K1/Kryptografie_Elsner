@@ -9,7 +9,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class Blockchiffre {
-    private static final BigInteger _charSetSize = BigInteger.valueOf(55296);
+    private static final BigInteger _charSetSize = BigInteger.valueOf(47);
     private static final String messageFiller = "";
 
     /**
@@ -141,35 +141,34 @@ public class Blockchiffre {
         while (cipher.length() > 0) {
             String cipherBlock = cipher.substring(0, blockLength);
             List<Integer> unicodeList = messageToIntList(cipherBlock);
-            ArrayList<BigInteger> cipherList = unicodeToBigIntList(cipher, blockLength, unicodeList);
-            ArrayList<BigInteger> blockList= new ArrayList<>();
+            BigInteger cipherNumber = unicodeToBigIntList(cipher, blockLength, unicodeList);
             System.out.println("CipherList dec");
             System.out.println(cipherList);
-            for (BigInteger cipherNumber: cipherList){
-                blockList.add(FastExponentiation.exponentiation(cipherNumber, rsaKeys.getKey(), rsaKeys.getN()));
-            }
+
+            BigInteger blockValue = FastExponentiation.exponentiation(cipherNumber, rsaKeys.getKey(), rsaKeys.getN());
+
             System.out.println("BlockList dec");
-            System.out.println(blockList);
-            messageText =  bigIntListToUnicode(blockList, blockLength - 1);
+            System.out.println(blockValue);
+            messageText = bigIntListToUnicode(blockValue, blockLength - 1);
             cipher = cipher.substring(blockLength);
         }
         return messageText;
     }
 
-    public static ArrayList<BigInteger> unicodeToBigIntList(String unicodeMessage, int blockLength, List<Integer> unicodeList) {
+    public static BigInteger unicodeToBigIntList(String unicodeMessage, int blockLength, List<Integer> unicodeList) {
         ArrayList<BigInteger> messageInt = new ArrayList<>();
-
+        BigInteger blockValue = BigInteger.ZERO;
         int messageLength = unicodeMessage.length();
         for (int i = 0; i < messageLength; i++) {
-            BigInteger blockValue = BigInteger.ZERO;
+
 
             for (int j = 0; j < blockLength; j++) {
                 blockValue = blockValue.add(BigInteger.valueOf(i).multiply(_charSetSize.pow(j)));
             }
             messageInt.add(blockValue);
         }
-
-        return messageInt;
+        Collections.reverse(messageInt);
+        return blockValue;
     }
 
     public static ArrayList<BigInteger> messageToBigIntList(String unicodeMessage, int blockLength, List<Integer> unicodeList) {
@@ -202,19 +201,16 @@ public class Blockchiffre {
         return messageInt;
     }
 
-    public static String bigIntListToUnicode(ArrayList<BigInteger> bigIntMessage, int blockLength) {
+    public static String bigIntListToUnicode(BigInteger bigIntMessage, int blockLength) {
         List<Integer> unicodeList = new ArrayList<>();
 
-        for (BigInteger cipherBlock : bigIntMessage) {
-            List<Integer> unicodeBlockList = new ArrayList<>();
-            for (int i = blockLength - 1; i >= 0; i--) {
-                BigInteger unicodeNumber = cipherBlock.divide(_charSetSize.pow(i));
-                unicodeBlockList.add(unicodeNumber.intValue());
-                cipherBlock = cipherBlock.mod(_charSetSize.pow(i));
-            }
-            //Collections.reverse(unicodeBlockList);
-            unicodeList.addAll(unicodeBlockList);
+
+        for (int i = blockLength - 1; i >= 0; i--) {
+            BigInteger unicodeNumber = bigIntMessage.divide(_charSetSize.pow(i));
+            unicodeList.add(unicodeNumber.intValue());
+            bigIntMessage = bigIntMessage.mod(_charSetSize.pow(i));
         }
+        //Collections.reverse(unicodeBlockList);
 
         StringBuilder unicodeMessage = new StringBuilder();
         for (int number : unicodeList) {
