@@ -40,6 +40,7 @@ public class RSAHandler {
     }
 
     public static int setBlockLength() {
+//        return _blockLength = Blockchiffre.calcBlockLength(primeNumberLength);
         return _blockLength = Blockchiffre.calculateBlockLength(_n);
     }
 
