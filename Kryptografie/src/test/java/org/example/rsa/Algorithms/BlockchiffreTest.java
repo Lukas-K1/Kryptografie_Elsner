@@ -39,10 +39,10 @@ public class BlockchiffreTest {
 
 	@Test
 	public void encryptMessage() throws Exception {
-		String message = "abc";
-		RSAKeys rsaKeys = new RSAKeys(null, null);
-		PairCipherBlockLength expected = new PairCipherBlockLength("abc", 123);
-		PairCipherBlockLength actual = Blockchiffre.encryptMessage(message, rsaKeys);
+		String message = "MATHEMATIK IST SPANNEND!";
+		RSAKeys rsaKeys = new RSAKeys(BigInteger.valueOf(Long.parseLong("577322589362687")), BigInteger.valueOf(Long.parseLong("91569306435939")));
+		PairCipherBlockLength expected = new PairCipherBlockLength("R8F9BX-YOI,FQC2LZGO9OIZLNC5", 9);
+		PairCipherBlockLength actual = Blockchiffre.encryptMessage(message, rsaKeys, 8);
 
 		assertEquals(expected, actual);
 	}

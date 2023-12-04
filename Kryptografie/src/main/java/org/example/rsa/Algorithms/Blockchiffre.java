@@ -120,13 +120,13 @@ public class Blockchiffre {
         while (message.length() > 0) {
             String messageBlock = message.substring(0, charBlockLength);
             List<Integer> unicodeList = messageToIntList(messageBlock);
-            ArrayList<BigInteger> blockList = unicodeToBigIntList(message, charBlockLength, unicodeList);
-            ArrayList<BigInteger> cipherList = new ArrayList<>();
+            BigInteger blockValue = unicodeToBigIntList(message, charBlockLength, unicodeList);
+
             System.out.println("BlockList gen");
-            System.out.println(blockList);
-            for (BigInteger messageBlockNumber : blockList) {
-                cipherList.add(FastExponentiation.exponentiation(messageBlockNumber, rsaKeys.getKey(), rsaKeys.getN()));
-            }
+            System.out.println(blockValue);
+
+            BigInteger cipherList = FastExponentiation.exponentiation(blockValue, rsaKeys.getKey(), rsaKeys.getN());
+
             System.out.println("CipherList gen");
             System.out.println(cipherList);
             cipher = cipher.concat(bigIntListToUnicode(cipherList, charBlockLength + 1));
@@ -143,7 +143,7 @@ public class Blockchiffre {
             List<Integer> unicodeList = messageToIntList(cipherBlock);
             BigInteger cipherNumber = unicodeToBigIntList(cipher, blockLength, unicodeList);
             System.out.println("CipherList dec");
-            System.out.println(cipherList);
+            System.out.println(cipherNumber);
 
             BigInteger blockValue = FastExponentiation.exponentiation(cipherNumber, rsaKeys.getKey(), rsaKeys.getN());
 
