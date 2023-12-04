@@ -9,9 +9,9 @@ import static org.junit.jupiter.api.Assertions.*;
 public class ExtendedEuclideanTest {
 	@Test
 	public void extendedGCD() {
-		BigInteger a = BigInteger.valueOf(5);
-		BigInteger b = BigInteger.valueOf(48);
-		ExtendedEuclidean.ExtendedEuclidResult expected = new ExtendedEuclidean.ExtendedEuclidResult(BigInteger.valueOf(1), BigInteger.valueOf(-19), BigInteger.valueOf(2));
+		BigInteger a = BigInteger.valueOf(315);
+		BigInteger b = BigInteger.valueOf(661643);
+		ExtendedEuclidean.ExtendedEuclidResult expected = new ExtendedEuclidean.ExtendedEuclidResult(BigInteger.valueOf(1), BigInteger.valueOf(-319269), BigInteger.valueOf(152));
 		ExtendedEuclidean.ExtendedEuclidResult actual = ExtendedEuclidean.extendedGCD(a, b);
 		assertEquals(expected.gcd, actual.gcd);
 		assertEquals(expected.x, actual.x);
@@ -20,8 +20,8 @@ public class ExtendedEuclideanTest {
 
 	@Test
 	public void gcd() {
-		BigInteger a = BigInteger.valueOf(5);
-		BigInteger b = BigInteger.valueOf(48);
+		BigInteger a = BigInteger.valueOf(315);
+		BigInteger b = BigInteger.valueOf(661643);
 		BigInteger expected = BigInteger.ONE;
 		BigInteger actual = ExtendedEuclidean.gcd(a, b);
 
@@ -30,9 +30,9 @@ public class ExtendedEuclideanTest {
 
 	@Test
 	public void getModInverse() throws Exception {
-		BigInteger e = BigInteger.valueOf(5);
-		BigInteger phi = BigInteger.valueOf(48);
-		BigInteger expected = BigInteger.valueOf(29);
+		BigInteger e = BigInteger.valueOf(315);
+		BigInteger phi = BigInteger.valueOf(661643);
+		BigInteger expected = BigInteger.valueOf(342374);
 		BigInteger actual = ExtendedEuclidean.getModInverse(e, phi);
 
 		assertEquals(expected, actual);
