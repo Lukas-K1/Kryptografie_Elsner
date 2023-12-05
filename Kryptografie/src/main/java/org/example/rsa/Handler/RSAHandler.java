@@ -35,6 +35,10 @@ public class RSAHandler {
     public static RSAUser Alice = new RSAUser();
     public static RSAUser Bob = new RSAUser();
 
+    public static void setN(BigInteger n) {
+        _n = n;
+    }
+
     public void setNumberLengthPQ(int primeNumberLength) {
         _numberLengthPQ = primeNumberLength / 2;
     }

@@ -1,6 +1,8 @@
 package org.example.rsa.Algorithms;
 
 import java.math.BigInteger;
+
+import org.junit.Assert;
 import org.junit.jupiter.api.*;
 import static org.junit.jupiter.api.Assertions.*;
 import org.example.rsa.PairTypes.PairCipherBlockLength;
@@ -43,7 +45,7 @@ public class BlockchiffreTest {
 		RSAKeys rsaKeys = new RSAKeys(BigInteger.valueOf(Long.parseLong("577322589362687")), BigInteger.valueOf(Long.parseLong("91569306435939")));
 		PairCipherBlockLength expected = new PairCipherBlockLength("R8F9BX-YOI,FQC2LZGO9OIZLNC5", 9);
 		PairCipherBlockLength actual = Blockchiffre.encryptMessage(message, rsaKeys, 8);
-
-		assertEquals(expected, actual);
+		assertEquals(expected.getCipher(), actual.getCipher());
+		assertEquals(expected.getBlockLength(), actual.getBlockLength());
 	}
 }
