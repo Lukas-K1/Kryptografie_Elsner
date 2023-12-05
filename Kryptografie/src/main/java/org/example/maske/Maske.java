@@ -42,6 +42,9 @@ class Maske {
                 // Create components for the first row
                 JTextField anzahlSchritteFeld = new JTextField(1);
                 JTextField primzahlLängeFeld = new JTextField(1);
+                JTextField seedM = new JTextField(1);
+                JTextField lengthKlartext = new JTextField(1);
+                JTextField lengthChiffre = new JTextField(1);
 
                 JTextArea oeffentlichAlice = new JTextArea(öffentlichAlice);
                 oeffentlichAlice.setEditable(false);
@@ -54,16 +57,6 @@ class Maske {
                 oeffentlichBob.setWrapStyleWord(true);
 
                 JButton button = new JButton("Start");
-
-                JTextArea lengthKlartext = new JTextArea();
-                lengthKlartext.setEditable(true);
-                lengthKlartext.setLineWrap(true);
-                lengthKlartext.setWrapStyleWord(true);
-
-                JTextArea lengthChiffre = new JTextArea();
-                lengthChiffre.setEditable(true);
-                lengthChiffre.setLineWrap(true);
-                lengthChiffre.setWrapStyleWord(true);
 
                 // Add components to the first row
                 JPanel column1 = new JPanel();
@@ -79,13 +72,15 @@ class Maske {
                 column3.add(createLabeledPanel("Öffentlicher Schlüssel Bob", oeffentlichBob));
 
                 JPanel column4 = new JPanel(new GridLayout(2, 1));
+                column4.setLayout(new BoxLayout(column4, BoxLayout.Y_AXIS));
                 column4.add(createLabeledPanel("Länge des Klartexts", lengthKlartext));
                 column4.add(createLabeledPanel("Länge des Chiffriertexts", lengthChiffre));
+                column4.add(createLabeledPanel("Setze Seed M", seedM));
 
                 row1.add(column1);
+                row1.add(column4);
                 row1.add(column2);
                 row1.add(column3);
-                row1.add(column4);
 
                 // Create a panel for the second row (2/3 of the window)
                 JPanel row2 = new JPanel(new GridLayout(1, 2)); // 2 columns in the second row
