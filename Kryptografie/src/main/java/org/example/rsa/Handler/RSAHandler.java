@@ -96,13 +96,12 @@ public class RSAHandler {
         sentMessage(Bob, message);
     }
 
-    //TODO create User type fo Alice/Bob
     public PairCipherBlockLength encryptMessageBob(String message) throws Exception {
-        return encryptMessage(message, Bob.getKeyPair().getPublicKey());
+        return encryptMessage(message, Alice.getKeyPair().getPublicKey());
     }
 
     public PairCipherBlockLength encryptMessageAlice(String message) throws Exception {
-        return encryptMessage(message, Alice.getKeyPair().getPublicKey());
+        return encryptMessage(message, Bob.getKeyPair().getPublicKey());
     }
 
     public String decryptMessageBob(PairCipherBlockLength encryptedMessage) throws Exception {
@@ -215,8 +214,8 @@ public class RSAHandler {
      */
     public static BigInteger calculateP(int primeNumberLength) throws Exception {
         BigInteger possibleP;
-        BigInteger a = BigInteger.TWO.pow(primeNumberLength / 2 - 1);
-        BigInteger b = BigInteger.TWO.pow(primeNumberLength / 2);
+        BigInteger a = BigInteger.TWO.pow(primeNumberLength - 1);
+        BigInteger b = BigInteger.TWO.pow(primeNumberLength);
         do {
             possibleP = Utilities.generateRandom(_m, _countN, a, b, millerRabinTrials);
         } while (possibleP.equals(_q));
@@ -231,8 +230,8 @@ public class RSAHandler {
      */
     public static BigInteger calculateQ(int primeNumberLength) throws Exception {
         BigInteger possibleQ;
-        BigInteger a = BigInteger.TWO.pow(primeNumberLength / 2 - 1);
-        BigInteger b = BigInteger.TWO.pow(primeNumberLength / 2);
+        BigInteger a = BigInteger.TWO.pow(primeNumberLength- 1);
+        BigInteger b = BigInteger.TWO.pow(primeNumberLength);
         do {
             possibleQ = Utilities.generateRandom(_m, _countN, a, b, millerRabinTrials);
         } while (possibleQ.equals(_p));

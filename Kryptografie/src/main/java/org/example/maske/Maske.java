@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 
 import org.example.rsa.Handler.RSAHandler;
 import org.example.rsa.PairTypes.PairCipherBlockLength;
+import org.example.rsa.PairTypes.RSAKeyPair;
 
 class Maske {
         public int anzahlAnSchritte = 0;
@@ -28,6 +29,9 @@ class Maske {
         PairCipherBlockLength encryptedMessageBob;
         PairCipherBlockLength receivedMessageAlice;
         PairCipherBlockLength receivedMessageBob;
+
+        RSAKeyPair keyPairAlice;
+        RSAKeyPair keyPairBob;
 
         public void launch() {
                 JFrame frame = new JFrame("Integrationsprojekt");
@@ -260,12 +264,13 @@ class Maske {
                                 handler.setM(52);
 
                                 try {
-                                        oeffentlichAlice.setText(handler.generateKeyPairAlice().getPublicKey().toString());
-                                        oeffentlichBob.setText(handler.generateKeyPairBob().getPublicKey().toString());
+                                        keyPairAlice = handler.generateKeyPairAlice();
+                                        keyPairBob = handler.generateKeyPairBob();
+                                        oeffentlichAlice.setText(keyPairAlice.getPublicKey().toString());
+                                        oeffentlichBob.setText(keyPairBob.getPublicKey().toString());
                                         handler.setBlockLength();
-                                        geheimAlice.setText(handler.Alice.getKeyPair().getPrivateKey().toString());
-                                        geheimBob.setText(handler.Bob.getKeyPair().getPrivateKey().toString());
-                                        handler.setBlockLength();
+                                        geheimAlice.setText(keyPairAlice.getPrivateKey().toString());
+                                        geheimBob.setText(keyPairBob.getPrivateKey().toString());
                                 } catch (Exception e1) {
                                         // TODO Auto-generated catch block
                                         e1.printStackTrace();
