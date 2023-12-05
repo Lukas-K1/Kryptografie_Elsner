@@ -283,7 +283,6 @@ class Maske {
                                 } catch (Exception ex) {
                                         throw new RuntimeException(ex);
                                 }
-                                verschlüsselnAlice();
                         }
                         });
 
@@ -295,7 +294,6 @@ class Maske {
                                 } catch (Exception ex) {
                                         throw new RuntimeException(ex);
                                 }
-                                signierenAlice();
                         }
                         });
 
@@ -309,7 +307,6 @@ class Maske {
                                 } catch (Exception ex) {
                                         throw new RuntimeException(ex);
                                 }
-                                verschlüsselnBob();
                         }
                         });
 
@@ -321,7 +318,6 @@ class Maske {
                                 } catch (Exception ex) {
                                         throw new RuntimeException(ex);
                                 }
-                                signierenBob();
                         }
                         });
 
@@ -334,7 +330,6 @@ class Maske {
                                 } catch (Exception ex) {
                                         throw new RuntimeException(ex);
                                 }
-                                entschlüsselnAlice();
                         }
                         });
 
@@ -343,7 +338,6 @@ class Maske {
                         public void actionPerformed(ActionEvent e) {
                                 handler.sentMessageAlice(encryptedMessageAlice.getCipher());
                                 textBob.setText(receivedMessageBob.getCipher());
-                                versendenAlice();
                         }
                         });
 
@@ -356,7 +350,6 @@ class Maske {
                                 } catch (Exception ex) {
                                         throw new RuntimeException(ex);
                                 }
-                                entschlüsselnBob();
                         }
                         });
 
@@ -366,7 +359,6 @@ class Maske {
 
                                 handler.sentMessageBob(encryptedMessageBob.getCipher());
                                 textAlice.setText(receivedMessageAlice.getCipher());
-                                versendenBob();
                         }
                         });
 
@@ -374,7 +366,6 @@ class Maske {
                         @Override
                         public void actionPerformed(ActionEvent e) {
                                 textAlice.setText("");
-                                resetAlice();
                         }
                         });
 
@@ -382,7 +373,6 @@ class Maske {
                         @Override
                         public void actionPerformed(ActionEvent e) {
                                 textBob.setText("");
-                                resetBob();
                         }
                         });
                 }
@@ -412,48 +402,4 @@ class Maske {
                         addBorder(labeledPanel, labelText);
                         return labeledPanel;
                     }
-
-                public void startButton(){
-                        System.out.println("Start Button gedrückt");
-                }
-
-                public void verschlüsselnAlice(){
-                        System.out.println("Alice Verschlüsselungs Button gedrückt");
-                }
-
-                public void signierenAlice(){
-                        System.out.println("Alice Signatur Button gedrückt");
-                }
-
-                public void verschlüsselnBob(){
-                        System.out.println("Bobs Verschlüsselungs Button gedrückt");
-                }
-
-                public void signierenBob(){
-                        System.out.println("Bobs Signatur Button gedrückt");
-                }
-
-                public void entschlüsselnAlice(){
-                        System.out.println("Alice Text entschlüsselt");
-                }
-
-                public void versendenAlice(){
-                        System.out.println("Alice Text verschickt");
-                }
-
-                public void entschlüsselnBob(){
-                        System.out.println("Bobs Text entschlüsselt");
-                }
-
-                public void versendenBob(){
-                        System.out.println("Bobs Text verschickt");
-                }
-
-                public void resetAlice(){
-                        System.out.println("Alice Maske reset");
-                }
-
-                public void resetBob(){
-                        System.out.println("Bobs Maske reset");
-                }
 }
