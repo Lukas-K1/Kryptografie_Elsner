@@ -14,6 +14,6 @@ public class PublicKey extends RSAKeys {
 
     @Override
     public String toString() {
-        return "e=" + this.getKeyE() + ", n=" + this.getN();
+        return "e=" + this.getKeyE() + "\n\n n=" + this.getN();
     }
 }
