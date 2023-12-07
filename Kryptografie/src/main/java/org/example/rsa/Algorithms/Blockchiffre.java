@@ -117,7 +117,7 @@ public class Blockchiffre {
      * @return Chiffrat
      */
     private static String generateCipher(String message, int charBlockLength, RSAKeys rsaKeys) throws Exception {
-        ArrayList<BigInteger> blockList = messageToBigIntList2(message, charBlockLength);
+        ArrayList<BigInteger> blockList = messageToBigIntList(message, charBlockLength);
         ArrayList<BigInteger> cipherList= new ArrayList<>();
         System.out.println("BlockList gen");
         System.out.println(blockList);
@@ -126,21 +126,20 @@ public class Blockchiffre {
         }
         System.out.println("CipherList gen");
         System.out.println(cipherList);
-        return bigIntListToUnicode2(cipherList, charBlockLength + 1);
+        return bigIntListToUnicode(cipherList, charBlockLength + 1);
     }
 
     private static String decryptCipher(String cipher, Integer blockLength, RSAKeys rsaKeys) throws Exception {
-//        ArrayList<BigInteger> cipherList = messageToBigIntList2(cipher, blockLength);
-//        ArrayList<BigInteger> blockList= new ArrayList<>();
-//        System.out.println("CipherList dec");
-//        System.out.println(cipherList);
-//        for (BigInteger cipherNumber: cipherList){
-//            blockList.add(FastExponentiation.exponentiation(cipherNumber, rsaKeys.getKey(), rsaKeys.getN()));
-//        }
-//        System.out.println("BlockList dec");
-//        System.out.println(blockList);
-//        return bigIntListToUnicode2(blockList, blockLength - 1);
-        return decryptMessage(cipher, rsaKeys, blockLength);
+        ArrayList<BigInteger> cipherList = messageToBigIntList(cipher, blockLength);
+        ArrayList<BigInteger> blockList= new ArrayList<>();
+        System.out.println("CipherList dec");
+        System.out.println(cipherList);
+        for (BigInteger cipherNumber: cipherList){
+            blockList.add(FastExponentiation.exponentiation(cipherNumber, rsaKeys.getKey(), rsaKeys.getN()));
+        }
+        System.out.println("BlockList dec");
+        System.out.println(blockList);
+        return bigIntListToUnicode(blockList, blockLength - 1);
     }
 
     public static ArrayList<BigInteger> messageToBigIntList(String unicodeMessage, int blockLength) {
