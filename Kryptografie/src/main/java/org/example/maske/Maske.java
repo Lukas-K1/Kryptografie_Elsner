@@ -261,7 +261,8 @@ class Maske {
                                 handler.setMillerRabinTrials(anzahlAnSchritte);
                                 handler.setPrimeNumberLength(primzahlLänge);
                                 handler.setNumberLengthPQ(primzahlLänge);
-                                handler.setM(52);
+                                String seedMText = seedM.getText();
+                                handler.setM(Integer.valueOf(seedMText));
 
                                 try {
                                         keyPairAlice = handler.generateKeyPairAlice();
