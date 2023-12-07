@@ -10,7 +10,7 @@ public class MillerRabin {
      * @param k
      * @param n
      * @param m
-     * @return true if probably prime
+     * @return false if probably prime
      * @throws Exception
      */
     public static Boolean isPrime(BigInteger probablyPrime, int k, BigInteger n, BigInteger m) throws Exception {
@@ -18,7 +18,7 @@ public class MillerRabin {
             return false;
         }
         if (probablyPrime.equals(BigInteger.TWO)) {
-            return true;
+            return true; 
         }
         if (probablyPrime.mod(BigInteger.TWO).equals(BigInteger.ZERO)) {
             return false;

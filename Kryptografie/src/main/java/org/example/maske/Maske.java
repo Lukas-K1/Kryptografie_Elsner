@@ -341,7 +341,6 @@ class Maske {
                 buttonVersenden.addActionListener(new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
-                                handler.sentMessageAlice(encryptedMessageAlice.getCipher());
                                 textBob.setText(receivedMessageBob.getCipher());
                         }
                         });
@@ -361,8 +360,6 @@ class Maske {
                 buttonVersendenBob.addActionListener(new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
-
-                                handler.sentMessageBob(encryptedMessageBob.getCipher());
                                 textAlice.setText(receivedMessageAlice.getCipher());
                         }
                         });
