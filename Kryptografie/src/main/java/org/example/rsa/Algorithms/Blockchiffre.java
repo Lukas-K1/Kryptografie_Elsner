@@ -103,8 +103,12 @@ public class Blockchiffre {
      */
     private static String fillMessage(String message, int charBlockLength) {
         StringBuilder filledMessage = new StringBuilder(message);
-        int messageLengthDifference = charBlockLength - (message.length() % charBlockLength);
-        filledMessage.append(messageFiller.repeat(messageLengthDifference));
+//        int messageLengthDifference = charBlockLength - (message.length() % charBlockLength);
+        int messageLengthDifference = message.length() % charBlockLength;
+        while (!((message.length() % charBlockLength) == 0)) {
+            filledMessage.append(messageFiller);
+        }
+        //filledMessage.append(messageFiller.repeat(messageLengthDifference));
         return filledMessage.toString();
     }
 
@@ -118,10 +122,10 @@ public class Blockchiffre {
      */
     private static String generateCipher(String message, int charBlockLength, RSAKeys rsaKeys) throws Exception {
         ArrayList<BigInteger> blockList = messageToBigIntList(message, charBlockLength);
-        ArrayList<BigInteger> cipherList= new ArrayList<>();
+        ArrayList<BigInteger> cipherList = new ArrayList<>();
         System.out.println("BlockList gen");
         System.out.println(blockList);
-        for (BigInteger messageBlockNumber: blockList){
+        for (BigInteger messageBlockNumber : blockList) {
             cipherList.add(FastExponentiation.exponentiation(messageBlockNumber, rsaKeys.getKey(), rsaKeys.getN()));
         }
         System.out.println("CipherList gen");
@@ -131,10 +135,10 @@ public class Blockchiffre {
 
     private static String decryptCipher(String cipher, Integer blockLength, RSAKeys rsaKeys) throws Exception {
         ArrayList<BigInteger> cipherList = messageToBigIntList(cipher, blockLength);
-        ArrayList<BigInteger> blockList= new ArrayList<>();
+        ArrayList<BigInteger> blockList = new ArrayList<>();
         System.out.println("CipherList dec");
         System.out.println(cipherList);
-        for (BigInteger cipherNumber: cipherList){
+        for (BigInteger cipherNumber : cipherList) {
             blockList.add(FastExponentiation.exponentiation(cipherNumber, rsaKeys.getKey(), rsaKeys.getN()));
         }
         System.out.println("BlockList dec");
@@ -151,7 +155,7 @@ public class Blockchiffre {
             BigInteger blockValue = BigInteger.ZERO;
             for (int j = 0; j < blockLength; j++) {
                 blockValue = blockValue.multiply(_charSetSize)
-                        .add(BigInteger.valueOf(unicodeList.get(i+j)));
+                        .add(BigInteger.valueOf(unicodeList.get(i + j)));
             }
             messageInt.add(blockValue);
         }
@@ -175,7 +179,7 @@ public class Blockchiffre {
 
     public static String bigIntListToUnicode(ArrayList<BigInteger> bigIntMessage, int blockLength) {
         List<Integer> unicodeList = new ArrayList<>();
-        for (BigInteger cipherBlock : bigIntMessage){
+        for (BigInteger cipherBlock : bigIntMessage) {
             List<Integer> unicodeBlockList = new ArrayList<>();
             for (int i = 0; i < blockLength; i++) {
                 BigInteger unicode = cipherBlock.mod(_charSetSize);
