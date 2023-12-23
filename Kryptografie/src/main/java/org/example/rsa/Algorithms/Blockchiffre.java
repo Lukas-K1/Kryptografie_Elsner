@@ -122,10 +122,11 @@ public class Blockchiffre {
      */
     private static String generateCipher(String message, int charBlockLength, RSAKeys rsaKeys) throws Exception {
         ArrayList<BigInteger> blockList = messageToBigIntList(message, charBlockLength);
+        ArrayList<BigInteger> paddedBlockList = addPadding(blockList, charBlockLength);
         ArrayList<BigInteger> cipherList = new ArrayList<>();
         System.out.println("BlockList gen");
         System.out.println(blockList);
-        for (BigInteger messageBlockNumber : blockList) {
+        for (BigInteger messageBlockNumber : paddedBlockList) {
             cipherList.add(FastExponentiation.exponentiation(messageBlockNumber, rsaKeys.getKey(), rsaKeys.getN()));
         }
         System.out.println("CipherList gen");
@@ -143,7 +144,8 @@ public class Blockchiffre {
         }
         System.out.println("BlockList dec");
         System.out.println(blockList);
-        return bigIntListToUnicode(blockList, blockLength - 1);
+        ArrayList<BigInteger> unpaddedBlockList = removePadding(blockList);
+        return bigIntListToUnicode(unpaddedBlockList, blockLength - 1);
     }
 
     public static ArrayList<BigInteger> messageToBigIntList(String unicodeMessage, int blockLength) {
@@ -196,5 +198,21 @@ public class Blockchiffre {
         }
 
         return unicodeMessage.toString();
+    }
+
+    private static ArrayList<BigInteger> addPadding(List<BigInteger> message, int blockLength) {
+        ArrayList<BigInteger> paddedMessage = new ArrayList<>(message);
+        while (paddedMessage.size() % (blockLength+1) != 0) {
+            paddedMessage.add(BigInteger.ZERO);
+        }
+        return paddedMessage;
+    }
+
+    private static ArrayList<BigInteger> removePadding(List<BigInteger> message) {
+        ArrayList<BigInteger> unpaddedMessage = new ArrayList<>(message);
+        while (unpaddedMessage.get(unpaddedMessage.size()-1).equals(BigInteger.ZERO)) {
+            unpaddedMessage.remove(unpaddedMessage.size()-1);
+        }
+        return unpaddedMessage;
     }
 }
