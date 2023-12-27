@@ -105,7 +105,7 @@ public class Blockchiffre {
         StringBuilder filledMessage = new StringBuilder(message);
 //        int messageLengthDifference = charBlockLength - (message.length() % charBlockLength);
         int messageLengthDifference = message.length() % charBlockLength;
-        while (!((message.length() % charBlockLength) == 0)) {
+        while (!((filledMessage.length() % charBlockLength) == 0)) {
             filledMessage.append(messageFiller);
         }
         //filledMessage.append(messageFiller.repeat(messageLengthDifference));
