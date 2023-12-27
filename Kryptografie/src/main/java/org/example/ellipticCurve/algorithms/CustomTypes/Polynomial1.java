@@ -9,7 +9,7 @@ public class Polynomial1 extends ArrayList<Integer> {
     private Polynomial1 _polynomial;
 
     /**
-     no-arg constructor returns a polynomial of degree 1, with value 0
+     * no-arg constructor returns a polynomial of degree 1, with value 0
      */
 
     public Polynomial1() {
@@ -17,29 +17,29 @@ public class Polynomial1 extends ArrayList<Integer> {
         // constructor of ArrayList<Integer> with
         super(1); // we want capacity at least 1
         // parameter 1 (capacity, not size)
-        this.add(0,0); // uses autoboxing (index, value)
+        this.add(0, 0); // uses autoboxing (index, value)
         _polynomial = this;
     }
 
     /**
-     Construct polynomial from string representation
-     that matches the output format of the Polynomial toString method.
-
-     That is, you should be able to do:
-
-     <code>Polynomial p = new Polynomial("0");<br />
-     Polynomial p = new Polynomial("1");<br />
-     Polynomial p = new Polynomial("-4");<br />
-     Polynomial p = new Polynomial("2x - 3");<br />
-     Polynomial p = new Polynomial("x^2 - 5x + 6");<br />
-     Polynomial p = new Polynomial("x^2 - x - 1");<br />
-     Polynomial p = new Polynomial("x^2 - x");<br />
-     Polynomial p = new Polynomial("-x^7 - 2x^5 + 3x^3 - 4x");<br /></code>
-
-     And for any Polymomial object p, the following test should pass:<br />
-     <code>assertEquals(new Polynomial(p.toString()), p);</code><br />
-
-     @param s string representation of Polynomial
+     * Construct polynomial from string representation
+     * that matches the output format of the Polynomial toString method.
+     * <p>
+     * That is, you should be able to do:
+     *
+     * <code>Polynomial p = new Polynomial("0");<br />
+     * Polynomial p = new Polynomial("1");<br />
+     * Polynomial p = new Polynomial("-4");<br />
+     * Polynomial p = new Polynomial("2x - 3");<br />
+     * Polynomial p = new Polynomial("x^2 - 5x + 6");<br />
+     * Polynomial p = new Polynomial("x^2 - x - 1");<br />
+     * Polynomial p = new Polynomial("x^2 - x");<br />
+     * Polynomial p = new Polynomial("-x^7 - 2x^5 + 3x^3 - 4x");<br /></code>
+     * <p>
+     * And for any Polymomial object p, the following test should pass:<br />
+     * <code>assertEquals(new Polynomial(p.toString()), p);</code><br />
+     *
+     * @param s string representation of Polynomial
      */
 
     public Polynomial1(String s) {
@@ -60,7 +60,7 @@ public class Polynomial1 extends ArrayList<Integer> {
         // to convert to int, and add in this parameter.
 
         if (integerConstantMatcher.matches()) {
-            this.add(0,Integer.parseInt(s));
+            this.add(0, Integer.parseInt(s));
             return; // we are done!
         }
 
@@ -105,8 +105,8 @@ public class Polynomial1 extends ArrayList<Integer> {
                 constantTerm *= -1;
             }
 
-            this.add(0,constantTerm);
-            this.add(1,xCoeff);
+            this.add(0, constantTerm);
+            this.add(1, xCoeff);
             return;
         }
 
@@ -120,16 +120,16 @@ public class Polynomial1 extends ArrayList<Integer> {
                         + "( [+-] \\d+)?" // optional constant term (group 7)
                         + "$"; // the end of the string
 
-        Pattern degreeTwoOrMorePattern  = Pattern.compile(twoOrMoreRe);
+        Pattern degreeTwoOrMorePattern = Pattern.compile(twoOrMoreRe);
         Matcher degreeTwoOrMoreMatcher = degreeTwoOrMorePattern.matcher(s);
 
         // if we have a match...
         if (degreeTwoOrMoreMatcher.matches()) {
 
             int firstCoeff = 1;
-            String startSign      = degreeTwoOrMoreMatcher.group(1);
-            String coeffString    = degreeTwoOrMoreMatcher.group(2);
-            String degreeString   = degreeTwoOrMoreMatcher.group(3);
+            String startSign = degreeTwoOrMoreMatcher.group(1);
+            String coeffString = degreeTwoOrMoreMatcher.group(2);
+            String degreeString = degreeTwoOrMoreMatcher.group(3);
             String middleXtoTheTerms = degreeTwoOrMoreMatcher.group(4);
             String optionalXTermPart = degreeTwoOrMoreMatcher.group(6);
             String optionalConstantTermPart = degreeTwoOrMoreMatcher.group(7);
@@ -144,15 +144,15 @@ public class Polynomial1 extends ArrayList<Integer> {
 
             int degree = Integer.parseInt(degreeString);
 
-            this.ensureCapacity(degree+1); // method of ArrayList<Integer>
-            for(int i=0; i<=degree; i++) // initialize all to zero
-                this.add(0,0);
+            this.ensureCapacity(degree + 1); // method of ArrayList<Integer>
+            for (int i = 0; i <= degree; i++) // initialize all to zero
+                this.add(0, 0);
 
-            this.set(degree,firstCoeff);
+            this.set(degree, firstCoeff);
 
-            if (middleXtoTheTerms!=null && !middleXtoTheTerms.equals("")) {
+            if (middleXtoTheTerms != null && !middleXtoTheTerms.equals("")) {
 
-                Pattern addlXtoThePowerTermPattern  =
+                Pattern addlXtoThePowerTermPattern =
                         Pattern.compile(" ([+-]) (\\d+)(x\\^)(\\d+)");
                 Matcher addlXtoThePowerTermMatcher
                         = addlXtoThePowerTermPattern.matcher(middleXtoTheTerms);
@@ -160,9 +160,9 @@ public class Polynomial1 extends ArrayList<Integer> {
                 while (addlXtoThePowerTermMatcher.find()) {
 
                     int coeff = 1;
-                    String sign           = addlXtoThePowerTermMatcher.group(1);
-                    String nextCoeffString    = addlXtoThePowerTermMatcher.group(2);
-                    String nextDegreeString   = addlXtoThePowerTermMatcher.group(4);
+                    String sign = addlXtoThePowerTermMatcher.group(1);
+                    String nextCoeffString = addlXtoThePowerTermMatcher.group(2);
+                    String nextDegreeString = addlXtoThePowerTermMatcher.group(4);
 
                     if (nextCoeffString != null && !nextCoeffString.equals("")) {
                         coeff = Integer.parseInt(nextCoeffString);
@@ -172,7 +172,7 @@ public class Polynomial1 extends ArrayList<Integer> {
                         coeff *= -1;
                     }
 
-                    this.set(Integer.parseInt(nextDegreeString),coeff);
+                    this.set(Integer.parseInt(nextDegreeString), coeff);
 
                 }
             } // if middleXToTheTerms has something
@@ -200,7 +200,7 @@ public class Polynomial1 extends ArrayList<Integer> {
                     xCoeff *= -1;
                 }
 
-                this.set(1,xCoeff);
+                this.set(1, xCoeff);
             } // optionalXTerm part
 
             if (optionalConstantTermPart != null
@@ -221,11 +221,11 @@ public class Polynomial1 extends ArrayList<Integer> {
                     constant = Integer.parseInt(constantString);
                 }
 
-                if (sign!=null && sign.equals("-")) {
+                if (sign != null && sign.equals("-")) {
                     constant *= -1;
                 }
 
-                this.set(0,constant);
+                this.set(0, constant);
             } // a constant term is present
 
             _polynomial = this;
@@ -241,36 +241,39 @@ public class Polynomial1 extends ArrayList<Integer> {
     }
 
     /**
-     get the degree of the polynomial.  Always >= 1
-     @return degree of the polynomial
+     * get the degree of the polynomial.  Always >= 1
+     *
+     * @return degree of the polynomial
      */
-    public int getDegree() { return this.size() - 1; }
+    public int getDegree() {
+        return this.size() - 1;
+    }
 
 
     /**
-     Return string respresentation of Polynomial.
-
-     Leading coefficient has negative sign in front, with no space.
-     Other signs have a space on either side.    Coefficients that are ones
-     should be omitted (except in the x^0 term).
-     Terms with zero coefficients, except in the
-     special case where the polynomial is of degree zero, and the constant
-     term is in fact zero--in that case, "0" should be returned.
-
-
-     Examples:<br />
-     0<br />
-     1<br />
-     -4<br />
-     2x - 3<br />
-     x^2 - 5x + 6<br />
-     x^2 - x - 1<br />
-     x^2 - x <br />
-     -x^7 - 2x^5 + 3x^3 - 4x<br />
-
-     See the source code of PolynomialTest.java for more examples.
-
-     @return string representation of Polynomial
+     * Return string respresentation of Polynomial.
+     * <p>
+     * Leading coefficient has negative sign in front, with no space.
+     * Other signs have a space on either side.    Coefficients that are ones
+     * should be omitted (except in the x^0 term).
+     * Terms with zero coefficients, except in the
+     * special case where the polynomial is of degree zero, and the constant
+     * term is in fact zero--in that case, "0" should be returned.
+     * <p>
+     * <p>
+     * Examples:<br />
+     * 0<br />
+     * 1<br />
+     * -4<br />
+     * 2x - 3<br />
+     * x^2 - 5x + 6<br />
+     * x^2 - x - 1<br />
+     * x^2 - x <br />
+     * -x^7 - 2x^5 + 3x^3 - 4x<br />
+     * <p>
+     * See the source code of PolynomialTest.java for more examples.
+     *
+     * @return string representation of Polynomial
      */
 
     public String toString() {
@@ -301,7 +304,7 @@ public class Polynomial1 extends ArrayList<Integer> {
             result += df.format(Math.abs(firstTerm));
         }
 
-        result +="x";
+        result += "x";
 
         if (this.getDegree() > 1) {
             result += "^" + this.getDegree();
@@ -309,11 +312,11 @@ public class Polynomial1 extends ArrayList<Integer> {
 
         // append rest of terms
 
-        for (int i=this.getDegree() - 1; i>=0; i--) {
+        for (int i = this.getDegree() - 1; i >= 0; i--) {
 
             // if this coeff is zero, supress it
 
-            if (this.get(i)==0) {
+            if (this.get(i) == 0) {
                 continue;
             }
 
@@ -323,15 +326,18 @@ public class Polynomial1 extends ArrayList<Integer> {
 
             // put on the first coeff, supressing 1's
 
-            if (Math.abs(this.get(i))!=1) {
+            if (Math.abs(this.get(i)) != 1) {
                 result += df.format(Math.abs(this.get(i)));
             }
 
-            if (i>=2) {
+            if (i >= 2) {
                 result += "x" + "^" + i;
-            } else if (i==1) {
+            } else if (i == 1) {
                 result += "x";
-            }; // else i==0 and we do nothing. :-)
+            } // else i==0 and we do nothing. :-)
+            else {
+                result += df.format(Math.abs(this.get(i)));
+            }
 
         }
 
@@ -345,21 +351,24 @@ public class Polynomial1 extends ArrayList<Integer> {
         if (n == 0) {
             throw new Exception("no coefficients in polynomial");
         }
-        Polynomial1 result =
-                new Polynomial1();
-        for (int j = n - 1; j > 0; j--) {
-            for (int var : t) {
-                result.add(var * j);
-            }
+
+        if (n == 1) {
+            return new Polynomial1();
         }
+
+        Polynomial1 result = new Polynomial1();
+        for (int j = n - 1; j > 0; j--) {
+            result.add(0, j * t.get(j));
+        }
+
         return result;
     }
 
     /**
      * Compute the value of the function for the given argument.
      * <p>
-     *  The value returned is </p><p>
-     *  {@code coefficients[n] * x^n + ... + coefficients[1] * x  + coefficients[0]}
+     * The value returned is </p><p>
+     * {@code coefficients[n] * x^n + ... + coefficients[1] * x  + coefficients[0]}
      * </p>
      *
      * @param x Argument for which the function value should be computed.
@@ -375,7 +384,7 @@ public class Polynomial1 extends ArrayList<Integer> {
         if (n == 0) {
             throw new Exception("no coefficients in polynomial");
         }
-        double result = polynomial.get(n-1);//coefficients[n - 1];
+        double result = polynomial.get(n - 1);//coefficients[n - 1];
         for (int j = n - 2; j >= 0; j--) {
             result = argument * result + polynomial.get(j);
         }
