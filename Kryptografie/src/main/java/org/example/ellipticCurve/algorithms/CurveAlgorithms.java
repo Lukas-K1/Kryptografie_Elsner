@@ -11,8 +11,7 @@ public class CurveAlgorithms {
     }
 
     public static void setFunction(String function) {
-        Polynomial polynomial = new Polynomial(function);
-        _function = polynomial;
+        _function = new Polynomial(function);
     }
 
     //#region Tangentenverfahren
@@ -25,8 +24,8 @@ public class CurveAlgorithms {
     public static Double newtonRaphsonFunction(double x0, double epsilon) {
         _x = x0;
         do {
-            double fx = function(_function, _x);
-            double xDerivative = derivative(_function, _x);
+            double fx = function(_function, _x); // f(x)
+            double xDerivative = derivative(_function, _x); // f'(x)
             _x = _x - (fx / xDerivative);
         }
         while (Math.abs(function(_function, _x)) > epsilon);
