@@ -17,7 +17,7 @@ public class Polynomial {
         String[] terms = _polynomialString.split(" ");
         for (String term : terms) {
             String[] parts = term.split("\\*x\\^?");
-            double coefficient = Double.parseDouble(parts[0].trim());
+            double coefficient = Double.parseDouble(parts[0]);
             int exponent = parts.length > 1 ? Integer.parseInt(parts[1].trim()) : 0;
             _coefficients.add(coefficient);
             _exponents.add(exponent);
@@ -26,19 +26,7 @@ public class Polynomial {
 
     // Funktion zur Berechnung des Funktionswerts für gegebenes x
     public double evaluate(double x) {
-        // Ersetzen von 'x' in der Polynomzeichenkette durch den Wert von x
-//        String expr = _polynomialString.replaceAll("x", String.valueOf(x));
-//        return evaluateExpression(expr);
-//        _polynomialString = _polynomialString.replaceAll("- ", "-");
-//        _polynomialString = _polynomialString.replaceAll("\\+ ", "+");
-//        String[] terms = _polynomialString.split(" ");
-//        for (String term : terms) {
-//            String[] parts = term.split("\\*x\\^?");
-//            double coefficient = Double.parseDouble(parts[0].trim());
-//            int exponent = parts.length > 1 ? Integer.parseInt(parts[1].trim()) : 0;
-//            _coefficients.add(coefficient);
-//            _exponents.add(exponent);
-//        }
+
         double result = 0;
         for (int i = 0; i < _coefficients.size(); i++) {
             result += _coefficients.get(i) * Math.pow(x, _exponents.get(i));
@@ -55,6 +43,7 @@ public class Polynomial {
     }
 
     // Hilfsmethode zur Auswertung eines mathematischen Ausdrucks
+    @Deprecated
     private double evaluateExpression(String expression) {
         return Double.parseDouble(new Object() {}.toString()
                 .replaceFirst(".*?([\\d.]+).*", "$1")
@@ -62,6 +51,7 @@ public class Polynomial {
     }
 
     // Hilfsmethode zur Ableitung eines Polynoms
+    @Deprecated
     private String derive(String polynomial) {
         ArrayList<String> terms = new ArrayList<>();
         Pattern pattern = Pattern.compile("[-+]?\\b\\d+\\.?\\d*\\*?x?\\^?\\d*\\b");
@@ -109,15 +99,6 @@ public class Polynomial {
                 double newCoefficient = coefficient * exponent;
                 int newExponent = exponent - 1;
 
-//                if (!derivative.isEmpty() && newCoefficient > 0) {
-//                    derivative.append(" + ");
-//                }
-//                else if (newCoefficient < 0) {
-//                    derivative.append(" - ").append(Math.abs(newCoefficient));
-//                }
-//                if (!(newCoefficient < 0)){
-//                    derivative.append(newCoefficient);
-//                }
                 if (!derivative.isEmpty()) {
                     derivative += (newCoefficient > 0) ? " + " : " - ";
                     derivative += Math.abs(newCoefficient);
@@ -132,7 +113,6 @@ public class Polynomial {
                 }
             }
         }
-        derivative = derivative.replace("- -", "- ");
         return derivative;
     }
 
