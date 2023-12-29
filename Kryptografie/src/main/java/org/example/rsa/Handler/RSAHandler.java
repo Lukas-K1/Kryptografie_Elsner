@@ -135,8 +135,8 @@ public class RSAHandler {
         BigInteger d;
 
         try {
-//            d = ExtendedEuclidean.getModInverse(e, phi);
-            d = generateD(e, phi);
+            d = ExtendedEuclidean.getModInverse(e, phi);
+            //d = generateD(e, phi);
         } catch (Exception exception) {
             System.out.println(exception.getMessage() + "\n" + "private key could not be generated");
             return generateRSAKeyPair();
