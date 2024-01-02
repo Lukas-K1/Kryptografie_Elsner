@@ -43,6 +43,10 @@ public class RSAHandler {
         _numberLengthPQ = primeNumberLength / 2;
     }
 
+    public int getBlockLength() {
+        return _blockLength;
+    }
+
     public static int setBlockLength() {
 //        return _blockLength = Blockchiffre.calcBlockLength(primeNumberLength);
         return _blockLength = Blockchiffre.calculateBlockLength(_n);

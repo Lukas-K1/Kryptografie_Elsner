@@ -1,14 +1,14 @@
 package org.example.maske;
 
+import org.example.rsa.Handler.RSAHandler;
+import org.example.rsa.PairTypes.PairCipherBlockLength;
+import org.example.rsa.PairTypes.RSAKeyPair;
+
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
-import org.example.rsa.Handler.RSAHandler;
-import org.example.rsa.PairTypes.PairCipherBlockLength;
-import org.example.rsa.PairTypes.RSAKeyPair;
 
 class Maske {
 
@@ -281,6 +281,8 @@ class Maske {
                                         handler.setBlockLength();
                                         geheimAlice.setText(keyPairAlice.getPrivateKey().toString());
                                         geheimBob.setText(keyPairBob.getPrivateKey().toString());
+                                        klarBlockLength.setText("Blocklänge des Klartextes : \n" + handler.getBlockLength());
+                                        chiffBlockLength.setText("Blocklänge des Chiffriertextes : \n" + (handler.getBlockLength() + 1));
                                 } catch (Exception e1) {
                                         // TODO Auto-generated catch block
                                         e1.printStackTrace();
