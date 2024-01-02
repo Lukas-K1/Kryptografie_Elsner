@@ -17,6 +17,10 @@ public class CurveAlgorithms {
     public static void setFunction(String function, double a, double b) {
         function = function.replace("a", String.valueOf(a));
         function = function.replace("b", String.valueOf(b));
+        double validCoefficients = 4*Math.pow(a, 3) + 27*Math.pow(b, 2);
+        if(validCoefficients == 0){
+            throw new IllegalArgumentException("Invalid coefficients");
+        }
         _function = new Polynomial(function);
     }
 
