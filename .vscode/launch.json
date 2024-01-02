@@ -6,6 +6,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "GraphPanel",
+            "request": "launch",
+            "mainClass": "org.example.maske.GraphPanel",
+            "projectName": "Kryptografie"
+        },
+        {
+            "type": "java",
             "name": "Main",
             "request": "launch",
             "mainClass": "Main",
