@@ -11,6 +11,9 @@ import org.example.rsa.PairTypes.PairCipherBlockLength;
 import org.example.rsa.PairTypes.RSAKeyPair;
 
 class Maske {
+
+        ZusatzMaske maske = new ZusatzMaske();
+
         public int anzahlAnSchritte = 0;
         public int primzahlLänge = 0;
 
@@ -62,11 +65,18 @@ class Maske {
 
                 JButton button = new JButton("Start");
 
+                JButton buttonZusatz = new JButton("Zusatzaufgabe");
+
                 // Add components to the first row
                 JPanel column1 = new JPanel();
                 column1.setLayout(new BoxLayout(column1, BoxLayout.Y_AXIS));
                 column1.add(createLabeledPanel("Anzahl der Schritte", anzahlSchritteFeld));
                 column1.add(createLabeledPanel("Länge der Primzahlen", primzahlLängeFeld));
+                column1.add(createLabeledPanel("Setze Seed M", seedM));
+                JLabel klarBlockLength = new JLabel("Blocklänge des Klartextes : \n 0");
+                JLabel chiffBlockLength = new JLabel("Blocklänge des Chiffriertextes : \n 0");
+                column1.add(klarBlockLength);
+                column1.add(chiffBlockLength);
                 column1.add(button);
 
                 JPanel column2 = new JPanel(new GridLayout(1, 1));
@@ -77,14 +87,13 @@ class Maske {
 
                 JPanel column4 = new JPanel(new GridLayout(2, 1));
                 column4.setLayout(new BoxLayout(column4, BoxLayout.Y_AXIS));
-                column4.add(createLabeledPanel("Länge des Klartexts", lengthKlartext));
-                column4.add(createLabeledPanel("Länge des Chiffriertexts", lengthChiffre));
-                column4.add(createLabeledPanel("Setze Seed M", seedM));
+                //column4.add(createLabeledPanel("Länge des Klartexts", lengthKlartext));
+                column4.add(buttonZusatz);
 
                 row1.add(column1);
-                row1.add(column4);
                 row1.add(column2);
                 row1.add(column3);
+                row1.add(column4);
 
                 // Create a panel for the second row (2/3 of the window)
                 JPanel row2 = new JPanel(new GridLayout(1, 2)); // 2 columns in the second row
@@ -378,7 +387,16 @@ class Maske {
                                 textBob.setText("");
                         }
                         });
+
+                buttonZusatz.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                                frame.dispose();
+                                maske.test();
+                        }
+                        });
                 }
+                
 
                 
 
