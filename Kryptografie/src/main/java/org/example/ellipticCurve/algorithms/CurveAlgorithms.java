@@ -1,5 +1,6 @@
 package org.example.ellipticCurve.algorithms;
 
+import org.example.ellipticCurve.algorithms.CustomTypes.Point2D;
 import org.example.ellipticCurve.algorithms.CustomTypes.Polynomial;
 
 public class CurveAlgorithms {
@@ -11,6 +12,11 @@ public class CurveAlgorithms {
     }
 
     public static void setFunction(String function) {
+        _function = new Polynomial(function);
+    }
+    public static void setFunction(String function, double a, double b) {
+        function = function.replace("a", String.valueOf(a));
+        function = function.replace("b", String.valueOf(b));
         _function = new Polynomial(function);
     }
 
@@ -65,5 +71,34 @@ public class CurveAlgorithms {
     private static double derivative(Polynomial function, double x) {
         Polynomial derivative = function.derivative();
         return derivative.evaluate(x);
+    }
+
+    public static Point2D ellipticTangent(Point2D point1) {
+        if (point1.getY() == 0) {
+            return point1;
+        }
+        double m = 0;
+        Polynomial derivative = _function.derivative();
+        m = (derivative.evaluate(point1.getX()))/(2 * point1.getY());
+        double x3 = Math.pow(m, 2) - 2 * point1.getX();
+        double y3 = m * (x3 - point1.getX()) + point1.getY();
+        return new Point2D(x3, y3);
+    }
+
+    public static Point2D ellipticSecant(Point2D point1, Point2D point2) {
+        double m = 0;
+        if(point1.equals(point2)){
+            throw new IllegalArgumentException("Points are equal");
+        }
+        if (point1.getX() == point2.getX()) {
+            return point1.invert();
+        }
+        m = (point2.getY() - point1.getY()) / (point2.getX() - point1.getX());
+        double n = point1.getY() - m * point1.getX();
+
+        double x3 = Math.pow(m, 2) - point1.getX() - point2.getX();
+        double y3 = m * (x3 - point1.getX()) + point1.getY();
+
+        return new Point2D(x3, y3);
     }
 }
