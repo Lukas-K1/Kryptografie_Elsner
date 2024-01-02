@@ -126,7 +126,7 @@ public class Blockchiffre {
         ArrayList<BigInteger> cipherList = new ArrayList<>();
         System.out.println("BlockList gen");
         System.out.println(blockList);
-        for (BigInteger messageBlockNumber : paddedBlockList) {
+        for (BigInteger messageBlockNumber : blockList) {
             cipherList.add(FastExponentiation.exponentiation(messageBlockNumber, rsaKeys.getKey(), rsaKeys.getN()));
         }
         System.out.println("CipherList gen");
@@ -145,7 +145,7 @@ public class Blockchiffre {
         System.out.println("BlockList dec");
         System.out.println(blockList);
         ArrayList<BigInteger> unpaddedBlockList = removePadding(blockList);
-        return bigIntListToUnicode(unpaddedBlockList, blockLength - 1);
+        return bigIntListToUnicode(blockList, blockLength - 1);
     }
 
     public static ArrayList<BigInteger> messageToBigIntList(String unicodeMessage, int blockLength) {
