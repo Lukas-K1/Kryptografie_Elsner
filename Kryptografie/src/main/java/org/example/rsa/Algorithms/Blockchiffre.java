@@ -10,14 +10,13 @@ import java.util.List;
 
 public class Blockchiffre {
     private static final BigInteger _charSetSize = BigInteger.valueOf(55296);
-    private static final String messageFiller = "";
+    private static final String messageFiller = "\u0000";
 
     /**
      * @param message
      * @param rsaKeys
      * @return
      * @throws Exception
-     * @deprecated use {@link #encryptMessage(String, RSAKeys, int)} instead
      */
     public static PairCipherBlockLength encryptMessage(String message, RSAKeys rsaKeys) throws Exception {
         int charBlockLength = calculateBlockLength(rsaKeys.getN());
@@ -103,12 +102,16 @@ public class Blockchiffre {
      */
     private static String fillMessage(String message, int charBlockLength) {
         StringBuilder filledMessage = new StringBuilder(message);
-//        int messageLengthDifference = charBlockLength - (message.length() % charBlockLength);
-        int messageLengthDifference = message.length() % charBlockLength;
-        while (!((filledMessage.length() % charBlockLength) == 0)) {
-            filledMessage.append(messageFiller);
+        if (!(message.length() % charBlockLength == 0)) {
+            int messageLengthDifference = charBlockLength - (message.length() % charBlockLength);
+            filledMessage.append(messageFiller.repeat(messageLengthDifference));
         }
-        //filledMessage.append(messageFiller.repeat(messageLengthDifference));
+//        int messageLengthDifference = charBlockLength - (message.length() % charBlockLength);
+//        filledMessage.append(messageFiller.repeat(messageLengthDifference));
+//        int messageBlockDifference = message.length() % charBlockLength;
+//        while (!((filledMessage.length() % charBlockLength) == 0)) {
+//            filledMessage.append(messageFiller);
+//        }
         return filledMessage.toString();
     }
 
