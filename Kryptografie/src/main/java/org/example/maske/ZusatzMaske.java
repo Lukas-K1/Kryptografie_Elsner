@@ -26,6 +26,8 @@ public class ZusatzMaske {
         // Create components for the first row
         JTextField aParameter = new JTextField(1);
         JTextField bParameter = new JTextField(1);
+        JTextField xParameter = new JTextField(1);
+        JTextField yParameter = new JTextField(1);
 
         JButton button = new JButton("Start");
 
@@ -38,6 +40,8 @@ public class ZusatzMaske {
         column1.add(ellipticCurveDefinition);
         column1.add(createLabeledPanel("a", aParameter));
         column1.add(createLabeledPanel("b", bParameter));
+        column1.add(createLabeledPanel("x-Achsen Länge", xParameter));
+        column1.add(createLabeledPanel("y-Achsen Länge", yParameter));
         column1.add(button);
         
         JPanel column4 = new JPanel(new GridLayout(2, 1));
@@ -53,6 +57,9 @@ public class ZusatzMaske {
         // Create a panel for the second row (2/3 of the window)
         JPanel row2 = new JPanel(new GridLayout(1, 2)); // 2 columns in the second row
         addBorder(row2, "Elliptic Curve");
+
+        GraphPanel graph = new GraphPanel();
+        row2.add(graph);
 
         // Add rows to the main panel
         mainPanel.add(row1, BorderLayout.NORTH);
@@ -76,6 +83,14 @@ public class ZusatzMaske {
                     frame.dispose();
                     Maske maske = new Maske();
                     maske.launch();
+            }
+            });
+
+        button.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                    graph.scale(graph.getGraphics(), Integer.valueOf(xParameter.getText()), Integer.valueOf(yParameter.getText()));
+                    graph.drawEllipticCurve(graph.getGraphics(), Integer.valueOf(aParameter.getText()), Integer.valueOf(bParameter.getText()), Integer.valueOf(xParameter.getText()), Integer.valueOf(yParameter.getText()));
             }
             });
     }
