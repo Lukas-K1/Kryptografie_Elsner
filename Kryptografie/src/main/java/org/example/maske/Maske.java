@@ -279,8 +279,8 @@ class Maske {
                                         handler.setBlockLength();
                                         geheimAlice.setText(keyPairAlice.getPrivateKey().toString());
                                         geheimBob.setText(keyPairBob.getPrivateKey().toString());
-                                        klarBlockLength.setText("Blocklänge des Klartextes : \n" + handler.getBlockLength());
-                                        chiffBlockLength.setText("Blocklänge des Chiffriertextes : \n" + (handler.getBlockLength() + 1));
+                                        klarBlockLengthLabel.setText("Blocklänge des Klartextes : \n" + handler.getBlockLength());
+                                        chiffBlockLengthLabel.setText("Blocklänge des Chiffriertextes : \n" + (handler.getBlockLength() + 1));
                                 } catch (Exception e1) {
                                         // TODO Auto-generated catch block
                                         e1.printStackTrace();
