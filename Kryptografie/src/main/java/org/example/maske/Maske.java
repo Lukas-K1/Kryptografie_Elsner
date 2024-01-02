@@ -12,8 +12,6 @@ import org.example.rsa.PairTypes.RSAKeyPair;
 
 class Maske {
 
-        ZusatzMaske maske = new ZusatzMaske();
-
         public int anzahlAnSchritte = 0;
         public int primzahlLänge = 0;
 
@@ -26,6 +24,8 @@ class Maske {
         public String signaturBob = "";
         public String signaturGültigkeitAlice = "Ausgabe von gültiger oder ungültiger Signatur";
         public String signaturGültigkeitBob = "Ausgabe von gültiger oder ungültiger Signatur";
+        public int klarBlockLength = 0;
+        public int chiffBlockLength = 0;
 
         RSAHandler handler = new RSAHandler();
         PairCipherBlockLength encryptedMessageAlice;
@@ -50,8 +50,6 @@ class Maske {
                 JTextField anzahlSchritteFeld = new JTextField(1);
                 JTextField primzahlLängeFeld = new JTextField(1);
                 JTextField seedM = new JTextField(1);
-                JTextField lengthKlartext = new JTextField(1);
-                JTextField lengthChiffre = new JTextField(1);
 
                 JTextArea oeffentlichAlice = new JTextArea(öffentlichAlice);
                 oeffentlichAlice.setEditable(false);
@@ -73,10 +71,10 @@ class Maske {
                 column1.add(createLabeledPanel("Anzahl der Schritte", anzahlSchritteFeld));
                 column1.add(createLabeledPanel("Länge der Primzahlen", primzahlLängeFeld));
                 column1.add(createLabeledPanel("Setze Seed M", seedM));
-                JLabel klarBlockLength = new JLabel("Blocklänge des Klartextes : \n 0");
-                JLabel chiffBlockLength = new JLabel("Blocklänge des Chiffriertextes : \n 0");
-                column1.add(klarBlockLength);
-                column1.add(chiffBlockLength);
+                JLabel klarBlockLengthLabel = new JLabel("Blocklänge des Klartextes : \n " + klarBlockLength);
+                JLabel chiffBlockLengthLabel = new JLabel("Blocklänge des Chiffriertextes : \n " + chiffBlockLength);
+                column1.add(klarBlockLengthLabel);
+                column1.add(chiffBlockLengthLabel);
                 column1.add(button);
 
                 JPanel column2 = new JPanel(new GridLayout(1, 1));
@@ -392,12 +390,11 @@ class Maske {
                         @Override
                         public void actionPerformed(ActionEvent e) {
                                 frame.dispose();
+                                ZusatzMaske maske = new ZusatzMaske();
                                 maske.test();
                         }
                         });
                 }
-                
-
                 
 
                 private void addBorder(JPanel panel, String title) {
