@@ -6,11 +6,15 @@ import org.example.ellipticCurve.algorithms.CustomTypes.Polynomial;
 public class CurveAlgorithms {
     private static double _x;
     private static Polynomial _function;
+    private static String _functionString;
 
     public static Polynomial getFunction() {
         return _function;
     }
-
+    public static String getFunctionString() {
+        return _functionString;
+    }
+    static String function = "1*x^3 + a*x^1 + b";
     public static void setFunction(String function) {
         _function = new Polynomial(function);
     }
@@ -21,6 +25,17 @@ public class CurveAlgorithms {
         if(validCoefficients == 0){
             throw new IllegalArgumentException("Invalid coefficients");
         }
+        _functionString = function;
+        _function = new Polynomial(function);
+    }
+    public static void setFunction(double a, double b) {
+        function = function.replace("a", String.valueOf(a));
+        function = function.replace("b", String.valueOf(b));
+        double validCoefficients = 4*Math.pow(a, 3) + 27*Math.pow(b, 2);
+        if(validCoefficients == 0){
+            throw new IllegalArgumentException("Invalid coefficients");
+        }
+        _functionString = function;
         _function = new Polynomial(function);
     }
 
