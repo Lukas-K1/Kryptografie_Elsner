@@ -11,9 +11,12 @@ public class Polynomial {
     private ArrayList<Integer> _exponents = new ArrayList<>();
 
     public Polynomial(String polynomialString) {
-        this._polynomialString = polynomialString;
+        _polynomialString = polynomialString;
         _polynomialString = _polynomialString.replaceAll("- ", "-");
         _polynomialString = _polynomialString.replaceAll("\\+ ", "+");
+        if (_polynomialString.contains("+-")) {
+            _polynomialString = _polynomialString.replace("+-", "-");
+        }
         String[] terms = _polynomialString.split(" ");
         for (String term : terms) {
             String[] parts = term.split("\\*x\\^?");
