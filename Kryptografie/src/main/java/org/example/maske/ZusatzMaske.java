@@ -96,10 +96,11 @@ public class ZusatzMaske {
             public void actionPerformed(ActionEvent e) {
                     graph.scale(graph.getGraphics(), Double.valueOf(scaleParameter.getText()));
                     graph.drawEllipticCurve(graph.getGraphics(), Double.valueOf(aParameter.getText()), Double.valueOf(bParameter.getText()), Double.valueOf(scaleParameter.getText()));
-                    graph.drawDot(graph.getGraphics(), new DoubleDot(-3, -3), Double.valueOf(scaleParameter.getText()));
-                    graph.drawDot(graph.getGraphics(), new DoubleDot(-3, 3), Double.valueOf(scaleParameter.getText()));
-                    graph.drawDot(graph.getGraphics(), new DoubleDot(3, -3), Double.valueOf(scaleParameter.getText()));
-                    graph.drawDot(graph.getGraphics(), new DoubleDot(3, 3), Double.valueOf(scaleParameter.getText()));
+                    // graph.drawDot(graph.getGraphics(), new DoubleDot(-3, -3), Double.valueOf(scaleParameter.getText()));
+                    // graph.drawDot(graph.getGraphics(), new DoubleDot(-3, 3), Double.valueOf(scaleParameter.getText()));
+                    // graph.drawDot(graph.getGraphics(), new DoubleDot(3, -3), Double.valueOf(scaleParameter.getText()));
+                    // graph.drawDot(graph.getGraphics(), new DoubleDot(3, 3), Double.valueOf(scaleParameter.getText()));
+                    graph.drawLine(graph.getGraphics(), new DoubleDot(3, 3), new DoubleDot(3, -3), Double.valueOf(scaleParameter.getText()));
                     double aValue = Double.valueOf(aParameter.getText());
                     double bValue = Double.valueOf(bParameter.getText());
                     CurveAlgorithms.setFunction(aValue, bValue);

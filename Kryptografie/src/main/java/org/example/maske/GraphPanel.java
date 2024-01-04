@@ -116,4 +116,19 @@ public class GraphPanel extends JPanel {
 
         g.drawString("("+dot.x+"|"+dot.y+")",start.x+xInt-3+15, start.y-yInt-3+15);
     }
+
+    public void drawLine(Graphics g, DoubleDot dot1, DoubleDot dot2, double scale){
+        int xInt1 = (int) Math.round(dot1.x*(20*scale));
+        int yInt1 = (int) Math.round(dot1.y*(20*scale));
+
+        int xInt2 = (int) Math.round(dot2.x*(20*scale));
+        int yInt2 = (int) Math.round(dot2.y*(20*scale));
+
+        this.drawDot(g, dot1, scale);
+        this.drawDot(g, dot2, scale);
+
+        Dot start = this.startPunkt();
+
+        g.drawLine(start.x+xInt1, start.y-yInt1, start.x+xInt2, start.y-yInt2);
+    }
 }
