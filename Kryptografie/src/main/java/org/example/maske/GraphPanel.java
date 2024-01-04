@@ -25,7 +25,7 @@ public class GraphPanel extends JPanel {
         g.drawLine(width/2, 0, width/2, height); // Y-Achse
     }
 
-    public void scale(Graphics g, int x, int y){
+    public void scale(Graphics g, double scale){
         super.paintComponent(g);
 
         int width = getWidth();
@@ -34,21 +34,22 @@ public class GraphPanel extends JPanel {
         this.paintComponent(g);
         Dot start = this.startPunkt();
 
-        for(int i = 1; i<11; i++){
-            g.drawLine(start.x+(width/20*i), start.y, start.x+(width/20*i), start.y+10);
-            g.drawLine(start.x-(width/20*i), start.y, start.x-(width/20*i), start.y+10);
-            String scale = String.valueOf(((x/20)*i));
-            g.drawString(scale, start.x+(width/20*i)-20, start.y+25);
-            g.drawString("-"+scale, start.x-(width/20*i), start.y+25);
-        }
+        // Achsen Beschriftung skaliert nicht richtig
+        // for(int i = 1; i<11; i++){
+        //     g.drawLine(start.x+(width/20*i), start.y, start.x+(width/20*i), start.y+10);
+        //     g.drawLine(start.x-(width/20*i), start.y, start.x-(width/20*i), start.y+10);
+        //     String scale = String.valueOf(((x/20)*i));
+        //     g.drawString(scale, start.x+(width/20*i)-20, start.y+25);
+        //     g.drawString("-"+scale, start.x-(width/20*i), start.y+25);
+        // }
 
-        for(int i = 1; i<6; i++){
-            g.drawLine(start.x, start.y+(height/10*i), start.x-10, start.y+(height/10*i));
-            g.drawLine(start.x, start.y-(height/10*i), start.x-10, start.y-(height/10*i));
-            String scale = String.valueOf(((y/10)*i));
-            g.drawString(scale, start.x-25, start.y+(height/10*i)-5);
-            g.drawString("-"+scale, start.x-25, start.y-(height/10*i)+15);
-        }
+        // for(int i = 1; i<6; i++){
+        //     g.drawLine(start.x, start.y+(height/10*i), start.x-10, start.y+(height/10*i));
+        //     g.drawLine(start.x, start.y-(height/10*i), start.x-10, start.y-(height/10*i));
+        //     String scale = String.valueOf(((y/10)*i));
+        //     g.drawString("-"+scale, start.x-25, start.y+(height/10*i)-5);
+        //     g.drawString(scale, start.x-25, start.y-(height/10*i)+15);
+        // }
     }
 
     public Dot startPunkt(){
@@ -58,35 +59,33 @@ public class GraphPanel extends JPanel {
         return new Dot(width/2, height/2);
     }
 
-    public void drawEllipticCurve(Graphics g, int a, int b, int x, int y){
+    public void drawEllipticCurve(Graphics g, Double a, Double b, double scale){
 
         int width = getWidth();
         int height = getHeight();
         Dot start = this.startPunkt();
-        double test = 1;
 
-        List<DoubleDot> curveDots = this.calculateEllipticCurvePoints(a,b,x,y);
+        List<DoubleDot> curveDots = this.calculateEllipticCurvePoints(a,b,scale);
 
         g.setColor(Color.RED);
         for(int i = 0; i<curveDots.size()-2; i++){
-            int xInt = (int) Math.round(curveDots.get(i).x*20);
-            int xIntNext = (int) Math.round(curveDots.get(i+2).x*20);
-            int yInt = (int) Math.round(curveDots.get(i).y*20);
-            int yIntNext = (int) Math.round(curveDots.get(i+2).y*20);
+            int xInt = (int) Math.round(curveDots.get(i).x*(20*scale));
+            int xIntNext = (int) Math.round(curveDots.get(i+2).x*(20*scale));
+            int yInt = (int) Math.round(curveDots.get(i).y*(20*scale));
+            int yIntNext = (int) Math.round(curveDots.get(i+2).y*(20*scale));
             g.drawLine(start.x+xInt*1, start.y+yInt*1, start.x+xIntNext*1, start.y+yIntNext*1);
         }
     }
 
-    private List<DoubleDot> calculateEllipticCurvePoints(int a, int b, int x, int y){
+    private List<DoubleDot> calculateEllipticCurvePoints(Double a, Double b, double scale){
         List<DoubleDot> result = new ArrayList<>();
 
         double width = getWidth();
         double height = getHeight();
         BigDecimal aValue = new BigDecimal(""+a);
         BigDecimal bValue = new BigDecimal(""+b);
-        BigDecimal xDoubleValue = new BigDecimal(""+x);
-        double negateX = -x;
-        BigDecimal yDoubleValue = new BigDecimal(""+y);
+        BigDecimal xDoubleValue = new BigDecimal(""+(10*scale));
+        double negateX = -(scale*100);
 
         System.out.println("Berechne");
 
@@ -103,5 +102,15 @@ public class GraphPanel extends JPanel {
         }
 
         return result;
+    }
+
+    public void drawDot(Graphics g, DoubleDot dot, double scale){
+        int xInt = (int) Math.round(dot.x*(20*scale));
+        int yInt = (int) Math.round(dot.y*(20*scale));
+
+        Dot start = this.startPunkt();
+
+        g.drawOval(start.x+xInt-3, start.y+yInt-3, 6, 6);
+        g.drawString("("+dot.x+"|"+dot.y+")",start.x+xInt-3+15, start.y+yInt-3+15);
     }
 }
