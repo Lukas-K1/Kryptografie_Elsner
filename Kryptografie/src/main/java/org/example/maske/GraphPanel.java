@@ -2,6 +2,8 @@ package org.example.maske;
 
 import javax.swing.*;
 import javax.swing.border.Border;
+import javax.transaction.xa.Xid;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -111,6 +113,7 @@ public class GraphPanel extends JPanel {
         Dot start = this.startPunkt();
 
         g.drawOval(start.x+xInt-3, start.y+yInt-3, 6, 6);
-        g.drawString("("+dot.x+"|"+dot.y+")",start.x+xInt-3+15, start.y+yInt-3+15);
+
+        g.drawString("("+dot.x+"|"+dot.y+")",start.x+xInt-3+15, start.y-yInt-3+15);
     }
 }
