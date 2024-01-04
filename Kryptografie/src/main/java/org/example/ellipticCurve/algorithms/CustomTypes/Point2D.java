@@ -29,7 +29,7 @@ public class Point2D {
         return new Point2D(_x, -_y);
     }
 
-    public Point2D parseFromString(String point) {
+    public static Point2D parseFromString(String point) {
         String[] coordinates = point.replace("(", "").replace(")", "").split(",");
         return new Point2D(Double.parseDouble(coordinates[0]), Double.parseDouble(coordinates[1]));
     }

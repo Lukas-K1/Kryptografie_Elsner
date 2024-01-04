@@ -1,14 +1,13 @@
 package org.example.maske;
 
+import org.example.ellipticCurve.algorithms.CurveAlgorithms;
+import org.example.ellipticCurve.algorithms.CustomTypes.Point2D;
+
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
-import org.example.rsa.Handler.RSAHandler;
-import org.example.rsa.PairTypes.PairCipherBlockLength;
-import org.example.rsa.PairTypes.RSAKeyPair;
 
 public class ZusatzMaske {
     
@@ -31,6 +30,11 @@ public class ZusatzMaske {
         JButton button = new JButton("Start");
 
         JButton buttonZusatz = new JButton("Basisaufgabe");
+
+        JButton buttomSecantOperation = new JButton("Sekantenverfahren");
+        JButton buttonTangentOperation = new JButton("Tangentenverfahren");
+        JTextField secantPoint1 = new JTextField(1);
+        JTextField secantPoint2 = new JTextField(1);
 
         // Add components to the first row
         JPanel column1 = new JPanel();
@@ -93,8 +97,27 @@ public class ZusatzMaske {
                     graph.scale(graph.getGraphics(), Double.valueOf(scaleParameter.getText()));
                     graph.drawEllipticCurve(graph.getGraphics(), Double.valueOf(aParameter.getText()), Double.valueOf(bParameter.getText()), Double.valueOf(scaleParameter.getText()));
                     graph.drawDot(graph.getGraphics(), new DoubleDot(0, 3), Double.valueOf(scaleParameter.getText()));
+                    double aValue = Double.valueOf(aParameter.getText());
+                    double bValue = Double.valueOf(bParameter.getText());
+                    CurveAlgorithms.setFunction(aValue, bValue);
             }
             });
+        buttomSecantOperation.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                    Point2D p1 = Point2D.parseFromString(secantPoint1.getText());
+                    Point2D p2 = Point2D.parseFromString(secantPoint2.getText());
+                    Point2D intersection = CurveAlgorithms.ellipticSecant(p1, p2);
+            }
+        });
+        buttonTangentOperation.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                    Point2D p1 = Point2D.parseFromString(secantPoint1.getText());
+                    Point2D intersection = CurveAlgorithms.ellipticTangent(p1);
+            }
+        });
+
     }
 
 
