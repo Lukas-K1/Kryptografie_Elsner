@@ -307,7 +307,7 @@ class Maske {
                         @Override
                         public void actionPerformed(ActionEvent e) {
                                 try {
-                                        _signatureAlice = handler.signatureForMessage(encryptedMessageAlice.getCipher(), keyPairBob.getPrivateKey());
+                                        _signatureAlice = handler.signatureForMessage(encryptedMessageAlice.getCipher(), keyPairAlice.getPrivateKey());
                                         signaturenAlice.setText(_signatureAlice);
                                 } catch (Exception ex) {
                                         throw new RuntimeException(ex);
@@ -332,7 +332,7 @@ class Maske {
                         @Override
                         public void actionPerformed(ActionEvent e) {
                                 try {
-                                        _signatureBob = handler.signatureForMessage(encryptedMessageBob.getCipher(), keyPairAlice.getPrivateKey());
+                                        _signatureBob = handler.signatureForMessage(encryptedMessageBob.getCipher(), keyPairBob.getPrivateKey());
                                         signaturenBob.setText(_signatureBob);
                                 } catch (Exception ex) {
                                         throw new RuntimeException(ex);
