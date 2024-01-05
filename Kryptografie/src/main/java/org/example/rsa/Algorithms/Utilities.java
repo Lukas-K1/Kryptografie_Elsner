@@ -8,6 +8,7 @@ import org.example.rsa.PairTypes.PublicKey;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.MathContext;
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashSet;
@@ -326,7 +327,7 @@ public class Utilities {
      */
     public static String hash256(String message, PrivateKey privateKey) throws NoSuchAlgorithmException {
         final MessageDigest digest = MessageDigest.getInstance("SHA3-256");
-        final byte[] hashbytes = digest.digest(message.getBytes());
+        final byte[] hashbytes = digest.digest(message.getBytes(StandardCharsets.UTF_8));
         BigInteger hashedInteger = new BigInteger(1, hashbytes);
         BigInteger hashedMessage = FastExponentiation.exponentiation(hashedInteger, privateKey.getKey(), privateKey.getN());
         return hashedMessage.toString(16);
@@ -342,9 +343,11 @@ public class Utilities {
      */
     public static boolean isSignatureValid(String message, String signature, PublicKey publicKey) throws NoSuchAlgorithmException {
         final MessageDigest digest = MessageDigest.getInstance("SHA3-256");
-        final byte[] hashbytes = digest.digest(message.getBytes());
+        final byte[] hashbytes = digest.digest(message.getBytes(StandardCharsets.UTF_8));
         BigInteger hashedInteger = new BigInteger(1, hashbytes);
-        BigInteger decryptedSignature = FastExponentiation.exponentiation(hashedInteger, publicKey.getKey(), publicKey.getN());
-        return decryptedSignature.toString(16).equals(signature);
+        BigInteger signatureInteger = new BigInteger(signature, 16);
+
+        BigInteger decryptedSignature = FastExponentiation.exponentiation(signatureInteger, publicKey.getKey(), publicKey.getN());
+        return decryptedSignature.equals(hashedInteger);
     }
 }
