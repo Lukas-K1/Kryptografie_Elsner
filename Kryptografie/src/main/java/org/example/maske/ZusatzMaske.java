@@ -10,7 +10,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class ZusatzMaske {
-    
+    private String dotResultStart = "Lösungsausgabe : \n";
+    private String dotResults = "";
 
     public void test(){
         JFrame frame = new JFrame("Integrationsprojekt");
@@ -48,15 +49,28 @@ public class ZusatzMaske {
         bParameter.setText("0");
         scaleParameter.setText("1");
         column1.add(button);
+
+        JPanel column2 = new JPanel();
+        column2.setLayout(new BoxLayout(column2, BoxLayout.Y_AXIS));
+        column2.add(createLabeledPanel("1 Punkt für Sekante und Tangente",secantPoint1));
+        column2.add(createLabeledPanel("2 Punkte für Sekante", secantPoint2));
+        column2.add(buttomSecantOperation);
+        column2.add(buttonTangentOperation);
         
+        JPanel column3 = new JPanel();
+        column3.setLayout(new BoxLayout(column3, BoxLayout.Y_AXIS));
+
+        JLabel result = new JLabel(dotResultStart + dotResults);
+        column3.add(result);
+
         JPanel column4 = new JPanel(new GridLayout(2, 1));
         column4.setLayout(new BoxLayout(column4, BoxLayout.Y_AXIS));
         //column4.add(createLabeledPanel("Länge des Klartexts", lengthKlartext));
         column4.add(buttonZusatz);
 
         row1.add(column1);
-        row1.add(new JPanel());
-        row1.add(new JPanel());
+        row1.add(column2);
+        row1.add(column3);
         row1.add(column4);
 
         // Create a panel for the second row (2/3 of the window)
@@ -100,25 +114,44 @@ public class ZusatzMaske {
                     // graph.drawDot(graph.getGraphics(), new DoubleDot(-3, 3), Double.valueOf(scaleParameter.getText()));
                     // graph.drawDot(graph.getGraphics(), new DoubleDot(3, -3), Double.valueOf(scaleParameter.getText()));
                     // graph.drawDot(graph.getGraphics(), new DoubleDot(3, 3), Double.valueOf(scaleParameter.getText()));
-                    graph.drawLine(graph.getGraphics(), new DoubleDot(3, 3), new DoubleDot(3, -3), Double.valueOf(scaleParameter.getText()));
+                    //graph.drawLine(graph.getGraphics(), new DoubleDot(3, 3), new DoubleDot(3, -3), Double.valueOf(scaleParameter.getText()));
                     double aValue = Double.valueOf(aParameter.getText());
                     double bValue = Double.valueOf(bParameter.getText());
                     CurveAlgorithms.setFunction(aValue, bValue);
             }
             });
+
         buttomSecantOperation.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                     Point2D p1 = Point2D.parseFromString(secantPoint1.getText());
                     Point2D p2 = Point2D.parseFromString(secantPoint2.getText());
                     Point2D intersection = CurveAlgorithms.ellipticSecant(p1, p2);
+
+                    DoubleDot d1 = new DoubleDot(p1.getX(), p1.getY());
+                    DoubleDot d2 = new DoubleDot(p2.getX(), p2.getY());;
+                    DoubleDot intersect = new DoubleDot(intersection.getX(), intersection.getY());
+                    
+                    graph.drawLine(graph.getGraphics(), d1, intersect, Double.valueOf(scaleParameter.getText()));
+                    graph.drawDot(graph.getGraphics(), d2, Double.valueOf(scaleParameter.getText()));
+
+                    dotResults += intersection.toString()+","+intersection.invert().toString()+",";
+                    result.setText(dotResultStart + dotResults);
             }
         });
+
         buttonTangentOperation.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                     Point2D p1 = Point2D.parseFromString(secantPoint1.getText());
                     Point2D intersection = CurveAlgorithms.ellipticTangent(p1);
+
+                    DoubleDot d1 = new DoubleDot(p1.getX(), p1.getY());
+                    DoubleDot intersect = new DoubleDot(intersection.getX(), intersection.getY());
+
+                    graph.drawLine(graph.getGraphics(), d1, intersect, Double.valueOf(scaleParameter.getText()));
+                    dotResults += intersection.toString()+","+intersection.invert().toString()+",";
+                    result.setText(dotResultStart + dotResults);
             }
         });
 

@@ -112,7 +112,7 @@ public class GraphPanel extends JPanel {
 
         Dot start = this.startPunkt();
 
-        g.drawOval(start.x+xInt-3, start.y+yInt-3, 6, 6);
+        g.drawOval(start.x+xInt-3, start.y-yInt-3, 6, 6);
 
         g.drawString("("+dot.x+"|"+dot.y+")",start.x+xInt-3+15, start.y-yInt-3+15);
     }
@@ -126,6 +126,23 @@ public class GraphPanel extends JPanel {
 
         this.drawDot(g, dot1, scale);
         this.drawDot(g, dot2, scale);
+
+        Dot start = this.startPunkt();
+
+        g.drawLine(start.x+xInt1, start.y-yInt1, start.x+xInt2, start.y-yInt2);
+    }
+
+    public void drawLine(Graphics g, DoubleDot dot1, double steigung, double scale){
+        int xInt1 = (int) Math.round(dot1.x*(20*scale));
+        int yInt1 = (int) Math.round(dot1.y*(20*scale));
+
+        double pseudoX2 = dot1.x+steigung;
+        double pseudoY2 = dot1.y+1;
+
+        int xInt2 = (int) Math.round(pseudoX2*(20*scale));
+        int yInt2 = (int) Math.round(pseudoY2*(20*scale));
+
+        this.drawDot(g, dot1, scale);
 
         Dot start = this.startPunkt();
 
