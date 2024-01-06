@@ -26,8 +26,8 @@ class Maske {
         public String signaturGültigkeitBob = "Ausgabe von gültiger oder ungültiger Signatur";
         public int klarBlockLength = 0;
         public int chiffBlockLength = 0;
-        private String _signatureAlice;
-        private String _signatureBob;
+        private String _signatureAlice = "";
+        private String _signatureBob = "";
 
         RSAHandler handler = new RSAHandler();
         PairCipherBlockLength encryptedMessageAlice;
@@ -344,11 +344,13 @@ class Maske {
                         @Override
                         public void actionPerformed(ActionEvent e) {
                                 try {
-                                        Boolean validSignature = handler.validSignature(receivedMessageAlice.getCipher(), _signatureBob, keyPairBob.getPublicKey());
-                                        signaturenAlice.setText(validSignature.toString());
+                                        if (!_signatureBob.isEmpty()) {
+                                                Boolean validSignature = handler.validSignature(receivedMessageAlice.getCipher(), _signatureBob, keyPairBob.getPublicKey());
+                                                signaturenAlice.setText(validSignature.toString());
+                                        }
                                         String message = handler.decryptMessageAlice(receivedMessageAlice);
                                         textAlice.setText(message);
-                                        //TODO: check signature
+
                                 } catch (Exception ex) {
                                         throw new RuntimeException(ex);
                                 }
@@ -366,11 +368,13 @@ class Maske {
                         @Override
                         public void actionPerformed(ActionEvent e) {
                                 try {
-                                        Boolean validSignature = handler.validSignature(receivedMessageBob.getCipher(), _signatureAlice, keyPairAlice.getPublicKey());
-                                        signaturenBob.setText(validSignature.toString());
+                                        if (!_signatureAlice.isEmpty()) {
+                                                Boolean validSignature = handler.validSignature(receivedMessageBob.getCipher(), _signatureAlice, keyPairAlice.getPublicKey());
+                                                signaturenBob.setText(validSignature.toString());
+                                        }
                                         String message = handler.decryptMessageBob(receivedMessageBob);
                                         textBob.setText(message);
-                                        //TODO: check signature
+                                        
                                 } catch (Exception ex) {
                                         throw new RuntimeException(ex);
                                 }
