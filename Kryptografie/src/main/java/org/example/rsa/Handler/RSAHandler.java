@@ -10,6 +10,7 @@ import org.example.rsa.PairTypes.PublicKey;
 import org.example.rsa.PairTypes.RSAKeyPair;
 
 import java.math.BigInteger;
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 
 /**
@@ -179,8 +180,8 @@ public class RSAHandler {
      * @return hashed message (signed)
      * @throws Exception
      */
-    public String signatureForMessage(String message) throws Exception {
-        return Utilities.hash256(message, generateRSAKeyPair().getPrivateKey());
+    public static String signatureForMessage(String message, PrivateKey privateKey) throws Exception {
+        return Utilities.hash256(message, privateKey);
     }
 
     /**
@@ -190,13 +191,16 @@ public class RSAHandler {
      * @return true if hash equals value of signature of the message
      * @throws Exception
      */
-    public boolean validSignature(String hashedMessage, String signature) throws Exception {
+    public static boolean validSignature(String hashedMessage, String signature, PublicKey publicKey) throws Exception {
+        if (primeNumberLength < 258){
+            throw new Exception("prime number length is too small");
+        }
         final MessageDigest digest = MessageDigest.getInstance("SHA3-256");
-        final byte[] hashbytes = digest.digest(hashedMessage.getBytes());
+        final byte[] hashbytes = digest.digest(hashedMessage.getBytes(StandardCharsets.UTF_8));
         BigInteger hashedInteger = new BigInteger(1, hashbytes);
         BigInteger signatureInteger = new BigInteger(signature, 16);
 
-        BigInteger decryptedSignature = FastExponentiation.exponentiation(signatureInteger, generateRSAKeyPair().getPublicKey().getKey(), generateRSAKeyPair().getPublicKey().getN());
+        BigInteger decryptedSignature = FastExponentiation.exponentiation(signatureInteger, publicKey.getKey(), publicKey.getN());
         return decryptedSignature.equals(hashedInteger);
     }
 

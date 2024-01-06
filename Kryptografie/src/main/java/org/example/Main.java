@@ -1,8 +1,7 @@
 package org.example;
 
-import org.example.rsa.Algorithms.*;
+import org.example.rsa.Algorithms.Blockchiffre;
 import org.example.rsa.Handler.RSAHandler;
-import org.example.rsa.PairTypes.PairCipherBlockLength;
 import org.example.rsa.PairTypes.PrivateKey;
 import org.example.rsa.PairTypes.PublicKey;
 import org.example.rsa.PairTypes.RSAKeyPair;
@@ -14,8 +13,8 @@ public class Main {
         //System.out.println("Hello world!");
         //BigInteger x = ExtendedEuclidean.getModInverse(BigInteger.valueOf(5), BigInteger.valueOf(48));
         String text = "MATHEMATIK IST SPANNEND!";
-        int numberLength = 256;
-        int millerRabinTrials = 100;
+        int numberLength = 258;
+        int millerRabinTrials = 10;
         org.example.rsa.Handler.RSAHandler rsaHandler = new RSAHandler();
         rsaHandler.setPrimeNumberLength(numberLength);
         rsaHandler.setMillerRabinTrials(millerRabinTrials);
@@ -55,16 +54,22 @@ public class Main {
         int blocklength = Blockchiffre.calculateBlockLength(n);
         RSAHandler.setN(n);
         System.out.println(blocklength);
-        PublicKey publicKey = new PublicKey(e, n);
-        PrivateKey privateKey = new PrivateKey(d, n);
-        RSAHandler.setBlockLength();
-        PairCipherBlockLength encryptedText = RSAHandler.encryptMessage(text,publicKey);
-        String decryptedText = RSAHandler.decryptMessage(encryptedText, privateKey);
-        System.out.println(encryptedText.getCipher());
-        System.out.println("Entschlüsselter Text");
-        System.out.println(decryptedText);
+//        PublicKey publicKey = new PublicKey(e, n);
+        PublicKey publicKey = keys.getPublicKey();
+//        PrivateKey privateKey = new PrivateKey(d, n);
+        PrivateKey privateKey = keys.getPrivateKey();
+//        RSAHandler.setBlockLength();
+//        PairCipherBlockLength encryptedText = RSAHandler.encryptMessage(text,publicKey);
+//        String decryptedText = RSAHandler.decryptMessage(encryptedText, privateKey);
+//        System.out.println(encryptedText.getCipher());
+//        System.out.println("Entschlüsselter Text");
+//        System.out.println(decryptedText);
         //ArrayList<BigInteger> testList = Blockchiffre.unicodeToBigIntList("Hallo wie geht es di", 4);
         //System.out.println(testList);
         //System.out.println(Blockchiffre.bigIntListToUnicode(testList,4));
+        String signature = RSAHandler.signatureForMessage(text, privateKey);
+        System.out.println(signature);
+        boolean validSignature = RSAHandler.validSignature(text, signature, publicKey);
+        System.out.println(validSignature);
     }
 }

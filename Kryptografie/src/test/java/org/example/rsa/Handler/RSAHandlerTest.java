@@ -1,11 +1,13 @@
 package org.example.rsa.Handler;
 
-import org.junit.jupiter.api.*;
-import static org.junit.jupiter.api.Assertions.*;
-import java.math.BigInteger;
-import org.example.rsa.PairTypes.RSAKeyPair;
-import org.example.rsa.PairTypes.PublicKey;
 import org.example.rsa.PairTypes.PrivateKey;
+import org.example.rsa.PairTypes.PublicKey;
+import org.example.rsa.PairTypes.RSAKeyPair;
+import org.junit.jupiter.api.Test;
+
+import java.math.BigInteger;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class RSAHandlerTest {
 	@Test
@@ -14,7 +16,8 @@ public class RSAHandlerTest {
 		String hashedMessage = "abc";
 		String signature = "abc";
 		boolean expected = true;
-		boolean actual = r.validSignature(hashedMessage, signature);
+		PublicKey publicKey = new PublicKey(null, null);
+		boolean actual = r.validSignature(hashedMessage, signature, publicKey);
 
 		assertEquals(expected, actual);
 	}
@@ -62,7 +65,8 @@ public class RSAHandlerTest {
 		String hashedMessage = "abc";
 		String signature = "abc";
 		boolean expected = true;
-		boolean actual = r.validSignature(hashedMessage, signature);
+		PublicKey publicKey = new PublicKey(null, null);
+		boolean actual = r.validSignature(hashedMessage, signature, publicKey);
 
 		assertEquals(expected, actual);
 	}
