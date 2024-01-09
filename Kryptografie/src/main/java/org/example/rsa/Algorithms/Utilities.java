@@ -231,25 +231,6 @@ public class Utilities {
         return randomNumbers;
     }
 
-    // based on it security script page 97
-
-    /**
-     * returns one number from set of random numbers; not used; not marked deprecated
-     * @param a
-     * @param b
-     * @param n
-     * @param m
-     * @return
-     * @throws Exception
-     */
-    public static BigInteger calculateRandom(BigInteger a, BigInteger b, BigInteger n, BigInteger m) throws Exception {
-        BigInteger random = calculateRandoms(a, b, n, m)
-                .stream()
-                .findFirst()
-                .orElseThrow(() -> new Exception("keine Zahl generiert"));
-        return random;
-    }
-
     /**
      * returns random number with primality check using Miller-Rabin
      * @param m
@@ -260,7 +241,7 @@ public class Utilities {
      * @return random biginteger which is probably prime
      * @throws Exception
      */
-    public static BigInteger generateRandom(BigInteger m, BigInteger n, BigInteger a, BigInteger b, int millerRabinTrials) throws Exception {
+    public static BigInteger generateRandomPrime(BigInteger m, BigInteger n, BigInteger a, BigInteger b, int millerRabinTrials) throws Exception {
         BigInteger probablyPrime;
         n = getCountN();
         while (true) {

@@ -2,6 +2,9 @@ package org.example.rsa.Algorithms;
 
 import java.math.BigInteger;
 
+import org.example.rsa.PairTypes.PrivateKey;
+import org.example.rsa.PairTypes.PublicKey;
+import org.example.rsa.PairTypes.RSAKeyPair;
 import org.junit.Assert;
 import org.junit.jupiter.api.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -10,42 +13,27 @@ import org.example.rsa.PairTypes.RSAKeys;
 
 public class BlockchiffreTest {
 	@Test
-	public void calculateBlockLength() {
-		String blockLength = "7646106098027519744244395349050541229862450072951769912421603079185396677401061286273210500317429813689758757404464272049551073948015867458446688676577403";
-		BigInteger n = BigInteger.valueOf(Long.parseLong(blockLength));
-		int expected = 32;
+	public void calculateBlockLengthTest() {
+		String nString = "91569306435939";
+		BigInteger n = BigInteger.valueOf(Long.parseLong(nString));
+		int expected = 2;
 		int actual = Blockchiffre.calculateBlockLength(n);
 
 		assertEquals(expected, actual);
 	}
 
-	@Test
-	public void calcBlockLength() {
-		int primeNumberLength = 1024;
-		int expected = 64;
-		int actual = Blockchiffre.calcBlockLength(primeNumberLength);
-
-		assertEquals(expected, actual);
-	}
 
 	@Test
-	public void decryptMessage() throws Exception {
-		PairCipherBlockLength encryptedMessage = new PairCipherBlockLength("R8F9BX-YOI,FQC2LZGO9OIZLNC5", 9);
-		String number = "791569306435939";
-		RSAKeys rsaKeys = new RSAKeys(BigInteger.valueOf(Long.parseLong("577322589362687")), BigInteger.valueOf(Long.parseLong(number)));
-		String expected = "MATHEMATIK IST SPANNEND!";
-		String actual = Blockchiffre.decryptMessage(encryptedMessage, rsaKeys);
-
-		assertEquals(expected, actual);
-	}
-
-	@Test
-	public void encryptMessage() throws Exception {
+	public void encryptDecryptMessageTest() throws Exception {
 		String message = "MATHEMATIK IST SPANNEND!";
-		RSAKeys rsaKeys = new RSAKeys(BigInteger.valueOf(Long.parseLong("15485863")), BigInteger.valueOf(Long.parseLong("791569306435939")));
-		PairCipherBlockLength expected = new PairCipherBlockLength("R8F9BX-YOI,FQC2LZGO9OIZLNC5", 9);
-		PairCipherBlockLength actual = Blockchiffre.encryptMessage(message, rsaKeys, 8);
-		assertEquals(expected.getCipher(), actual.getCipher());
-		assertEquals(expected.getBlockLength(), actual.getBlockLength());
+		BigInteger n = BigInteger.valueOf(Long.parseLong("7487702261154119839"));
+		BigInteger d = BigInteger.valueOf(Long.parseLong("4929816652703129689"));
+		BigInteger e = BigInteger.valueOf(Long.parseLong("2418102639206226409"));
+		int blockLength = Blockchiffre.calculateBlockLength(n);
+		PublicKey publicKey = new PublicKey(e, n);
+		PrivateKey privateKey = new PrivateKey(d, n);
+		PairCipherBlockLength encrypted = Blockchiffre.encryptMessage(message, publicKey, blockLength);
+		String decryptedText = Blockchiffre.decryptMessage(encrypted, privateKey);
+		assertEquals(message, decryptedText);
 	}
 }

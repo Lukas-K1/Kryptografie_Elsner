@@ -1,6 +1,9 @@
 org\example\rsa\Algorithms\BlockchiffreTest.class
+org\example\ellipticCurve\algorithms\CustomTypes\Polynomial1Test.class
 org\example\rsa\Handler\RSAHandlerTest.class
-org\example\rsa\Algorithms\FastExponentiationTest.class
 org\example\rsa\Algorithms\ExtendedEuclideanTest.class
 org\example\rsa\Algorithms\MillerRabinTest.class
+org\example\rsa\Algorithms\FastExponentiationTest.class
 org\example\rsa\Algorithms\UtilitiesTest.class
+org\example\ellipticCurve\algorithms\CustomTypes\PolynomialTest.class
+org\example\ellipticCurve\algorithms\CurveAlgorithmsTest.class

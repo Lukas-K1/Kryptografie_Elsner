@@ -28,7 +28,7 @@ public class UtilitiesTest {
 		BigInteger b = null;
 		int millerRabinTrials = 123;
 		BigInteger expected = null;
-		BigInteger actual = Utilities.generateRandom(m, n, a, b, millerRabinTrials);
+		BigInteger actual = Utilities.generateRandomPrime(m, n, a, b, millerRabinTrials);
 
 		assertEquals(expected, actual);
 	}

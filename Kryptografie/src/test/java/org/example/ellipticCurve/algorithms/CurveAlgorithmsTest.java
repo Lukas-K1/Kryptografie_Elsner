@@ -25,7 +25,7 @@ class CurveAlgorithmsTest {
 
     @Test
     void setFunctionAB() {
-        setFunction("1*x^3 + a*x^1 + b", 3, 4);
+        setFunction(3, 4);
         String function = CurveAlgorithms.getFunctionString();
         assertEquals("1*x^3 + 3.0*x^1 + 4.0", function);
     }
@@ -39,7 +39,7 @@ class CurveAlgorithmsTest {
 
     @Test
     void ellipticSecantSkript() {
-        setFunction("1*x^3 + a*x^1 + b", -2, 0);
+        setFunction( -2, 0);
         Point2D p1 = new Point2D(-1, 1);
         Point2D p2 = new Point2D(0, 0);
         Point2D p3 = new Point2D(2, -2);
@@ -50,7 +50,7 @@ class CurveAlgorithmsTest {
 
     @Test
     void ellipticTangentSkript() {
-        setFunction("1*x^3 + a*x^1 + b", -2, 0);
+        setFunction( -2, 0);
         Point2D p1 = new Point2D(-1, 1);
         Point2D p3 = new Point2D(2.25, 2.625);
         Point2D result = CurveAlgorithms.ellipticTangent(p1);
