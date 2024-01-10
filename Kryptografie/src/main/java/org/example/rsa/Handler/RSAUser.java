@@ -3,8 +3,6 @@ package org.example.rsa.Handler;
 import org.example.rsa.PairTypes.*;
 
 public class RSAUser {
-    private String _name;
-    private String _password;
     private RSAKeyPair _keyPair;
 
     public RSAUser(RSAKeyPair keys) {
