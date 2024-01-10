@@ -1,6 +1,10 @@
-D:\IntelliJ Workspace\Krypto\Kryptografie\src\test\java\org\example\rsa\Algorithms\BlockchiffreTest.java
-D:\IntelliJ Workspace\Krypto\Kryptografie\src\test\java\org\example\rsa\Algorithms\MillerRabinTest.java
-D:\IntelliJ Workspace\Krypto\Kryptografie\src\test\java\org\example\rsa\Algorithms\UtilitiesTest.java
-D:\IntelliJ Workspace\Krypto\Kryptografie\src\test\java\org\example\rsa\Algorithms\ExtendedEuclideanTest.java
-D:\IntelliJ Workspace\Krypto\Kryptografie\src\test\java\org\example\rsa\Algorithms\FastExponentiationTest.java
-D:\IntelliJ Workspace\Krypto\Kryptografie\src\test\java\org\example\rsa\Handler\RSAHandlerTest.java
+C:\Users\Luca\IdeaProjects\Kryptografie_Elsner\Kryptografie\src\test\java\org\example\maske\MaskeTest.java
+C:\Users\Luca\IdeaProjects\Kryptografie_Elsner\Kryptografie\src\test\java\org\example\rsa\Algorithms\BlockchiffreTest.java
+C:\Users\Luca\IdeaProjects\Kryptografie_Elsner\Kryptografie\src\test\java\org\example\rsa\Handler\RSAHandlerTest.java
+C:\Users\Luca\IdeaProjects\Kryptografie_Elsner\Kryptografie\src\test\java\org\example\rsa\Algorithms\FastExponentiationTest.java
+C:\Users\Luca\IdeaProjects\Kryptografie_Elsner\Kryptografie\src\test\java\org\example\ellipticCurve\algorithms\CustomTypes\Polynomial1Test.java
+C:\Users\Luca\IdeaProjects\Kryptografie_Elsner\Kryptografie\src\test\java\org\example\rsa\Algorithms\MillerRabinTest.java
+C:\Users\Luca\IdeaProjects\Kryptografie_Elsner\Kryptografie\src\test\java\org\example\ellipticCurve\algorithms\CurveAlgorithmsTest.java
+C:\Users\Luca\IdeaProjects\Kryptografie_Elsner\Kryptografie\src\test\java\org\example\rsa\Algorithms\UtilitiesTest.java
+C:\Users\Luca\IdeaProjects\Kryptografie_Elsner\Kryptografie\src\test\java\org\example\ellipticCurve\algorithms\CustomTypes\PolynomialTest.java
+C:\Users\Luca\IdeaProjects\Kryptografie_Elsner\Kryptografie\src\test\java\org\example\rsa\Algorithms\ExtendedEuclideanTest.java

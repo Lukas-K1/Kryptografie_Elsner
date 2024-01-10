@@ -8,10 +8,13 @@ import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.Iterator;
 
 public class ZusatzMaske {
-    private String dotResultStart = "Lösungsausgabe : \n";
-    private String dotResults = "";
+    private String dotResultStart = "Lösungsausgabe";
+    private Set<String> dotResults = new HashSet<String>();
 
     public void test(){
         JFrame frame = new JFrame("Integrationsprojekt");
@@ -31,6 +34,11 @@ public class ZusatzMaske {
         JButton button = new JButton("Start");
 
         JButton buttonZusatz = new JButton("Basisaufgabe");
+
+        JTextArea loesungen = new JTextArea("");
+        loesungen.setEditable(false);
+        loesungen.setLineWrap(true);
+        loesungen.setWrapStyleWord(true);
 
         JButton buttomSecantOperation = new JButton("Sekantenverfahren");
         JButton buttonTangentOperation = new JButton("Tangentenverfahren");
@@ -60,8 +68,7 @@ public class ZusatzMaske {
         JPanel column3 = new JPanel();
         column3.setLayout(new BoxLayout(column3, BoxLayout.Y_AXIS));
 
-        JLabel result = new JLabel(dotResultStart + dotResults);
-        column3.add(result);
+        column3.add(createLabeledPanel(dotResultStart, loesungen));
 
         JPanel column4 = new JPanel(new GridLayout(2, 1));
         column4.setLayout(new BoxLayout(column4, BoxLayout.Y_AXIS));
@@ -108,6 +115,8 @@ public class ZusatzMaske {
         button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                    dotResults = new HashSet<String>();
+                    loesungen.setText(""); 
                     graph.scale(graph.getGraphics(), Double.valueOf(scaleParameter.getText()));
                     graph.drawEllipticCurve(graph.getGraphics(), Double.valueOf(aParameter.getText()), Double.valueOf(bParameter.getText()), Double.valueOf(scaleParameter.getText()));
                     // graph.drawDot(graph.getGraphics(), new DoubleDot(-3, -3), Double.valueOf(scaleParameter.getText()));
@@ -131,12 +140,22 @@ public class ZusatzMaske {
                     DoubleDot d1 = new DoubleDot(p1.getX(), p1.getY());
                     DoubleDot d2 = new DoubleDot(p2.getX(), p2.getY());;
                     DoubleDot intersect = new DoubleDot(intersection.getX(), intersection.getY());
-                    
-                    graph.drawLine(graph.getGraphics(), d1, intersect, Double.valueOf(scaleParameter.getText()));
-                    graph.drawDot(graph.getGraphics(), d2, Double.valueOf(scaleParameter.getText()));
 
-                    dotResults += intersection.toString()+","+intersection.invert().toString()+",";
-                    result.setText(dotResultStart + dotResults);
+                    double a = Double.valueOf(aParameter.getText());
+                    double b = Double.valueOf(bParameter.getText());
+                    
+                    if(d1.aufKurve(a,b) && d2.aufKurve(a,b)){
+                        graph.drawLine(graph.getGraphics(), d1, intersect, Double.valueOf(scaleParameter.getText()));
+                        graph.drawDot(graph.getGraphics(), d2, Double.valueOf(scaleParameter.getText()));
+    
+                        //dotResults += intersection.toString()+","+intersection.invert().toString()+",";
+                        dotResults.add(intersection.toString());
+                        dotResults.add(intersection.invert().toString());
+                        loesungen.setText(hashSetToString(dotResults)); 
+                    }
+                    else{
+                        System.out.println("Punkte liegen nicht auf der Kurve");
+                    }
             }
         });
 
@@ -149,9 +168,19 @@ public class ZusatzMaske {
                     DoubleDot d1 = new DoubleDot(p1.getX(), p1.getY());
                     DoubleDot intersect = new DoubleDot(intersection.getX(), intersection.getY());
 
-                    graph.drawLine(graph.getGraphics(), d1, intersect, Double.valueOf(scaleParameter.getText()));
-                    dotResults += intersection.toString()+","+intersection.invert().toString()+",";
-                    result.setText(dotResultStart + dotResults);
+                    double a = Double.valueOf(aParameter.getText());
+                    double b = Double.valueOf(bParameter.getText());
+
+                    if(d1.aufKurve(a, b)){
+                        graph.drawLine(graph.getGraphics(), d1, intersect, Double.valueOf(scaleParameter.getText()));
+                        //dotResults += intersection.toString()+","+intersection.invert().toString()+",";
+                        dotResults.add(intersection.toString());
+                        dotResults.add(intersection.invert().toString());
+                        loesungen.setText(hashSetToString(dotResults));
+                    }
+                    else{
+                        System.out.println("Punkte liegen nicht auf der Geraden");
+                    }
             }
         });
 
@@ -181,4 +210,13 @@ public class ZusatzMaske {
             addBorder(labeledPanel, labelText);
             return labeledPanel;
         }
+
+    private String hashSetToString(Set<String> iterator){
+        String result = "";
+        Iterator<String> iter = iterator.iterator();
+        while(iter.hasNext()){
+            result += " " + iter.next();
+        }
+        return result;
+    }
 }

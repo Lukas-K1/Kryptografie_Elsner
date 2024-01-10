@@ -73,10 +73,17 @@ public class GraphPanel extends JPanel {
         for(int i = 0; i<curveDots.size()-2; i++){
             int xInt = (int) Math.round(curveDots.get(i).x*(20*scale));
             int xIntNext = (int) Math.round(curveDots.get(i+2).x*(20*scale));
+            
             int yInt = (int) Math.round(curveDots.get(i).y*(20*scale));
             int yIntNext = (int) Math.round(curveDots.get(i+2).y*(20*scale));
+            if((xInt+10 < xIntNext)) {
+                g.drawLine(start.x+xInt*1, start.y+yInt*1, start.x+xInt*1, start.y-yInt*1);
+                continue;
+            }
             g.drawLine(start.x+xInt*1, start.y+yInt*1, start.x+xIntNext*1, start.y+yIntNext*1);
         }
+
+        this.drawImportantDots(g, a, b, scale);
     }
 
     private List<DoubleDot> calculateEllipticCurvePoints(Double a, Double b, double scale){
@@ -147,5 +154,19 @@ public class GraphPanel extends JPanel {
         Dot start = this.startPunkt();
 
         g.drawLine(start.x+xInt1, start.y-yInt1, start.x+xInt2, start.y-yInt2);
+    }
+
+    public void drawImportantDots(Graphics g, Double a, Double b, double scale){
+        g.setColor(Color.black);
+
+        if(b==0){
+            drawDot(g, new DoubleDot(0, 0), scale);
+        }
+        else{
+            if(b>=0){
+                drawDot(g, new DoubleDot(0, Math.sqrt(b)), scale);
+                drawDot(g, new DoubleDot(0, -Math.sqrt(b)), scale);
+            }
+        }
     }
 }

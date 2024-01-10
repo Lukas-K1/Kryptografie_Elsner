@@ -225,7 +225,7 @@ public class RSAHandler {
         BigInteger a = BigInteger.TWO.pow(primeNumberLength - 1);
         BigInteger b = BigInteger.TWO.pow(primeNumberLength);
         do {
-            possibleP = Utilities.generateRandom(_m, _countN, a, b, millerRabinTrials);
+            possibleP = Utilities.generateRandomPrime(_m, _countN, a, b, millerRabinTrials);
         } while (possibleP.equals(_q));
         return _p = possibleP;
     }
@@ -241,7 +241,7 @@ public class RSAHandler {
         BigInteger a = BigInteger.TWO.pow(primeNumberLength- 1);
         BigInteger b = BigInteger.TWO.pow(primeNumberLength);
         do {
-            possibleQ = Utilities.generateRandom(_m, _countN, a, b, millerRabinTrials);
+            possibleQ = Utilities.generateRandomPrime(_m, _countN, a, b, millerRabinTrials);
         } while (possibleQ.equals(_p));
         return _q = possibleQ;
     }
@@ -259,7 +259,7 @@ public class RSAHandler {
         BigInteger upperBoundE = phi.subtract(BigInteger.ONE);
 
         do {
-            e = Utilities.generateRandom(_m, _countN, lowerBoundE, upperBoundE, millerRabinTrials);
+            e = Utilities.generateRandomPrime(_m, _countN, lowerBoundE, upperBoundE, millerRabinTrials);
         }
         while (!ExtendedEuclidean.gcd(e, phi).equals(BigInteger.ONE) || e.compareTo(phi) >= 0);
         return e;

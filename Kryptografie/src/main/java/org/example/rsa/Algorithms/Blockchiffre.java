@@ -13,29 +13,13 @@ public class Blockchiffre {
     private static final String messageFiller = "\u0000";
 
     /**
-     * @param message
-     * @param rsaKeys
-     * @return
-     * @throws Exception
-     */
-    public static PairCipherBlockLength encryptMessage(String message, RSAKeys rsaKeys) throws Exception {
-        int charBlockLength = calculateBlockLength(rsaKeys.getN());
-        if (checkBlockLength(charBlockLength, rsaKeys.getN())) {
-            throw new Exception("blocklänge nicht passend");
-        }
-        String filledMessage = fillMessage(message, charBlockLength);
-        String cipher = generateCipher(filledMessage, charBlockLength, rsaKeys);
-        return new PairCipherBlockLength(cipher, charBlockLength + 1);
-    }
-
-    /**
      * encryption of string message
      *
-     * @param message
-     * @param rsaKeys
-     * @param blockLength
-     * @return
-     * @throws Exception
+     * @param message     = message to be encrypted
+     * @param rsaKeys     = Key used for encryption
+     * @param blockLength = Blocklänge
+     * @return encryptedMessage
+     * @throws Exception = Blocklänge nicht passend
      */
     public static PairCipherBlockLength encryptMessage(String message, RSAKeys rsaKeys, int blockLength) throws Exception {
         if (!checkBlockLength(blockLength, rsaKeys.getN())) {
@@ -49,12 +33,15 @@ public class Blockchiffre {
     /**
      * method to call decryption steps
      *
-     * @param encryptedMessage
-     * @param rsaKeys
-     * @return
-     * @throws Exception
+     * @param encryptedMessage  = encryptedMessage
+     * @param rsaKeys           = Key used for decryption
+     * @return decryptedMessage
+     * @throws Exception = Blocklänge nicht passend
      */
     public static String decryptMessage(PairCipherBlockLength encryptedMessage, RSAKeys rsaKeys) throws Exception {
+        if (!checkBlockLength(encryptedMessage.getBlockLength()-1, rsaKeys.getN())) {
+            throw new Exception("blocklänge nicht passend");
+        }
         String cipher = encryptedMessage.getCipher();
         Integer blockLength = encryptedMessage.getBlockLength();
         String messageText = "";
@@ -79,17 +66,12 @@ public class Blockchiffre {
         return charBlockLength;
     }
 
-    public static int calcBlockLength(int primeNumberLength) {
-        double log = (primeNumberLength * (Math.log(2) / Math.log(_charSetSize.doubleValue())));
-        return (int) Math.floor(log);
-    }
-
     /**
      * checks correctness of block length based on script
      *
-     * @param charBlockLength
-     * @param n
-     * @return
+     * @param charBlockLength = Blocklänge
+     * @param n               = p*q
+     * @return True if blocklength correct
      */
     private static boolean checkBlockLength(int charBlockLength, BigInteger n) {
         return _charSetSize.pow(charBlockLength).compareTo(n) < 0
@@ -98,7 +80,10 @@ public class Blockchiffre {
 
     /**
      * Auffüllen der Länge des Textes auf eine Länge die ganzzahlig durch die Blocklänge teilbar ist
-     * TODO check if actually filling up to block length
+     *
+     * @param message         = gesamter Klartext
+     * @param charBlockLength = Blocklänge
+     * @return FilledMessage
      */
     private static String fillMessage(String message, int charBlockLength) {
         StringBuilder filledMessage = new StringBuilder(message);
@@ -106,56 +91,54 @@ public class Blockchiffre {
             int messageLengthDifference = charBlockLength - (message.length() % charBlockLength);
             filledMessage.append(messageFiller.repeat(messageLengthDifference));
         }
-//        int messageLengthDifference = charBlockLength - (message.length() % charBlockLength);
-//        filledMessage.append(messageFiller.repeat(messageLengthDifference));
-//        int messageBlockDifference = message.length() % charBlockLength;
-//        while (!((filledMessage.length() % charBlockLength) == 0)) {
-//            filledMessage.append(messageFiller);
-//        }
         return filledMessage.toString();
     }
 
     /**
      * teilen des Klartextes in Blocke und Erzeugen des Chiffres
-     * calls smaller encryption steps
      *
      * @param message         = gesamter Klartext
      * @param charBlockLength = Blocklänge
      * @return Chiffrat
      */
     private static String generateCipher(String message, int charBlockLength, RSAKeys rsaKeys) throws Exception {
-        ArrayList<BigInteger> blockList = messageToBigIntList(message, charBlockLength);
-        ArrayList<BigInteger> paddedBlockList = addPadding(blockList, charBlockLength);
+        ArrayList<BigInteger> blockList = messageToBigIntBlockList(message, charBlockLength);
         ArrayList<BigInteger> cipherList = new ArrayList<>();
-        System.out.println("BlockList gen");
-        System.out.println(blockList);
         for (BigInteger messageBlockNumber : blockList) {
             cipherList.add(FastExponentiation.exponentiation(messageBlockNumber, rsaKeys.getKey(), rsaKeys.getN()));
         }
-        System.out.println("CipherList gen");
-        System.out.println(cipherList);
-        return bigIntListToUnicode(cipherList, charBlockLength + 1);
+        return bigIntListToString(cipherList, charBlockLength + 1);
     }
 
+    /**
+     * teilen des Chiffrats in Blöcke und Entschlüsseln dieser
+     *
+     * @param cipher      = Chiffrat
+     * @param blockLength = Blocklänge
+     * @param rsaKeys     = Schlüssel
+     * @return Chiffrat
+     */
     private static String decryptCipher(String cipher, Integer blockLength, RSAKeys rsaKeys) throws Exception {
-        ArrayList<BigInteger> cipherList = messageToBigIntList(cipher, blockLength);
+        ArrayList<BigInteger> cipherList = messageToBigIntBlockList(cipher, blockLength);
         ArrayList<BigInteger> blockList = new ArrayList<>();
-        System.out.println("CipherList dec");
-        System.out.println(cipherList);
         for (BigInteger cipherNumber : cipherList) {
             blockList.add(FastExponentiation.exponentiation(cipherNumber, rsaKeys.getKey(), rsaKeys.getN()));
         }
-        System.out.println("BlockList dec");
-        System.out.println(blockList);
-        ArrayList<BigInteger> unpaddedBlockList = removePadding(blockList);
-        return bigIntListToUnicode(blockList, blockLength - 1);
+        return bigIntListToString(blockList, blockLength - 1);
     }
 
-    public static ArrayList<BigInteger> messageToBigIntList(String unicodeMessage, int blockLength) {
-        List<Integer> unicodeList = messageToIntList(unicodeMessage);
+    /**
+     * message to BigInteger Block representation
+     *
+     * @param message = message
+     * @param blockLength = Blöcklänge
+     * @return
+     */
+    private static ArrayList<BigInteger> messageToBigIntBlockList(String message, int blockLength) {
+        List<Integer> unicodeList = messageToIntList(message);
         ArrayList<BigInteger> messageInt = new ArrayList<>();
 
-        int messageLength = unicodeMessage.length();
+        int messageLength = message.length();
         for (int i = 0; i < messageLength; i += blockLength) {
             BigInteger blockValue = BigInteger.ZERO;
             for (int j = 0; j < blockLength; j++) {
@@ -171,8 +154,8 @@ public class Blockchiffre {
     /**
      * message to integer representation
      *
-     * @param message
-     * @return
+     * @param message = message
+     * @return List of Char -> Int Representation
      */
     private static ArrayList<Integer> messageToIntList(String message) {
         ArrayList<Integer> messageInt = new ArrayList<>();
@@ -182,7 +165,14 @@ public class Blockchiffre {
         return messageInt;
     }
 
-    public static String bigIntListToUnicode(ArrayList<BigInteger> bigIntMessage, int blockLength) {
+    /**
+     * BigInteger Block representation to message
+     *
+     * @param bigIntMessage = Block Representation of a String
+     * @param blockLength = Blocklänge
+     * @return message
+     */
+    public static String bigIntListToString(ArrayList<BigInteger> bigIntMessage, int blockLength) {
         List<Integer> unicodeList = new ArrayList<>();
         for (BigInteger cipherBlock : bigIntMessage) {
             List<Integer> unicodeBlockList = new ArrayList<>();
@@ -201,21 +191,5 @@ public class Blockchiffre {
         }
 
         return unicodeMessage.toString();
-    }
-
-    private static ArrayList<BigInteger> addPadding(List<BigInteger> message, int blockLength) {
-        ArrayList<BigInteger> paddedMessage = new ArrayList<>(message);
-        while (paddedMessage.size() % (blockLength+1) != 0) {
-            paddedMessage.add(BigInteger.ZERO);
-        }
-        return paddedMessage;
-    }
-
-    private static ArrayList<BigInteger> removePadding(List<BigInteger> message) {
-        ArrayList<BigInteger> unpaddedMessage = new ArrayList<>(message);
-        while (unpaddedMessage.get(unpaddedMessage.size()-1).equals(BigInteger.ZERO)) {
-            unpaddedMessage.remove(unpaddedMessage.size()-1);
-        }
-        return unpaddedMessage;
     }
 }

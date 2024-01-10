@@ -14,29 +14,25 @@ public class CurveAlgorithms {
     public static String getFunctionString() {
         return _functionString;
     }
-    static String function = "1*x^3 + a*x^1 + b";
+    static String functionBlueprint = "1*x^3 + a*x^1 + b";
+
+
     public static void setFunction(String function) {
         _function = new Polynomial(function);
     }
-    public static void setFunction(String function, double a, double b) {
-        function = function.replace("a", String.valueOf(a));
-        function = function.replace("b", String.valueOf(b));
-        double validCoefficients = 4*Math.pow(a, 3) + 27*Math.pow(b, 2);
-        if(validCoefficients == 0){
-            throw new IllegalArgumentException("Invalid coefficients");
-        }
-        _functionString = function;
-        _function = new Polynomial(function);
-    }
+
+
     public static void setFunction(double a, double b) {
-        function = function.replace("a", String.valueOf(a));
-        function = function.replace("b", String.valueOf(b));
+        String func = functionBlueprint;
+        func = func.replace("a", String.valueOf(a));
+        func = func.replace("b", String.valueOf(b));
         double validCoefficients = 4*Math.pow(a, 3) + 27*Math.pow(b, 2);
         if(validCoefficients == 0){
             throw new IllegalArgumentException("Invalid coefficients");
         }
-        _functionString = function;
-        _function = new Polynomial(function);
+        _functionString = func;
+        System.out.println(func);
+        _function = new Polynomial(func);
     }
 
     //#region Tangentenverfahren
