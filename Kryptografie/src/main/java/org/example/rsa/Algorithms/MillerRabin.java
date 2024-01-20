@@ -39,7 +39,7 @@ public class MillerRabin {
             BigInteger x = Utilities.getRandomBigInteger(BigInteger.TWO, exponent, n, m);
             BigInteger y = FastExponentiation.exponentiation(x, j, probablyPrime);
 
-            if (!y.equals(BigInteger.ONE) || y.equals(probablyPrime.subtract(BigInteger.ONE))) {
+            if (y.equals(BigInteger.ONE) || y.equals(probablyPrime.subtract(BigInteger.ONE))) {
                 continue;
             }
             int r;
