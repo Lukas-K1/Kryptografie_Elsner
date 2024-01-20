@@ -14,8 +14,11 @@ import java.security.NoSuchAlgorithmException;
 import java.util.HashSet;
 
 public class Utilities {
-
-    private static BigInteger _countN = BigInteger.ONE;
+    static BigInteger zero = BigInteger.ZERO;
+    static BigInteger one = BigInteger.ONE;
+    static BigDecimal zeroDec = BigDecimal.ZERO;
+    static BigDecimal oneDec = BigDecimal.ONE;
+    private static BigInteger _countN = one;
 
     public static BigInteger getCountN() {
         return _countN;
@@ -24,6 +27,7 @@ public class Utilities {
     public static BigInteger setCountN(BigInteger countN) {
         return _countN = countN;
     }
+
 
     /**
      * primes up to 1000 to check against
@@ -212,17 +216,18 @@ public class Utilities {
         BigDecimal bValue = new BigDecimal(b);
         BigDecimal nValue = new BigDecimal(n);
         BigDecimal mValue = new BigDecimal(m);
-        MathContext context = MathContext.DECIMAL128;
 
-        BigDecimal bSubA = bValue.subtract(aValue).add(BigDecimal.ONE);
+        MathContext context = MathContext.DECIMAL32;
+
+        BigDecimal bSubA = bValue.subtract(aValue).add(oneDec);
         HashSet<BigInteger> randomNumbers = new HashSet<BigInteger>();
 
         for (long i = 1; i <= n.intValue(); i++) {
-            while (mValue.sqrt(context).remainder(BigDecimal.ONE).equals(BigDecimal.ZERO)) {
-                mValue = mValue.add(BigDecimal.ONE);
+            while (mValue.sqrt(context).remainder(oneDec).equals(zeroDec)) {
+                mValue = mValue.add(oneDec);
             }
 
-            BigDecimal nsquareMod = mValue.sqrt(context).multiply(nValue).remainder(BigDecimal.ONE);
+            BigDecimal nsquareMod = mValue.sqrt(context).multiply(nValue).remainder(oneDec);
             BigDecimal floor = nsquareMod.multiply(bSubA);
             BigDecimal sn = aValue.add(floor);
             BigInteger randomNumber = sn.toBigInteger();
@@ -252,21 +257,21 @@ public class Utilities {
                 if (probablyPrime.equals(smallerPrime)) {
                     return probablyPrime;
                 }
-                if (probablyPrime.mod(smallerPrime).equals(BigInteger.ZERO)) {
+                if (probablyPrime.mod(smallerPrime).equals(zero)) {
                     hasPrimeDivisor = true;
                     break;
                 }
             }
             if (hasPrimeDivisor) {
-                n = n.add(BigInteger.ONE);
+                n = n.add(one);
                 continue;
             }
             if (!MillerRabin.isPrime(probablyPrime, millerRabinTrials, n, m)) {
                 break;
             }
-            n = n.add(BigInteger.ONE);
+            n = n.add(one);
         }
-        setCountN(n.add(BigInteger.ONE));
+        setCountN(n.add(one));
         return probablyPrime;
     }
 
@@ -285,15 +290,16 @@ public class Utilities {
         BigDecimal nValue = new BigDecimal(n);
         BigDecimal mValue = new BigDecimal(m);
 
-        BigDecimal bSubA = bValue.subtract(aValue).add(BigDecimal.ONE);
-        int contextPrecision = bSubA.precision() - bSubA.scale();
-        MathContext context = new MathContext(contextPrecision);
+        BigDecimal bSubA = bValue.subtract(aValue).add(oneDec);
+//        int contextPrecision = bSubA.precision() - bSubA.scale();
+//        MathContext context = new MathContext(contextPrecision);
+        MathContext context = MathContext.DECIMAL32;
 
-        while (mValue.sqrt(context).remainder(BigDecimal.ONE).equals(BigDecimal.ZERO) || mValue.sqrt(context).pow(2).equals(mValue)) {
-            mValue = mValue.add(BigDecimal.ONE);
+        while (mValue.sqrt(context).remainder(oneDec).equals(zeroDec) || mValue.sqrt(context).pow(2).equals(mValue)) {
+            mValue = mValue.add(oneDec);
         }
 
-        BigDecimal nsquareMod = mValue.sqrt(context).multiply(nValue).remainder(BigDecimal.ONE);
+        BigDecimal nsquareMod = mValue.sqrt(context).multiply(nValue).remainder(oneDec);
         BigDecimal floor = nsquareMod.multiply(bSubA);
         BigDecimal sn = aValue.add(floor);
         return sn.toBigInteger();

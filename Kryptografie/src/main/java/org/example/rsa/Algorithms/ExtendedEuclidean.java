@@ -3,6 +3,9 @@ package org.example.rsa.Algorithms;
 import java.math.BigInteger;
 
 public class ExtendedEuclidean {
+    static BigInteger zero = BigInteger.ZERO;
+    static BigInteger one = BigInteger.ONE;
+    static BigInteger two = BigInteger.TWO;
     /**
      * calculates gcd and parameters x, y used in mod inverse
      * @param a
@@ -10,8 +13,8 @@ public class ExtendedEuclidean {
      * @return
      */
     public static ExtendedEuclidResult extendedGCD(BigInteger a, BigInteger b) {
-        if (b.equals(BigInteger.ZERO)) {
-            return new ExtendedEuclidResult(a, BigInteger.ONE, BigInteger.ZERO);
+        if (b.equals(zero)) {
+            return new ExtendedEuclidResult(a, one, zero);
         } else {
             ExtendedEuclidResult result = extendedGCD(b, a.mod(b));
             BigInteger x = result.y;
@@ -27,7 +30,7 @@ public class ExtendedEuclidean {
      * @return greatest common divisor
      */
     public static BigInteger gcd(BigInteger a, BigInteger b) {
-        if (a.mod(b).equals(BigInteger.ZERO)) {
+        if (a.mod(b).equals(zero)) {
             return b;
         } else {
             return gcd(b, a.mod(b));
@@ -42,10 +45,10 @@ public class ExtendedEuclidean {
      */
     public static BigInteger getModInverse(BigInteger e, BigInteger phi){
         ExtendedEuclidResult result = extendedGCD(e, phi);
-        if (result.gcd.equals(BigInteger.ONE)) {
+        if (result.gcd.equals(one)) {
             return result.x.mod(phi);
         } else {
-            return BigInteger.ZERO;
+            return zero;
         }
     }
 

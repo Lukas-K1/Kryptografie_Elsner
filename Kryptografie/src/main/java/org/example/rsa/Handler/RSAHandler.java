@@ -19,9 +19,12 @@ import java.security.MessageDigest;
  * aswell as generating keys and the modulus
  */
 public class RSAHandler {
+    static BigInteger zero = BigInteger.ZERO;
+    static BigInteger one = BigInteger.ONE;
+    static BigInteger two = BigInteger.TWO;
 
-    public static int millerRabinTrials;
-    public static int primeNumberLength;
+    public static int _millerRabinTrials;
+    public static int _primeNumberLength;
 
     private static BigInteger _m;
     private static BigInteger _p;
@@ -30,7 +33,7 @@ public class RSAHandler {
     private static BigInteger _phi;
     private static BigInteger _e;
     private static BigInteger _d;
-    private static BigInteger _countN = BigInteger.ONE;
+    private static BigInteger _countN = one;
     private static int _blockLength;
     private static int _numberLengthPQ;
     public static RSAUser Alice = new RSAUser();
@@ -54,15 +57,15 @@ public class RSAHandler {
     }
 
     public void setMillerRabinTrials(int millerRabinTrials) {
-        this.millerRabinTrials = millerRabinTrials;
+        _millerRabinTrials = millerRabinTrials;
     }
 
     public void setPrimeNumberLength(int primeNumberLength) {
-        this.primeNumberLength = primeNumberLength;
+        _primeNumberLength = primeNumberLength;
     }
 
     public void setM(int m) {
-        this._m = BigInteger.valueOf(m);
+        _m = BigInteger.valueOf(m);
     }
 
     /**
@@ -192,7 +195,7 @@ public class RSAHandler {
      * @throws Exception
      */
     public static boolean validSignature(String hashedMessage, String signature, PublicKey publicKey) throws Exception {
-        if (primeNumberLength < 258){
+        if (_primeNumberLength < 258){
             throw new Exception("prime number length is too small");
         }
         final MessageDigest digest = MessageDigest.getInstance("SHA3-256");
@@ -222,10 +225,10 @@ public class RSAHandler {
      */
     public static BigInteger calculateP(int primeNumberLength) throws Exception {
         BigInteger possibleP;
-        BigInteger a = BigInteger.TWO.pow(primeNumberLength - 1);
-        BigInteger b = BigInteger.TWO.pow(primeNumberLength);
+        BigInteger a = two.pow(primeNumberLength - 1);
+        BigInteger b = two.pow(primeNumberLength);
         do {
-            possibleP = Utilities.generateRandomPrime(_m, _countN, a, b, millerRabinTrials);
+            possibleP = Utilities.generateRandomPrime(_m, _countN, a, b, _millerRabinTrials);
         } while (possibleP.equals(_q));
         return _p = possibleP;
     }
@@ -238,10 +241,10 @@ public class RSAHandler {
      */
     public static BigInteger calculateQ(int primeNumberLength) throws Exception {
         BigInteger possibleQ;
-        BigInteger a = BigInteger.TWO.pow(primeNumberLength- 1);
-        BigInteger b = BigInteger.TWO.pow(primeNumberLength);
+        BigInteger a = two.pow(primeNumberLength- 1);
+        BigInteger b = two.pow(primeNumberLength);
         do {
-            possibleQ = Utilities.generateRandomPrime(_m, _countN, a, b, millerRabinTrials);
+            possibleQ = Utilities.generateRandomPrime(_m, _countN, a, b, _millerRabinTrials);
         } while (possibleQ.equals(_p));
         return _q = possibleQ;
     }
@@ -255,13 +258,13 @@ public class RSAHandler {
     public static BigInteger calculateE(BigInteger phi) throws Exception {
         BigInteger e;
 
-        BigInteger lowerBoundE = BigInteger.TWO;
-        BigInteger upperBoundE = phi.subtract(BigInteger.ONE);
+        BigInteger lowerBoundE = two;
+        BigInteger upperBoundE = phi.subtract(one);
 
         do {
-            e = Utilities.generateRandomPrime(_m, _countN, lowerBoundE, upperBoundE, millerRabinTrials);
+            e = Utilities.generateRandomPrime(_m, _countN, lowerBoundE, upperBoundE, _millerRabinTrials);
         }
-        while (!ExtendedEuclidean.gcd(e, phi).equals(BigInteger.ONE) || e.compareTo(phi) >= 0);
+        while (!ExtendedEuclidean.gcd(e, phi).equals(one) || e.compareTo(phi) >= 0);
         return e;
     }
 
@@ -272,7 +275,7 @@ public class RSAHandler {
      * @return phi(N) = p - 1 * q - 1
      */
     public static BigInteger calculatePhiN(BigInteger p, BigInteger q) {
-        return _phi = (p.subtract(BigInteger.ONE)).multiply(q.subtract(BigInteger.ONE));
+        return _phi = (p.subtract(one)).multiply(q.subtract(one));
     }
 
     /**
@@ -299,14 +302,14 @@ public class RSAHandler {
      * @throws Exception
      */
     private static BigInteger generateDHelper(BigInteger phi, BigInteger e) throws Exception {
-        if (!phi.mod(e).equals(BigInteger.ZERO)) {
+        if (!phi.mod(e).equals(zero)) {
             return generateDHelper(e, phi.mod(e))
                     .multiply(phi)
-                    .subtract(BigInteger.ONE)
+                    .subtract(one)
                     .divide(e.multiply(BigInteger.valueOf(-1)));
         }
-        else if (e.equals(BigInteger.ONE)) {
-            return BigInteger.ONE;
+        else if (e.equals(one)) {
+            return one;
         } else {
             throw new Exception("values are not coprime");
         }
