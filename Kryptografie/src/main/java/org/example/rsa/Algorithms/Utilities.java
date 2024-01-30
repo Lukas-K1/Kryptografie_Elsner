@@ -261,7 +261,7 @@ public class Utilities {
                 n = n.add(BigInteger.ONE);
                 continue;
             }
-            if (!MillerRabin.isPrime(probablyPrime, millerRabinTrials, n, m)) {
+            if (MillerRabin.isPrime(probablyPrime, millerRabinTrials, n, m)) {
                 break;
             }
             n = n.add(BigInteger.ONE);
