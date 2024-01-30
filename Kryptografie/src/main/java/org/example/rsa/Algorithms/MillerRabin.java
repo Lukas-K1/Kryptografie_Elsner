@@ -39,6 +39,11 @@ public class MillerRabin {
             BigInteger x = Utilities.getRandomBigInteger(BigInteger.TWO, exponent, n, m);
             BigInteger y = FastExponentiation.exponentiation(x, j, probablyPrime);
 
+            /**
+            *the false fist negation in the following commented if statement was the culprit leading to the abysmal performance in the demonstration
+            *with this fix it increases the performance to a level that the generation of boh key pairs (Alice, bob) takes around 2.5 seconds with bitlength = 8192 and k = 100 trials
+            */
+            //if (!y.equals(BigInteger.ONE) || y.equals(probablyPrime.subtract(BigInteger.ONE))) {
             if (y.equals(BigInteger.ONE) || y.equals(probablyPrime.subtract(BigInteger.ONE))) {
                 continue;
             }
